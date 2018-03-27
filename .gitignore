@@ -1,32 +1,73 @@
 # Prerequisites
+
 *.d
 
+
+
 # Compiled Object files
+
 *.slo
+
 *.lo
+
 *.o
+
 *.obj
 
+
+
 # Precompiled Headers
+
 *.gch
+
 *.pch
 
+
+
 # Compiled Dynamic libraries
+
 *.so
+
 *.dylib
+
 *.dll
 
+
+
 # Fortran module files
+
 *.mod
+
 *.smod
 
+
+
 # Compiled Static libraries
+
 *.lai
+
 *.la
+
 *.a
+
 *.lib
 
+
+
 # Executables
+
 *.exe
+
 *.out
+
 *.app
+
+
+# Log files
+*.log
+
+/Builds/VisualStudio2017/x64/*
+/Builds/VisualStudio2017/.vs/*
+/Builds/CodeBlocksWindows/bin/*
+
+/Builds/CodeBlocksWindows/OneLittleSynthesizer.layout
