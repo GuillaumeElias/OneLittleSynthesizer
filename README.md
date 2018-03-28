@@ -10,7 +10,7 @@ This project is using VST version 2.4 (but you can set another version using the
 
 ## Builds
 
-- **Builds/CodeBlocksWindows/OneLittleSynthesizer.cbp**: 32 bit build for CodeBlocks using MinGW(GCC 6.3.3). You might have run into one or two compiler issues while compiling with JUCE 5.3.0, but they are easily fixed by just adding the missing #include.
+- **Builds/CodeBlocksWindows/OneLittleSynthesizer.cbp**: 32 bit build for CodeBlocks using MinGW(GCC 6.3.3). You might run into one or two compiler issues while compiling with JUCE 5.3.0, but they are easily fixed by just adding the missing #include into the JUCE source file.
 
 - **Builds/VisualStudio2017/OneLittleSynthesizer.sln**: 64 bit build for VisualStudio 2017.
 
