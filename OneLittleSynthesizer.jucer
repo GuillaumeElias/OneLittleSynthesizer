@@ -3,7 +3,7 @@
 <JUCERPROJECT id="BMgDZv" name="OneLittleSynthesizer" displaySplashScreen="1"
               reportAppUsage="1" splashScreenColour="Dark" projectType="audioplug"
               version="1.0.0" bundleIdentifier="com.yourcompany.OneLittleSynthesizer"
-              includeBinaryInAppConfig="1" cppLanguageStandard="11" companyCopyright=""
+              includeBinaryInAppConfig="1" cppLanguageStandard="14" companyCopyright=""
               buildVST="1" buildVST3="0" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" buildStandalone="1" enableIAA="0" pluginName="OneLittleSynthesizer"
               pluginDesc="OneLittleSynthesizer" pluginManufacturer="yourcompany"
@@ -14,6 +14,17 @@
               pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="5.2.0">
   <MAINGROUP id="Boogcv" name="OneLittleSynthesizer">
     <GROUP id="{22BBBFC2-8997-3B2D-3CCC-6D49C1B2253C}" name="Source">
+      <FILE id="IDaPh3" name="Constants.h" compile="0" resource="0" file="Source/Constants.h"/>
+      <FILE id="NlmWO7" name="Envelope.cpp" compile="1" resource="0" file="Source/Envelope.cpp"/>
+      <FILE id="mDuljl" name="Envelope.h" compile="0" resource="0" file="Source/Envelope.h"/>
+      <FILE id="SU33pA" name="EnvelopeUI.cpp" compile="1" resource="0" file="Source/EnvelopeUI.cpp"/>
+      <FILE id="kCDs8v" name="EnvelopeUI.h" compile="0" resource="0" file="Source/EnvelopeUI.h"/>
+      <FILE id="W9dV3S" name="Oscillator.cpp" compile="1" resource="0" file="Source/Oscillator.cpp"/>
+      <FILE id="FppX5k" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator.h"/>
+      <FILE id="Y3qkZ7" name="SynthSound.cpp" compile="1" resource="0" file="Source/SynthSound.cpp"/>
+      <FILE id="hUVoLa" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
+      <FILE id="luDU4C" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
+      <FILE id="wWYLwq" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="HVGMLw" name="Synth.cpp" compile="1" resource="0" file="Source/Synth.cpp"/>
       <FILE id="ZbvPEq" name="Synth.h" compile="0" resource="0" file="Source/Synth.h"/>
       <FILE id="aWhjPY" name="PluginProcessor.cpp" compile="1" resource="0"
@@ -24,17 +35,6 @@
             file="Source/PluginEditor.cpp"/>
       <FILE id="bg1DxS" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
-    <FILE id="IDaPh3" name="Constants.h" compile="0" resource="0" file="Source/Constants.h"/>
-    <FILE id="NlmWO7" name="Envelope.cpp" compile="1" resource="0" file="Source/Envelope.cpp"/>
-    <FILE id="mDuljl" name="Envelope.h" compile="0" resource="0" file="Source/Envelope.h"/>
-    <FILE id="SU33pA" name="EnvelopeUI.cpp" compile="1" resource="0" file="Source/EnvelopeUI.cpp"/>
-    <FILE id="kCDs8v" name="EnvelopeUI.h" compile="0" resource="0" file="Source/EnvelopeUI.h"/>
-    <FILE id="W9dV3S" name="Oscillator.cpp" compile="1" resource="0" file="Source/Oscillator.cpp"/>
-    <FILE id="FppX5k" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator.h"/>
-    <FILE id="Y3qkZ7" name="SynthSound.cpp" compile="1" resource="0" file="Source/SynthSound.cpp"/>
-    <FILE id="hUVoLa" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
-    <FILE id="luDU4C" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
-    <FILE id="wWYLwq" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
   </MAINGROUP>
   <EXPORTFORMATS>
     <VS2017 targetFolder="Builds/VisualStudio2017" windowsTargetPlatformVersion="10.0.16299.0">
@@ -47,25 +47,25 @@
                        linkTimeOptimisation="1" isDebug="0" optimisation="3" targetName="OneLittleSynthesizer"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_core" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_events" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_graphics" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_cryptography" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_video" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_opengl" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_basics" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_processors" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_utils" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_dsp" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="C/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="C/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="C:/JUCE/modules"/>
       </MODULEPATHS>
     </VS2017>
-    <CODEBLOCKS_WINDOWS targetFolder="Builds/CodeBlocksWindows">
+    <CODEBLOCKS_WINDOWS targetFolder="Builds/CodeBlocksWindows" extraCompilerFlags="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" windowsCodeBlocksArchitecture="-m32" isDebug="1"
                        optimisation="1" linkTimeOptimisation="0" targetName="OneLittleSynthesizer"/>
@@ -73,22 +73,22 @@
                        optimisation="3" linkTimeOptimisation="1" targetName="OneLittleSynthesizer"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_core" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_events" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_graphics" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_cryptography" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_video" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_opengl" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_basics" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_processors" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_utils" path="../../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_dsp" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="C:/JUCE/modules"/>
       </MODULEPATHS>
     </CODEBLOCKS_WINDOWS>
   </EXPORTFORMATS>
