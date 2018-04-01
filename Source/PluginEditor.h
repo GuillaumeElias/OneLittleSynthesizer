@@ -21,7 +21,7 @@ class WaveShapeSlider : public Slider
 
 //==============================================================================
 
-class OneLittleSynthesizerAudioProcessorEditor : public AudioProcessorEditor, private KeyListener
+class OneLittleSynthesizerAudioProcessorEditor : public AudioProcessorEditor, private KeyListener, private Button::Listener
 {
 public:
     OneLittleSynthesizerAudioProcessorEditor (OneLittleSynthesizerAudioProcessor&, AudioProcessorValueTreeState& );
@@ -31,6 +31,7 @@ public:
     void resized() override;
 
 private:
+    void buttonClicked ( Button * button) override;
     bool keyPressed (const KeyPress &key, Component *originatingComponent) override;
     bool keyStateChanged (bool isKeyDown, Component *originatingComponent) override;
 
@@ -38,6 +39,8 @@ private:
     AudioProcessorValueTreeState& parameters;
 
     MidiKeyboardComponent midiKeyboard;
+
+    TextButton resetParametersButton;
 
     //WAVE SHAPE
 	WaveShapeSlider waveShapeSlider;

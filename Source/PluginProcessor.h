@@ -44,12 +44,11 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    void setParameterValue(String paramName, float value);
+
     MidiKeyboardState keyboardState;
 
 private:
-    AudioProcessorParameter* getParameter (const String& paramId);
-    void applyParameter(AudioParameterFloat * param);
-
 
     File loggerFile;
     FileLogger logger;

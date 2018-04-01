@@ -243,6 +243,17 @@ void OneLittleSynthesizerAudioProcessor::setStateInformation (const void* data, 
 }
 
 //==============================================================================
+void OneLittleSynthesizerAudioProcessor::setParameterValue(String paramName, float value)
+{
+    auto parameter = parameters.getParameter(paramName);
+    auto range = parameters.getParameterRange(paramName);
+
+    parameter->beginChangeGesture();
+    parameter->setValueNotifyingHost(range.convertTo0to1(value));
+    parameter->endChangeGesture();
+}
+
+//==============================================================================
 // This creates new instances of the plugin..
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {

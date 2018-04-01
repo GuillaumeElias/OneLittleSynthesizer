@@ -4737,11 +4737,11 @@
 	"AppConfig.h"
 	<juce_video/juce_video.cpp>
 
-1522308030 source:c:\users\user\documents\cpp\onelittlesynthesizer\source\plugineditor.cpp
+1522585746 source:c:\users\user\documents\cpp\onelittlesynthesizer\source\plugineditor.cpp
 	"PluginProcessor.h"
 	"PluginEditor.h"
 
-1522308030 c:\users\user\documents\cpp\onelittlesynthesizer\source\pluginprocessor.h
+1522585538 c:\users\user\documents\cpp\onelittlesynthesizer\source\pluginprocessor.h
 	"../JuceLibraryCode/JuceHeader.h"
 	"Synth.h"
 
@@ -4768,7 +4768,7 @@
 	<../JuceLibraryCode/JuceHeader.h>
 	"Constants.h"
 
-1522341537 c:\users\user\documents\cpp\onelittlesynthesizer\source\synthvoice.h
+1522341549 c:\users\user\documents\cpp\onelittlesynthesizer\source\synthvoice.h
 	"../JuceLibraryCode/JuceHeader.h"
 	"SynthSound.h"
 	"Oscillator.h"
@@ -4778,12 +4778,12 @@
 
 1522308030 c:\users\user\documents\cpp\onelittlesynthesizer\source\constants.h
 
-1522308030 c:\users\user\documents\cpp\onelittlesynthesizer\source\plugineditor.h
+1522394339 c:\users\user\documents\cpp\onelittlesynthesizer\source\plugineditor.h
 	"../JuceLibraryCode/JuceHeader.h"
 	"PluginProcessor.h"
 	"EnvelopeUI.h"
 
-1522308030 source:c:\users\user\documents\cpp\onelittlesynthesizer\source\pluginprocessor.cpp
+1522585822 source:c:\users\user\documents\cpp\onelittlesynthesizer\source\pluginprocessor.cpp
 	"PluginProcessor.h"
 	"PluginEditor.h"
 

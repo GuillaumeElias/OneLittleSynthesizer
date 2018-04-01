@@ -20,6 +20,11 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
     getLookAndFeel().setColour (Slider::thumbColourId, Colours::white);
     getLookAndFeel().setColour (Label::textColourId, Colours::white);
 
+    //Reset parameters button
+    resetParametersButton.setButtonText("Reset");
+    resetParametersButton.setColour(Slider::thumbColourId, Colours::white);
+    resetParametersButton.addListener(this);
+
     //Wave shape
     waveShapeLabel.setText( "Wave shape", dontSendNotification);
     waveShapeLabel.setColour (Label::textColourId, Colours::white);
@@ -53,6 +58,7 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
     midiKeyboard.setWantsKeyboardFocus(false);
 
     //Making the components visible
+    addAndMakeVisible(resetParametersButton);
     addAndMakeVisible(waveShapeLabel);
     addAndMakeVisible(waveShapeSlider);
     addAndMakeVisible(filterFrequencyLabel);
@@ -69,6 +75,7 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
 //==============================================================================
 OneLittleSynthesizerAudioProcessorEditor::~OneLittleSynthesizerAudioProcessorEditor()
 {
+    resetParametersButton.removeListener(this);
 }
 
 //==============================================================================
@@ -80,21 +87,37 @@ void OneLittleSynthesizerAudioProcessorEditor::paint (Graphics& g)
 //==============================================================================
 void OneLittleSynthesizerAudioProcessorEditor::resized()
 {
-    Rectangle<int> bounds (getLocalBounds().reduced (10));
+    Rectangle<int> bounds (getLocalBounds());
 
     midiKeyboard.setBounds (bounds.removeFromBottom (70) );
 
-    waveShapeLabel.setBounds(0, 20, bounds.getWidth(), 20);
-    waveShapeSlider.setBounds (100, 20, bounds.getWidth() - 100 , 20);
+    resetParametersButton.setBounds(bounds.getWidth() - 55, 10, 45, 20);
 
-    filterFrequencyLabel.setBounds(0, 60, bounds.getWidth(), 20);
-    filterFrequencySlider.setBounds (100, 60, bounds.getWidth() - 100 , 20);
+    waveShapeLabel.setBounds(0, 40, bounds.getWidth(), 20);
+    waveShapeSlider.setBounds (100, 40, bounds.getWidth() - 100 , 20);
 
-    filterResonanceLabel.setBounds(0, 100, bounds.getWidth(), 20);
-    filterResonanceSlider.setBounds (100, 100, bounds.getWidth() - 100 , 20);
+    filterFrequencyLabel.setBounds(0, 80, bounds.getWidth(), 20);
+    filterFrequencySlider.setBounds (100, 80, bounds.getWidth() - 100 , 20);
 
-    envelopeUI.setBounds(0, 130, getWidth(), 100);
+    filterResonanceLabel.setBounds(0, 120, bounds.getWidth(), 20);
+    filterResonanceSlider.setBounds (100, 120, bounds.getWidth() - 100 , 20);
 
+    envelopeUI.setBounds(0, 150, getWidth(), 100);
+}
+
+//==============================================================================
+void OneLittleSynthesizerAudioProcessorEditor::buttonClicked( Button * button )
+{
+    if( button == &resetParametersButton )
+    {
+        processor.setParameterValue("waveShape", INIT_WAVE_SHAPE);
+        processor.setParameterValue("filterFreq", INIT_FILTER_FREQUENCY);
+        processor.setParameterValue("filterRes", INIT_FILTER_RESONANCE);
+        processor.setParameterValue("envAttack", INIT_ENV_ATTACK);
+        processor.setParameterValue("envDecay", INIT_ENV_DECAY);
+        processor.setParameterValue("envSustain", INIT_ENV_SUSTAIN);
+        processor.setParameterValue("envRelease", INIT_ENV_RELEASE);
+    }
 }
 
 //==============================================================================
