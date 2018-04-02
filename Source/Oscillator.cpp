@@ -84,7 +84,6 @@ float Oscillator::renderSquare(double currentPhase)
     {
         return -1.0f;
     }
-    return 0.f;
 }
 
 //==================================================================================

@@ -6,6 +6,26 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+namespace
+{
+    //=========================================================================
+    /* This function is used to filter out midi messages that are not supported at this point (i.e. everything but note on/off + sustain) */
+    void filterMidiMessages(const MidiBuffer& midiBufferIn, MidiBuffer& midiBufferOut)
+    {
+        MidiBuffer::Iterator bufferIterator(midiBufferIn);
+        MidiMessage midiEvent;
+        int samplePosition;
+
+        while (bufferIterator.getNextEvent(midiEvent, samplePosition))
+        {
+            if (midiEvent.isNoteOn() || midiEvent.isNoteOff() || midiEvent.isSustainPedalOn() || midiEvent.isSustainPedalOff())
+            {
+                midiBufferOut.addEvent(midiEvent, samplePosition);
+            }
+        }
+    }
+}
+
 AudioProcessor* JUCE_CALLTYPE createPluginFilter();
 
 //==============================================================================
@@ -207,9 +227,12 @@ bool OneLittleSynthesizerAudioProcessor::isBusesLayoutSupported (const BusesLayo
 //==============================================================================
 void OneLittleSynthesizerAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-    keyboardState.processNextMidiBuffer (midiMessages, 0, buffer.getNumSamples(), true);
+    MidiBuffer filteredMidiMessages;
+    filterMidiMessages(midiMessages, filteredMidiMessages);
 
-    synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+    keyboardState.processNextMidiBuffer (filteredMidiMessages, 0, buffer.getNumSamples(), true);
+
+    synth.renderNextBlock(buffer, filteredMidiMessages, 0, buffer.getNumSamples());
 }
 
 //==============================================================================
