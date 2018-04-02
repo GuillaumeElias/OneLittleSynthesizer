@@ -66,8 +66,14 @@
 # Log files
 *.log
 
-/Builds/VisualStudio2017/x64/*
-/Builds/VisualStudio2017/.vs/*
-/Builds/CodeBlocksWindows/bin/*
+# Visual Studio files
 
-/Builds/CodeBlocksWindows/OneLittleSynthesizer.layout
+/Builds/VisualStudio2017_x64/x64/*
+/Builds/VisualStudio2017_x64/.vs/*
+
+/Builds/VisualStudio2017_win32/Win32/*
+/Builds/VisualStudio2017_win32/.vs/*
+
+# Code Blocks files
+/Builds/CodeBlocksWindows_win32/bin/*
+/Builds/CodeBlocksWindows_win32/OneLittleSynthesizer.layout

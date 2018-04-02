@@ -1,0 +1,38 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2017
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OneLittleSynthesizer - Standalone Plugin", "OneLittleSynthesizer_StandalonePlugin.vcxproj", "{1169BC8E-1895-0F02-7F48-1EB2BE3A45C0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{464E2D56-5690-5442-442E-38061977809D} = {464E2D56-5690-5442-442E-38061977809D}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OneLittleSynthesizer - VST", "OneLittleSynthesizer_VST.vcxproj", "{B179576A-CF9B-57CB-A94C-BF620D5E1754}"
+	ProjectSection(ProjectDependencies) = postProject
+		{464E2D56-5690-5442-442E-38061977809D} = {464E2D56-5690-5442-442E-38061977809D}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OneLittleSynthesizer - Shared Code", "OneLittleSynthesizer_SharedCode.vcxproj", "{464E2D56-5690-5442-442E-38061977809D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B179576A-CF9B-57CB-A94C-BF620D5E1754}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B179576A-CF9B-57CB-A94C-BF620D5E1754}.Debug|Win32.Build.0 = Debug|Win32
+		{B179576A-CF9B-57CB-A94C-BF620D5E1754}.Release|Win32.ActiveCfg = Release|Win32
+		{B179576A-CF9B-57CB-A94C-BF620D5E1754}.Release|Win32.Build.0 = Release|Win32
+		{1169BC8E-1895-0F02-7F48-1EB2BE3A45C0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1169BC8E-1895-0F02-7F48-1EB2BE3A45C0}.Debug|Win32.Build.0 = Debug|Win32
+		{1169BC8E-1895-0F02-7F48-1EB2BE3A45C0}.Release|Win32.ActiveCfg = Release|Win32
+		{1169BC8E-1895-0F02-7F48-1EB2BE3A45C0}.Release|Win32.Build.0 = Release|Win32
+		{464E2D56-5690-5442-442E-38061977809D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{464E2D56-5690-5442-442E-38061977809D}.Debug|Win32.Build.0 = Debug|Win32
+		{464E2D56-5690-5442-442E-38061977809D}.Release|Win32.ActiveCfg = Release|Win32
+		{464E2D56-5690-5442-442E-38061977809D}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
