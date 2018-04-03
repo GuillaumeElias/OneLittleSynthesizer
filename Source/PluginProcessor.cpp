@@ -24,6 +24,12 @@ namespace
             }
         }
     }
+
+    //=========================================================================
+    String floatToStr(float number)
+    {
+        return String( roundToInt(number) );
+    }
 }
 
 AudioProcessor* JUCE_CALLTYPE createPluginFilter();
@@ -42,7 +48,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   String(),     // parameter label (suffix)
                                   NormalisableRange<float> (1.f, 4.f, 1.f),    // range
                                   INIT_WAVE_SHAPE,         // default value
-								  Oscillator::waveShapeToString,
+								  Oscillator::waveShapeToString, //value to text
                                   nullptr);
 
     parameters.createAndAddParameter ("filterFreq",
@@ -50,7 +56,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   String(),
                                   NormalisableRange<float> (0.f, 2000.0f), //0 to 2000 Hz
                                   INIT_FILTER_FREQUENCY,
-                                  nullptr,
+                                  floatToStr,
                                   nullptr);
 
     parameters.createAndAddParameter ("filterRes",
@@ -58,7 +64,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   String(),
                                   NormalisableRange<float> (0.1f, 6.0f), //Q
                                   INIT_FILTER_RESONANCE,
-                                  nullptr,
+                                  floatToStr,
                                   nullptr);
 
     parameters.createAndAddParameter ("envAttack",
@@ -66,7 +72,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   String(),
                                   NormalisableRange<float> (1.f, 5000.f), //1 to 5000 ms
                                   INIT_ENV_ATTACK,
-                                  nullptr,
+                                  floatToStr,
                                   nullptr);
 
     parameters.createAndAddParameter ("envDecay",
@@ -74,7 +80,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   String(),
                                   NormalisableRange<float> (1.f, 5000.f), //1 to 5000 ms
                                   INIT_ENV_DECAY,
-                                  nullptr,
+                                  floatToStr,
                                   nullptr);
 
     parameters.createAndAddParameter ("envSustain",
@@ -82,7 +88,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   String(),
                                   NormalisableRange<float> (0.f, 1.f), //0 -> 1
                                   INIT_ENV_SUSTAIN,
-                                  nullptr,
+                                  nullptr, //no need for remapping
                                   nullptr);
 
     parameters.createAndAddParameter ("envRelease",
@@ -90,7 +96,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   String(),
                                   NormalisableRange<float> (1.f, 5000.f), //1 to 5000 ms
                                   INIT_ENV_SUSTAIN,
-                                  nullptr,
+                                  floatToStr,
                                   nullptr);
 
     parameters.state = ValueTree (Identifier ("OneLittleSynthesizer"));
