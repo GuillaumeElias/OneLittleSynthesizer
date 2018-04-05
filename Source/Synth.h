@@ -11,7 +11,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 /*
-* Note: The actually audio processing is done in SynthVoice.cpp
+* Note: The actual audio processing is done in SynthVoice.cpp
 */
 class Synth : public Synthesiser
 {
