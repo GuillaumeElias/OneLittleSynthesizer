@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <Project DefaultTargets="Build"
          ToolsVersion="15.0"
          xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
@@ -154,6 +153,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\DrawableEnvelope.cpp"/>
+    <ClCompile Include="..\..\Source\DrawableEnvelopeUI.cpp"/>
     <ClCompile Include="..\..\Source\Envelope.cpp"/>
     <ClCompile Include="..\..\Source\EnvelopeUI.cpp"/>
     <ClCompile Include="..\..\Source\Oscillator.cpp"/>
@@ -1944,6 +1945,9 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\DrawableEnvelope.h"/>
+    <ClInclude Include="..\..\Source\EnvelopeInterface.h"/>
+    <ClInclude Include="..\..\Source\DrawableEnvelopeUI.h"/>
     <ClInclude Include="..\..\Source\Constants.h"/>
     <ClInclude Include="..\..\Source\Envelope.h"/>
     <ClInclude Include="..\..\Source\EnvelopeUI.h"/>

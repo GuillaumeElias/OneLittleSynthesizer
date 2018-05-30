@@ -3,7 +3,7 @@
 	"AppConfig.h"
 	<juce_audio_basics/juce_audio_basics.cpp>
 
-1522676243 c:\users\guillaume\documents\cpp\onelittlesynthesizer\jucelibrarycode\appconfig.h
+1527712238 c:\users\guillaume\documents\cpp\onelittlesynthesizer\jucelibrarycode\appconfig.h
 
 1522180793 c:\juce\modules\juce_audio_basics\juce_audio_basics.cpp
 	"juce_audio_basics.h"
@@ -4766,9 +4766,10 @@
 1522258508 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\envelope.cpp
 	"Envelope.h"
 
-1522258508 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\envelope.h
+1527713174 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\envelope.h
 	"../JuceLibraryCode/JuceHeader.h"
 	"Constants.h"
+	"EnvelopeInterface.h"
 
 1522676242 c:\users\guillaume\documents\cpp\onelittlesynthesizer\jucelibrarycode\juceheader.h
 	"AppConfig.h"
@@ -4906,4 +4907,6 @@
 	"juce_StandaloneFilterWindow.h"
 
 1522180775 c:\juce\modules\juce_audio_plugin_client\standalone\juce_standalonefilterwindow.h
+
+1527713103 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\envelopeinterface.h
 

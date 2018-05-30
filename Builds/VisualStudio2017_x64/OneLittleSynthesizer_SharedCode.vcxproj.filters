@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="OneLittleSynthesizer\Source">
@@ -412,6 +411,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\DrawableEnvelope.cpp">
+      <Filter>OneLittleSynthesizer\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DrawableEnvelopeUI.cpp">
+      <Filter>OneLittleSynthesizer\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Envelope.cpp">
       <Filter>OneLittleSynthesizer\Source</Filter>
     </ClCompile>
@@ -2379,6 +2384,15 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\DrawableEnvelope.h">
+      <Filter>OneLittleSynthesizer\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\EnvelopeInterface.h">
+      <Filter>OneLittleSynthesizer\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DrawableEnvelopeUI.h">
+      <Filter>OneLittleSynthesizer\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Constants.h">
       <Filter>OneLittleSynthesizer\Source</Filter>
     </ClInclude>

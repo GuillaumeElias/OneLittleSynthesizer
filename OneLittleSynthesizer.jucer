@@ -14,6 +14,16 @@
               pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="5.3.0">
   <MAINGROUP id="Boogcv" name="OneLittleSynthesizer">
     <GROUP id="{22BBBFC2-8997-3B2D-3CCC-6D49C1B2253C}" name="Source">
+      <FILE id="BFo01b" name="DrawableEnvelope.cpp" compile="1" resource="0"
+            file="Source/DrawableEnvelope.cpp"/>
+      <FILE id="l0CcOy" name="DrawableEnvelope.h" compile="0" resource="0"
+            file="Source/DrawableEnvelope.h"/>
+      <FILE id="y1zQiy" name="EnvelopeInterface.h" compile="0" resource="0"
+            file="Source/EnvelopeInterface.h"/>
+      <FILE id="PufJEV" name="DrawableEnvelopeUI.cpp" compile="1" resource="0"
+            file="Source/DrawableEnvelopeUI.cpp"/>
+      <FILE id="uo0OIW" name="DrawableEnvelopeUI.h" compile="0" resource="0"
+            file="Source/DrawableEnvelopeUI.h"/>
       <FILE id="IDaPh3" name="Constants.h" compile="0" resource="0" file="Source/Constants.h"/>
       <FILE id="NlmWO7" name="Envelope.cpp" compile="1" resource="0" file="Source/Envelope.cpp"/>
       <FILE id="mDuljl" name="Envelope.h" compile="0" resource="0" file="Source/Envelope.h"/>

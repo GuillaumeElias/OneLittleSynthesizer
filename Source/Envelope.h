@@ -7,19 +7,11 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Constants.h"
+#include "EnvelopeInterface.h"
 
 //==================================================================================
 
-class EnvelopeListener
-{
-    public:
-    virtual void onEndNote() {};
-    virtual void onSampleIncrement() {};
-};
-
-//==================================================================================
-
-class Envelope : private AudioProcessorValueTreeState::Listener
+class Envelope : public EnvelopeInterface, private AudioProcessorValueTreeState::Listener
 {
     public:
         Envelope( AudioProcessorValueTreeState* processorParameters, double sampleRate);
@@ -28,9 +20,9 @@ class Envelope : private AudioProcessorValueTreeState::Listener
         void addEnvelopeListener( EnvelopeListener * listener );
         void removeEnvelipeListener( EnvelopeListener * listener );
 
-        void noteOn();
-        void noteOff( bool allowTailOff );
-        float computeGain();
+        void noteOn() override;
+        void noteOff( bool allowTailOff ) override;
+        float computeGain() override;
 
     private:
 
