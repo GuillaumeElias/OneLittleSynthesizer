@@ -4,3 +4,17 @@
  */
 
 #pragma once
+
+#include "../JuceLibraryCode/JuceHeader.h"
+
+class DrawableEnvelopeUI : public Component, private MouseListener
+{
+    public:
+        void paint(Graphics&) override;
+
+    private:
+        void mouseDown( const MouseEvent & event) override;
+
+
+};
+

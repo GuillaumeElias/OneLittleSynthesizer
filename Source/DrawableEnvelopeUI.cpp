@@ -4,3 +4,21 @@
  */
 
 #include "DrawableEnvelopeUI.h"
+
+//=================================================================
+void DrawableEnvelopeUI::paint(Graphics & g)
+{
+    g.fillAll (Colours::black);
+
+    g.setColour (Colours::white);
+    g.setFont (10.0f);
+
+    Rectangle<int> bounds (getLocalBounds().reduced (10));
+
+}
+
+//=================================================================
+void DrawableEnvelopeUI::mouseDown( const MouseEvent & event)
+{
+
+}

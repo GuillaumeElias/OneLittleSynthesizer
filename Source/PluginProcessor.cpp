@@ -5,6 +5,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "EnvelopeInterface.h"
 
 namespace
 {
@@ -103,7 +104,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
 
     for(int i=0; i < NUMBER_OF_VOICES; i++)
     {
-        synth.addVoice( new SynthVoice( &parameters ) );
+        synth.addVoice( new SynthVoice( &parameters, i ) );
     }
 
     synth.addSound( new SynthSound( &parameters ) );
@@ -250,7 +251,17 @@ bool OneLittleSynthesizerAudioProcessor::hasEditor() const
 //==============================================================================
 AudioProcessorEditor* OneLittleSynthesizerAudioProcessor::createEditor()
 {
-    return new OneLittleSynthesizerAudioProcessorEditor (*this, parameters);
+    OneLittleSynthesizerAudioProcessorEditor * editor = new OneLittleSynthesizerAudioProcessorEditor (*this, parameters);
+
+    EnvelopeUI * envelopeUI = editor->getEnvelopeUI();
+
+    for(int i=0; i < NUMBER_OF_VOICES; i++)
+    {
+        SynthVoice * synthVoice = dynamic_cast<SynthVoice *> ( synth.getVoice(i) );
+        synthVoice->getEnvelope()->addEnvelopeListener(envelopeUI);
+    }
+
+    return editor;
 }
 
 //==============================================================================

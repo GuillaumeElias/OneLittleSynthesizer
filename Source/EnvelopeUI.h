@@ -5,15 +5,28 @@
 
 #pragma once
 
+#include <map>
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "EnvelopeInterface.h"
 
 //==============================================================================
 
 typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
 
 //==============================================================================
+class EnvelopeUI;
+class EnvelopeUIUpdater : public AsyncUpdater
+{
+    public:
+        EnvelopeUIUpdater(EnvelopeUI * envelopeUI);
+         void handleAsyncUpdate () override;
+    private:
+        EnvelopeUI * envelopeUI;
+};
 
-class EnvelopeUI : public Component, private AudioProcessorValueTreeState::Listener
+//==============================================================================
+
+class EnvelopeUI : public Component, public EnvelopeListener, private AudioProcessorValueTreeState::Listener
 {
 public:
     EnvelopeUI(AudioProcessorValueTreeState& processorParameters);
@@ -24,10 +37,12 @@ public:
 
     void resized() override;
 
+    void onEndNote( int voiceNumber ) override;
+    void onProgress( int voiceNumber, const EnvelopeProgress & progress ) override;
+
 private:
 
     void parameterChanged(const String& parameterID, float newValue ) override;
-
 
     AudioProcessorValueTreeState& parameters;
 
@@ -46,6 +61,10 @@ private:
     //Release slider
     Slider releaseSlider;
     ScopedPointer<SliderAttachment> releaseAttachment;
+
+    std::map <int, EnvelopeProgress> envProgressMap;
+
+    EnvelopeUIUpdater updater;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EnvelopeUI)
 };

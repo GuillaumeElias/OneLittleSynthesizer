@@ -6,9 +6,10 @@
 #include "Envelope.h"
 
 //============================================================================
-Envelope::Envelope( AudioProcessorValueTreeState* processorParameters, double splRate )
+Envelope::Envelope( AudioProcessorValueTreeState* processorParameters, double splRate, int voiceNb )
     : parameters( processorParameters )
     , sampleRate( splRate )
+    , voiceNumber( voiceNb )
     , attack( INIT_ENV_ATTACK / 1000.f ) //converts milliseconds to seconds
     , decay( INIT_ENV_DECAY / 1000.f )
     , sustain( INIT_ENV_SUSTAIN )
@@ -40,7 +41,7 @@ void Envelope::addEnvelopeListener( EnvelopeListener * listener )
 }
 
 //============================================================================
-void Envelope::removeEnvelipeListener( EnvelopeListener * listener )
+void Envelope::removeEnvelopeListener( EnvelopeListener * listener )
 {
     listeners.remove( listener );
 }
@@ -89,7 +90,7 @@ float Envelope::computeGain()
 
         case DECAY:
 
-            currentGain = 1 - deltaTime * sustain / decay;
+            currentGain = 1 - deltaTime * (1 - sustain) / decay;
 
             if( currentGain <= sustain )
             {
@@ -122,6 +123,7 @@ float Envelope::computeGain()
     }
 
     sampleIndex++;
+    notifyProgress(deltaTime);
 
     return currentGain;
 }
@@ -147,7 +149,18 @@ void Envelope::notifyEndNote()
 {
     for( auto listener : listeners.getListeners() )
     {
-        listener->onEndNote();
+        listener->onEndNote( voiceNumber );
+    }
+}
+
+//============================================================================
+void Envelope::notifyProgress(float deltaTime)
+{
+    EnvelopeProgress progress { currentPhase, deltaTime, currentGain };
+
+    for( auto listener : listeners.getListeners() )
+    {
+        listener->onProgress(voiceNumber, progress );
     }
 }
 

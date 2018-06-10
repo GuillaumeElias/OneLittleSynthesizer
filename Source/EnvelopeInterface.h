@@ -7,11 +7,23 @@
 
 //==================================================================================
 
+enum EnvelopePhase { OFF, ATTACK, DECAY, SUSTAIN, RELEASE };
+
+//==================================================================================
+struct EnvelopeProgress
+{
+    EnvelopePhase phase;
+    float deltaTime;
+    float gain;
+};
+
+//==================================================================================
+
 class EnvelopeListener
 {
 public:
-    virtual void onEndNote() {};
-    virtual void onSampleIncrement() {};
+    virtual void onEndNote( int voiceNb ) {};
+    virtual void onProgress( int voiceNb, const EnvelopeProgress & progress ) {};
 };
 
 //==================================================================================

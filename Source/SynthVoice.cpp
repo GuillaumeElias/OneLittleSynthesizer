@@ -7,7 +7,7 @@
 #include "SynthSound.h"
 
 // =============================================================================
-SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters )
+SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters, int voiceNumber )
     : parameters( processorParameters )
     , currentSynthSound( nullptr )
     , currentAngle (0)
@@ -16,7 +16,7 @@ SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters )
     , filterFreq( INIT_FILTER_FREQUENCY )
     , filterRes ( INIT_FILTER_RESONANCE )
     , osc( processorParameters )
-    , env( processorParameters, getSampleRate() )
+    , env( processorParameters, getSampleRate(), voiceNumber )
 {
     env.addEnvelopeListener(this);
 
@@ -31,7 +31,7 @@ SynthVoice::~SynthVoice()
     parameters->removeParameterListener("filterFreq", this);
     parameters->removeParameterListener("filterRes", this);
 
-    env.removeEnvelipeListener(this);
+    env.removeEnvelopeListener(this);
 }
 
 // =============================================================================
@@ -105,6 +105,12 @@ void SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSamp
 }
 
 // =============================================================================
+Envelope * SynthVoice::getEnvelope()
+{
+    return &env;
+}
+
+// =============================================================================
 void SynthVoice::parameterChanged(const String& parameterID, float newValue )
 {
     if(parameterID == "filterFreq")
@@ -131,7 +137,7 @@ void SynthVoice::updateFilterCoefficients()
 
 
 // =============================================================================
-void SynthVoice::onEndNote()
+void SynthVoice::onEndNote(int /*voiceNumber*/)
 {
     angleDelta = 0.0;
     currentSynthSound = nullptr;

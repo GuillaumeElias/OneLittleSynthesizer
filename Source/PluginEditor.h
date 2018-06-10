@@ -30,6 +30,8 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
+    EnvelopeUI * getEnvelopeUI();
+
 private:
     void buttonClicked ( Button * button) override;
     bool keyPressed (const KeyPress &key, Component *originatingComponent) override;

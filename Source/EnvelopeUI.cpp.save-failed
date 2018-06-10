@@ -117,7 +117,7 @@ void EnvelopeUI::paintEnvelope (Graphics& g)
         {
             case ATTACK:
             {
-                float posX = curDeltaTime * 33.33f; //1000 / 30
+                float posX = curDeltaTime * 33.33f;
 
                 g.drawLine(edgeX + posX, bottomY, edgeX + posX, bottomY - height * curGain, 2.f);
 

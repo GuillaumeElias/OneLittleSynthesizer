@@ -14,11 +14,11 @@
 class Envelope : public EnvelopeInterface, private AudioProcessorValueTreeState::Listener
 {
     public:
-        Envelope( AudioProcessorValueTreeState* processorParameters, double sampleRate);
+        Envelope( AudioProcessorValueTreeState* processorParameters, double sampleRate, int voiceNumber);
         ~Envelope();
 
         void addEnvelopeListener( EnvelopeListener * listener );
-        void removeEnvelipeListener( EnvelopeListener * listener );
+        void removeEnvelopeListener( EnvelopeListener * listener );
 
         void noteOn() override;
         void noteOff( bool allowTailOff ) override;
@@ -26,20 +26,21 @@ class Envelope : public EnvelopeInterface, private AudioProcessorValueTreeState:
 
     private:
 
-        enum Phase { OFF, ATTACK, DECAY, SUSTAIN, RELEASE };
-
         void resetNote();
         void triggerRelease();
         void notifyEndNote();
+        void notifyProgress( float deltaTime );
 
         void parameterChanged(const String& parameterID, float newValue ) override;
 
         AudioProcessorValueTreeState* parameters;
         ListenerList<EnvelopeListener> listeners;
 
+        int voiceNumber;
+
         double sampleRate;
         float attack, decay, sustain, release;
-        Phase currentPhase;
+        EnvelopePhase currentPhase;
         int sampleIndex;
         float currentGain, hitReleaseGain;
 

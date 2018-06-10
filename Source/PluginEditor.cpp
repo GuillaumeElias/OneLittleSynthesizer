@@ -106,6 +106,12 @@ void OneLittleSynthesizerAudioProcessorEditor::resized()
 }
 
 //==============================================================================
+EnvelopeUI * OneLittleSynthesizerAudioProcessorEditor::getEnvelopeUI()
+{
+    return &envelopeUI;
+}
+
+//==============================================================================
 void OneLittleSynthesizerAudioProcessorEditor::buttonClicked( Button * button )
 {
     if( button == &resetParametersButton )

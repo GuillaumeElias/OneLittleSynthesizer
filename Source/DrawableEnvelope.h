@@ -18,4 +18,13 @@ class DrawableEnvelope : public EnvelopeInterface
         void noteOn() override;
         void noteOff(bool allowTailOff) override;
         float computeGain() override;
+
+    private:
+        std::vector<float> values;
+        int valueIndex, sampleIndex;
+        float totalTime;
+
+        double sampleRate;
+
+        //TODO bool repeat
 };

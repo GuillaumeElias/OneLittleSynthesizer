@@ -16,7 +16,7 @@
 class SynthVoice : public SynthesiserVoice, private EnvelopeListener, private AudioProcessorValueTreeState::Listener
 {
 public:
-    SynthVoice( AudioProcessorValueTreeState * processorParameters );
+    SynthVoice( AudioProcessorValueTreeState * processorParameters, int voiceNumber);
     ~SynthVoice();
 
     void prepareToPlay();
@@ -35,10 +35,11 @@ public:
 
     void renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override;
 
+    Envelope * getEnvelope();
 private:
 
     void parameterChanged(const String& parameterID, float newValue ) override; //callback from parameter change
-    void onEndNote() override; //callback from Envelope
+    void onEndNote( int /*voiceNumber*/ ) override; //callback from Envelope
 
     void updateFilterCoefficients();
 

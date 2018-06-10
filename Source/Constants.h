@@ -18,3 +18,6 @@ const float INIT_ENV_RELEASE = 100.0f;
 const double FILTER_SMOOTH_RAMP_LENGTH = 0.0001; //in seconds
 
 const int NUMBER_OF_VOICES = 16;
+
+const int DRAWABLE_ENVELOPE_NB_VALUES = 32;
+const float DRAWABLE_ENVELOPE_INIT_VALUES = 0.5f;
