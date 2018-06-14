@@ -8,6 +8,7 @@
 #include <map>
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "EnvelopeInterface.h"
+#include "Constants.h"
 
 //==============================================================================
 

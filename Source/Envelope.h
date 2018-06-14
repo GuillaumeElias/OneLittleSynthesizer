@@ -40,6 +40,7 @@ class Envelope : public EnvelopeInterface, private AudioProcessorValueTreeState:
 
         double sampleRate;
         float attack, decay, sustain, release;
+        float decayDelta, hitReleaseGainRatio;
         EnvelopePhase currentPhase;
         int sampleIndex;
         float currentGain, hitReleaseGain;

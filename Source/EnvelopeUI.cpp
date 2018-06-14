@@ -3,7 +3,6 @@
  * You can reuse it in accordance with GPLv3. Note that it doesn't come with any warranty.
  */
 
-#include "../JuceLibraryCode/JuceHeader.h"
 #include "EnvelopeUI.h"
 
 //==============================================================================
@@ -15,7 +14,10 @@ EnvelopeUIUpdater::EnvelopeUIUpdater(EnvelopeUI * envUI)
 //==============================================================================
 void EnvelopeUIUpdater::handleAsyncUpdate()
 {
-    envelopeUI->repaint();
+    if(envelopeUI->isShowing())
+    {
+        envelopeUI->repaint();
+    }
 }
 
 //==============================================================================
@@ -105,13 +107,13 @@ void EnvelopeUI::paintEnvelope (Graphics& g)
 
     //PAINT PROGRESS INDICATOR
 
-    g.setColour (Colours::red);
-
     for( const auto & envPair : envProgressMap )
     {
         EnvelopePhase curPhase = envPair.second.phase;
-        const float & curDeltaTime = envPair.second.deltaTime;
-        const float & curGain = envPair.second.gain;
+        const float curDeltaTime = envPair.second.deltaTime;
+        const float curGain = envPair.second.gain;
+
+        g.setColour ( VOICES_COLOURS[ envPair.first ] );
 
         switch( curPhase )
         {
@@ -119,7 +121,7 @@ void EnvelopeUI::paintEnvelope (Graphics& g)
             {
                 float posX = curDeltaTime * 33.33f; //1000 / 30
 
-                g.drawLine(edgeX + posX, bottomY, edgeX + posX, bottomY - height * curGain, 2.f);
+                g.drawLine(edgeX + posX, bottomY, edgeX + posX, bottomY - height * curGain, 1.f);
 
                 break;
             }
@@ -127,7 +129,7 @@ void EnvelopeUI::paintEnvelope (Graphics& g)
             {
                 float startX = edgeX + att;
                 float posX = curDeltaTime * 33.33f;
-                g.drawLine(startX + posX, bottomY, startX + posX, bottomY - height * curGain, 2.f);
+                g.drawLine(startX + posX, bottomY, startX + posX, bottomY - height * curGain, 1.f);
 
                 break;
             }
@@ -135,7 +137,7 @@ void EnvelopeUI::paintEnvelope (Graphics& g)
             case SUSTAIN:
             {
                 float startX = edgeX + att + dec;
-                g.drawLine(startX, bottomY, startX, bottomY - height * curGain, 2.f);
+                g.drawLine(startX, bottomY, startX, bottomY - height * curGain, 1.f);
                 break;
             }
 
@@ -143,7 +145,7 @@ void EnvelopeUI::paintEnvelope (Graphics& g)
             {
                 float startX = edgeX + att + dec + sustainLength;
                 float posX = curDeltaTime * 33.33f;
-                g.drawLine(startX + posX, edgeY + height, startX + posX, bottomY - height * curGain, 2.f);
+                g.drawLine(startX + posX, edgeY + height, startX + posX, bottomY - height * curGain, 1.f);
 
                 break;
             }

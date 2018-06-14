@@ -14,10 +14,12 @@ Envelope::Envelope( AudioProcessorValueTreeState* processorParameters, double sp
     , decay( INIT_ENV_DECAY / 1000.f )
     , sustain( INIT_ENV_SUSTAIN )
     , release( INIT_ENV_RELEASE / 1000.f )
+    , decayDelta ( 1 - sustain )
     , currentPhase( OFF )
     , sampleIndex( 0 )
     , currentGain( 0.f )
     , hitReleaseGain( 0.f )
+    , hitReleaseGainRatio ( 0.f )
 {
     parameters->addParameterListener("envAttack", this);
     parameters->addParameterListener("envDecay", this);
@@ -90,7 +92,7 @@ float Envelope::computeGain()
 
         case DECAY:
 
-            currentGain = 1 - deltaTime * (1 - sustain) / decay;
+            currentGain = 1 - deltaTime * decayDelta / decay;
 
             if( currentGain <= sustain )
             {
@@ -108,7 +110,7 @@ float Envelope::computeGain()
 
         case RELEASE:
 
-            currentGain = hitReleaseGain - deltaTime * hitReleaseGain / release;
+            currentGain = hitReleaseGain - deltaTime * hitReleaseGainRatio;
 
             if( currentGain <= 0.f )
             {
@@ -140,6 +142,7 @@ void Envelope::resetNote()
 void Envelope::triggerRelease()
 {
     hitReleaseGain = currentGain;
+    hitReleaseGainRatio = hitReleaseGain / release;
     sampleIndex = 0;
     currentPhase = RELEASE;
 }
@@ -178,9 +181,14 @@ void Envelope::parameterChanged(const String& parameterID, float newValue )
     else if( parameterID == "envSustain" )
     {
         sustain = newValue;
+        decayDelta = 1 - sustain;
     }
     else if( parameterID == "envRelease" )
     {
         release = newValue / 1000.f;
+        if( currentPhase == RELEASE )
+        {
+            hitReleaseGainRatio = hitReleaseGain / release;
+        }
     }
 }
