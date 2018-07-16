@@ -14,8 +14,9 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
     , parameters (params)
     , midiKeyboard (p.keyboardState, MidiKeyboardComponent::horizontalKeyboard)
     , envelopeUI(params)
+    , drawableEnvelopeUI(params)
 {
-    setSize (450, 320);
+    setSize (370, 420);
 
     getLookAndFeel().setColour (Slider::thumbColourId, Colours::white);
     getLookAndFeel().setColour (Label::textColourId, Colours::white);
@@ -55,6 +56,7 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
 
     setFocusContainer(true);
     envelopeUI.setWantsKeyboardFocus(false);
+    drawableEnvelopeUI.setWantsKeyboardFocus(false);
     midiKeyboard.setWantsKeyboardFocus(false);
 
     //Making the components visible
@@ -67,6 +69,7 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
     addAndMakeVisible(filterResonanceSlider);
     addAndMakeVisible(midiKeyboard);
     addAndMakeVisible(envelopeUI);
+    addAndMakeVisible(drawableEnvelopeUI);
 
     //Adding key listener for moving filter with left and right arrows
     this->addKeyListener(this);
@@ -103,12 +106,19 @@ void OneLittleSynthesizerAudioProcessorEditor::resized()
     filterResonanceSlider.setBounds (100, 120, bounds.getWidth() - 100 , 20);
 
     envelopeUI.setBounds(0, 150, getWidth(), 100);
+    drawableEnvelopeUI.setBounds(0, 250, getWidth(), DRAWABLE_ENVELOPE_HEIGHT - 1);
 }
 
 //==============================================================================
 EnvelopeUI * OneLittleSynthesizerAudioProcessorEditor::getEnvelopeUI()
 {
     return &envelopeUI;
+}
+
+//==============================================================================
+DrawableEnvelopeUI * OneLittleSynthesizerAudioProcessorEditor::getDrawableEnvelopeUI()
+{
+    return &drawableEnvelopeUI;
 }
 
 //==============================================================================
@@ -123,6 +133,12 @@ void OneLittleSynthesizerAudioProcessorEditor::buttonClicked( Button * button )
         processor.setParameterValue("envDecay", INIT_ENV_DECAY);
         processor.setParameterValue("envSustain", INIT_ENV_SUSTAIN);
         processor.setParameterValue("envRelease", INIT_ENV_RELEASE);
+        processor.setParameterValue("filterAttack", INIT_FILTER_ENV_ATTACK);
+        processor.setParameterValue("filterSustain", DRAWABLE_ENVELOPE_INIT_VALUES);
+        processor.setParameterValue("filterRelease", INIT_FILTER_ENV_RELEASE);
+
+        DrawableEnvelope::resetValues();
+        drawableEnvelopeUI.repaint();
     }
 }
 

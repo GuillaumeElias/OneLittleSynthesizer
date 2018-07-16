@@ -8,7 +8,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Synth.h"
 
-class OneLittleSynthesizerAudioProcessor  : public AudioProcessor
+class OneLittleSynthesizerAudioProcessor  : public AudioProcessor, private AudioProcessorValueTreeState::Listener
 {
 public:
 
@@ -49,6 +49,8 @@ public:
     MidiKeyboardState keyboardState;
 
 private:
+
+    void parameterChanged(const String& parameterID, float newValue ) override;
 
     File loggerFile;
     FileLogger logger;

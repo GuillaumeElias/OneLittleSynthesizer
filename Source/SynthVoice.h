@@ -8,8 +8,9 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SynthSound.h"
 #include "Oscillator.h"
-#include "Envelope.h"
 #include "Constants.h"
+#include "Envelope/Envelope.h"
+#include "Envelope/DrawableEnvelope.h"
 
 #include <map>
 
@@ -36,20 +37,24 @@ public:
     void renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override;
 
     Envelope * getEnvelope();
+    DrawableEnvelope * getDrawableEnvelope();
+
 private:
 
     void parameterChanged(const String& parameterID, float newValue ) override; //callback from parameter change
     void onEndNote( int /*voiceNumber*/ ) override; //callback from Envelope
 
+    void setFilterFreq( float newFilterFreq );
     void updateFilterCoefficients();
 
     AudioProcessorValueTreeState * parameters;
     SynthSound * currentSynthSound;
 
     double currentAngle, angleDelta, level;
-    float filterFreq, filterRes;
+    float filterFreq, lastFilterFreq, filterRes;
 
     Oscillator osc;
     Envelope env;
+    DrawableEnvelope drawableEnv;
     dsp::StateVariableFilter::Filter<double> filter;
 };

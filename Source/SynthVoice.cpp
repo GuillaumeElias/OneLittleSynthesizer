@@ -14,15 +14,16 @@ SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters, int 
     , angleDelta (0)
     , level (0)
     , filterFreq( INIT_FILTER_FREQUENCY )
+    , lastFilterFreq( -1.f )
     , filterRes ( INIT_FILTER_RESONANCE )
     , osc( processorParameters )
     , env( processorParameters, getSampleRate(), voiceNumber )
+    , drawableEnv( processorParameters, getSampleRate(), voiceNumber )
 {
     env.addEnvelopeListener(this);
 
     parameters->addParameterListener("filterFreq", this);
     parameters->addParameterListener("filterRes", this);
-
 }
 
 // =============================================================================
@@ -60,12 +61,14 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity,
     angleDelta = TWO_PI * frequency / getSampleRate();
 
     env.noteOn();
+    drawableEnv.noteOn();
 }
 
 // =============================================================================
 void SynthVoice::stopNote (float /*velocity*/, bool allowTailOff)
 {
     env.noteOff( allowTailOff );
+    drawableEnv.noteOff( allowTailOff );
 }
 
 // =============================================================================
@@ -90,6 +93,9 @@ void SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSamp
             //calculate currentSample value from oscillator, envelope and velocity
             float currentSample = (float) ( osc.renderWave(currentAngle) * env.computeGain() * level );
 
+            //set filter freq based on drawable envelope
+            setFilterFreq( drawableEnv.computeGain() * MAX_FILTER_FREQUENCY );
+
             //apply filter
             currentSample = filter.processSample(currentSample);
 
@@ -111,11 +117,17 @@ Envelope * SynthVoice::getEnvelope()
 }
 
 // =============================================================================
+DrawableEnvelope * SynthVoice::getDrawableEnvelope()
+{
+    return &drawableEnv;
+}
+
+// =============================================================================
 void SynthVoice::parameterChanged(const String& parameterID, float newValue )
 {
     if(parameterID == "filterFreq")
     {
-        filterFreq = newValue;
+        //filterFreq = newValue; //temporary disabled
     }
     else if(parameterID == "filterRes")
     {
@@ -126,6 +138,17 @@ void SynthVoice::parameterChanged(const String& parameterID, float newValue )
     {
         updateFilterCoefficients();
     }
+}
+
+// =============================================================================
+void SynthVoice::setFilterFreq( float newFilterFreq )
+{
+    if( lastFilterFreq == newFilterFreq ) return;
+
+    lastFilterFreq = filterFreq;
+    filterFreq = newFilterFreq;
+
+    filter.parameters->setCutOffFrequency(getSampleRate(), filterFreq, filterRes);
 }
 
 // =============================================================================

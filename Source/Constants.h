@@ -11,18 +11,24 @@ const double PI = 3.14159265358979323846;
 const double TWO_PI = 2.0 * PI;
 
 const float INIT_FILTER_FREQUENCY = 1000.0f; //Hz
+const float MAX_FILTER_FREQUENCY = 2000.0f;
 const float INIT_FILTER_RESONANCE = 0.59f;
 const float INIT_WAVE_SHAPE = 1.f;
 const float INIT_ENV_ATTACK = 100.f; //milliseconds
 const float INIT_ENV_DECAY = 100.f;
 const float INIT_ENV_SUSTAIN = 0.8f; //0->1
 const float INIT_ENV_RELEASE = 100.0f;
+const float ENV_PROGRESS_UPDATE_RATE = 0.01f; //in seconds
 const double FILTER_SMOOTH_RAMP_LENGTH = 0.0001; //in seconds
 
 const int NUMBER_OF_VOICES = 16;
 
+const float INIT_FILTER_ENV_ATTACK = 400.f; //milliseconds
+const float INIT_FILTER_ENV_RELEASE = 400.0f;
 const int DRAWABLE_ENVELOPE_NB_VALUES = 32;
+const int DRAWABLE_ENVELOPE_BAR_WIDTH = 5;
 const float DRAWABLE_ENVELOPE_INIT_VALUES = 0.5f;
+const int DRAWABLE_ENVELOPE_HEIGHT = 100;
 
 const Array<Colour> VOICES_COLOURS =
 {   //One colour per voice will be used for any voice-specific visualization

@@ -81,8 +81,8 @@ void DrawableEnvelopeUI::paint(Graphics & g)
             case ATTACK:
             case DECAY:
             {
-                float val = curDeltaTime / DrawableEnvelope::getAttackTime() * DRAWABLE_ENVELOPE_NB_VALUES;
-                float posX = PADDING_LEFT + val * DRAWABLE_ENVELOPE_BAR_WIDTH;
+                float xTime = curDeltaTime / DrawableEnvelope::getAttackTime() * DRAWABLE_ENVELOPE_NB_VALUES;
+                float posX = PADDING_LEFT + xTime * DRAWABLE_ENVELOPE_BAR_WIDTH;
 
                 g.drawLine(posX, height, posX, height * ( 1.f - curGain), 1.f);
 

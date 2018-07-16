@@ -7,7 +7,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
-#include "EnvelopeUI.h"
+#include "Envelope/EnvelopeUI.h"
+#include "Envelope/DrawableEnvelopeUI.h"
 
 //==============================================================================
 
@@ -31,6 +32,7 @@ public:
     void resized() override;
 
     EnvelopeUI * getEnvelopeUI();
+    DrawableEnvelopeUI * getDrawableEnvelopeUI();
 
 private:
     void buttonClicked ( Button * button) override;
@@ -59,8 +61,9 @@ private:
     Label filterResonanceLabel;
     ScopedPointer<SliderAttachment> filterResAttachment;
 
-    //ENVELOPE
+    //ENVELOPES
     EnvelopeUI envelopeUI;
+    DrawableEnvelopeUI drawableEnvelopeUI;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OneLittleSynthesizerAudioProcessorEditor)
 };

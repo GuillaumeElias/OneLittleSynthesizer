@@ -30,6 +30,7 @@ class DrawableEnvelope : public AbstractEnvelope
         static void setAttackTime(float attack);
         static void setSustainLevel(float sustain);
         static void setReleaseTime(float release);
+        static void resetValues();
 
     private:
         //those values are shared between all the envelope instances

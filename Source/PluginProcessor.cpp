@@ -5,7 +5,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include "EnvelopeInterface.h"
+#include "Envelope/AbstractEnvelope.h"
 
 namespace
 {
@@ -55,7 +55,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
     parameters.createAndAddParameter ("filterFreq",
                                   "Filter Frequency",
                                   String(),
-                                  NormalisableRange<float> (0.f, 2000.0f), //0 to 2000 Hz
+                                  NormalisableRange<float> (0.f, MAX_FILTER_FREQUENCY), //0 to 2000 Hz
                                   INIT_FILTER_FREQUENCY,
                                   floatToStr,
                                   nullptr);
@@ -100,6 +100,30 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   floatToStr,
                                   nullptr);
 
+    parameters.createAndAddParameter ("filterAttack",
+                                  "Filter Attack",
+                                  String(),
+                                  NormalisableRange<float> (0.f, 5000), //1 to 5000 ms
+                                  INIT_FILTER_ENV_ATTACK,
+                                  nullptr, //no need for remapping
+                                  nullptr);
+
+    parameters.createAndAddParameter ("filterSustain",
+                                  "Filter Sustain",
+                                  String(),
+                                  NormalisableRange<float> (0.f, 1.f), //0 -> 1
+                                  DRAWABLE_ENVELOPE_INIT_VALUES,
+                                  nullptr, //no need for remapping
+                                  nullptr);
+
+    parameters.createAndAddParameter ("filterRelease",
+                                  "Filter Release",
+                                  String(),
+                                  NormalisableRange<float> (0.f, 5000), //1 to 5000 ms
+                                  INIT_FILTER_ENV_RELEASE,
+                                  nullptr, //no need for remapping
+                                  nullptr);
+
     parameters.state = ValueTree (Identifier ("OneLittleSynthesizer"));
 
     for(int i=0; i < NUMBER_OF_VOICES; i++)
@@ -108,6 +132,11 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
     }
 
     synth.addSound( new SynthSound( &parameters ) );
+
+    parameters.addParameterListener("filterAttack", this);
+    parameters.addParameterListener("filterSustain", this);
+    parameters.addParameterListener("filterRelease", this);
+    //TODO make env parameters work in the same way
 }
 
 //==============================================================================
@@ -254,11 +283,13 @@ AudioProcessorEditor* OneLittleSynthesizerAudioProcessor::createEditor()
     OneLittleSynthesizerAudioProcessorEditor * editor = new OneLittleSynthesizerAudioProcessorEditor (*this, parameters);
 
     EnvelopeUI * envelopeUI = editor->getEnvelopeUI();
+    DrawableEnvelopeUI * drawableEnvelopeUI = editor->getDrawableEnvelopeUI();
 
     for(int i=0; i < NUMBER_OF_VOICES; i++)
     {
         SynthVoice * synthVoice = dynamic_cast<SynthVoice *> ( synth.getVoice(i) );
         synthVoice->getEnvelope()->addEnvelopeListener(envelopeUI);
+        synthVoice->getDrawableEnvelope()->addEnvelopeListener(drawableEnvelopeUI);
     }
 
     return editor;
@@ -298,4 +329,29 @@ void OneLittleSynthesizerAudioProcessor::setParameterValue(String paramName, flo
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new OneLittleSynthesizerAudioProcessor();
+}
+
+//============================================================================
+void OneLittleSynthesizerAudioProcessor::parameterChanged(const String& parameterID, float newValue )
+{
+    if( parameterID == "filterAttack" )
+    {
+        DrawableEnvelope::setAttackTime( newValue / 1000.f );
+        if( auto editor = dynamic_cast<OneLittleSynthesizerAudioProcessorEditor *> ( getActiveEditor() ) )
+        {
+            editor->getDrawableEnvelopeUI()->repaint();
+        }
+    }
+    else if( parameterID == "filterSustain" )
+    {
+        DrawableEnvelope::setSustainLevel( newValue );
+    }
+    else if( parameterID == "filterRelease" )
+    {
+        DrawableEnvelope::setReleaseTime( newValue / 1000.f );
+        if( auto editor = dynamic_cast<OneLittleSynthesizerAudioProcessorEditor *> ( getActiveEditor() ) )
+        {
+            editor->getDrawableEnvelopeUI()->repaint();
+        }
+    }
 }

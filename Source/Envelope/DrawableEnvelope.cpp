@@ -66,8 +66,8 @@ float DrawableEnvelope::computeGain()
     float totalTime = (currentPhase == ATTACK ) ? attackTime : releaseTime;
     float deltaTime = sampleIndex / sampleRate;
 
-    float valueTime = deltaTime / totalTime * DRAWABLE_ENVELOPE_NB_VALUES;
-    valueIndex = roundToInt( valueTime );
+    float xTime = deltaTime / totalTime * DRAWABLE_ENVELOPE_NB_VALUES;
+    valueIndex = roundToInt( xTime );
     if( valueIndex >= DRAWABLE_ENVELOPE_NB_VALUES )
     {
         valueIndex = DRAWABLE_ENVELOPE_NB_VALUES - 1;
@@ -82,7 +82,7 @@ float DrawableEnvelope::computeGain()
     float gain = values->at(valueIndex);
     if( valueIndex < values->size() - 1 )
     {
-        float diffTime = valueTime - valueIndex;
+        float diffTime = xTime - valueIndex;
         gain += (values->at(valueIndex + 1) - gain) * diffTime;
     }
 
@@ -150,4 +150,11 @@ void DrawableEnvelope::setSustainLevel(float sustain)
 void DrawableEnvelope::setReleaseTime(float release)
 {
     releaseTime = release;
+}
+
+//============================================================================
+void DrawableEnvelope::resetValues()
+{
+    valuesAttack = std::vector<float>( DRAWABLE_ENVELOPE_NB_VALUES, DRAWABLE_ENVELOPE_INIT_VALUES );
+    valuesRelease = std::vector<float>( DRAWABLE_ENVELOPE_NB_VALUES, DRAWABLE_ENVELOPE_INIT_VALUES );
 }
