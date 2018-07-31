@@ -42,6 +42,8 @@ class DrawableEnvelopeUI : public Component, public EnvelopeListener
 
         void handleClick( int x, int y);
 
+        void paintContour(Graphics & g, const std::vector<float> & values, int paddingLeft);
+
         AudioProcessorValueTreeState& parameters;
 
         int height;
@@ -50,13 +52,9 @@ class DrawableEnvelopeUI : public Component, public EnvelopeListener
         Slider attackSlider;
         ScopedPointer<SliderAttachment> attackAttachment;
 
-        //Sustain slider
-        Slider sustainSlider;
-        ScopedPointer<SliderAttachment> sustainAttachment;
-
-        //Release slider
-        Slider releaseSlider;
-        ScopedPointer<SliderAttachment> releaseAttachment;
+        //Filter env amount
+        Slider envAmountSlider;
+        ScopedPointer<SliderAttachment> envAmountAttachment;
 
         std::map <int, EnvelopeProgress> envProgressMap;
 

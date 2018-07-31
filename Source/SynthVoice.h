@@ -44,14 +44,15 @@ private:
     void parameterChanged(const String& parameterID, float newValue ) override; //callback from parameter change
     void onEndNote( int /*voiceNumber*/ ) override; //callback from Envelope
 
-    void setFilterFreq( float newFilterFreq );
+    void setCurrentFilterFreq( float newFilterFreq );
     void updateFilterCoefficients();
 
     AudioProcessorValueTreeState * parameters;
     SynthSound * currentSynthSound;
 
     double currentAngle, angleDelta, level;
-    float filterFreq, lastFilterFreq, filterRes;
+    float currentFilterFreq, lastFilterFreq; //filter cutoff freq at current sample
+    float filterResParam, filterCutoffParam, filterEnvAmountParam;
 
     Oscillator osc;
     Envelope env;

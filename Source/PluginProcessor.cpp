@@ -52,12 +52,12 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
 								  Oscillator::waveShapeToString, //value to text
                                   nullptr);
 
-    parameters.createAndAddParameter ("filterFreq",
+    parameters.createAndAddParameter ("filterCutoffFreq",
                                   "Filter Frequency",
                                   String(),
-                                  NormalisableRange<float> (0.f, MAX_FILTER_FREQUENCY), //0 to 2000 Hz
+                                  NormalisableRange<float> (0.f, MAX_FILTER_CUTOFF_FREQUENCY), //0 to 2000 Hz
                                   INIT_FILTER_FREQUENCY,
-                                  floatToStr,
+                                  [](float val){ return floatToStr(val) + " Hz"; },
                                   nullptr);
 
     parameters.createAndAddParameter ("filterRes",
@@ -65,7 +65,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   String(),
                                   NormalisableRange<float> (0.1f, 6.0f), //Q
                                   INIT_FILTER_RESONANCE,
-                                  floatToStr,
+                                  [](float val){ return floatToStr(val * 10); },
                                   nullptr);
 
     parameters.createAndAddParameter ("envAttack",
@@ -89,7 +89,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   String(),
                                   NormalisableRange<float> (0.f, 1.f), //0 -> 1
                                   INIT_ENV_SUSTAIN,
-                                  nullptr, //no need for remapping
+                                  nullptr, //no need to show the value
                                   nullptr);
 
     parameters.createAndAddParameter ("envRelease",
@@ -105,23 +105,15 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   String(),
                                   NormalisableRange<float> (0.f, 5000), //1 to 5000 ms
                                   INIT_FILTER_ENV_ATTACK,
-                                  nullptr, //no need for remapping
+                                  [](float val){ return floatToStr(val) + " ms"; },
                                   nullptr);
 
-    parameters.createAndAddParameter ("filterSustain",
-                                  "Filter Sustain",
+    parameters.createAndAddParameter ("filterEnvAmount",
+                                  "Filter Attack",
                                   String(),
-                                  NormalisableRange<float> (0.f, 1.f), //0 -> 1
-                                  DRAWABLE_ENVELOPE_INIT_VALUES,
-                                  nullptr, //no need for remapping
-                                  nullptr);
-
-    parameters.createAndAddParameter ("filterRelease",
-                                  "Filter Release",
-                                  String(),
-                                  NormalisableRange<float> (0.f, 5000), //1 to 5000 ms
-                                  INIT_FILTER_ENV_RELEASE,
-                                  nullptr, //no need for remapping
+                                  NormalisableRange<float> (0.f, 1.f), //0 to 1
+                                  INIT_FILTER_ENV_AMOUNT,
+                                  [](float val){ return floatToStr(val * 100) + " %"; },
                                   nullptr);
 
     parameters.state = ValueTree (Identifier ("OneLittleSynthesizer"));
@@ -134,9 +126,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
     synth.addSound( new SynthSound( &parameters ) );
 
     parameters.addParameterListener("filterAttack", this);
-    parameters.addParameterListener("filterSustain", this);
-    parameters.addParameterListener("filterRelease", this);
-    //TODO make env parameters work in the same way
+    parameters.addParameterListener("envRelease", this);
 }
 
 //==============================================================================
@@ -342,11 +332,7 @@ void OneLittleSynthesizerAudioProcessor::parameterChanged(const String& paramete
             editor->getDrawableEnvelopeUI()->repaint();
         }
     }
-    else if( parameterID == "filterSustain" )
-    {
-        DrawableEnvelope::setSustainLevel( newValue );
-    }
-    else if( parameterID == "filterRelease" )
+    else if( parameterID == "envRelease" )
     {
         DrawableEnvelope::setReleaseTime( newValue / 1000.f );
         if( auto editor = dynamic_cast<OneLittleSynthesizerAudioProcessorEditor *> ( getActiveEditor() ) )

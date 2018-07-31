@@ -10,8 +10,8 @@
 const double PI = 3.14159265358979323846;
 const double TWO_PI = 2.0 * PI;
 
-const float INIT_FILTER_FREQUENCY = 1000.0f; //Hz
-const float MAX_FILTER_FREQUENCY = 2000.0f;
+const float INIT_FILTER_FREQUENCY = 400.0f; //Hz
+const float MAX_FILTER_CUTOFF_FREQUENCY = 1500.0f;
 const float INIT_FILTER_RESONANCE = 0.59f;
 const float INIT_WAVE_SHAPE = 1.f;
 const float INIT_ENV_ATTACK = 100.f; //milliseconds
@@ -24,9 +24,10 @@ const double FILTER_SMOOTH_RAMP_LENGTH = 0.0001; //in seconds
 const int NUMBER_OF_VOICES = 16;
 
 const float INIT_FILTER_ENV_ATTACK = 400.f; //milliseconds
-const float INIT_FILTER_ENV_RELEASE = 400.0f;
-const int DRAWABLE_ENVELOPE_NB_VALUES = 32;
-const int DRAWABLE_ENVELOPE_BAR_WIDTH = 5;
+const float INIT_FILTER_ENV_AMOUNT = 0.5f; //0 to 1
+const int DRAWABLE_ENVELOPE_NB_VALUES = 16;
+const int DRAWABLE_ENVELOPE_BAR_WIDTH = 6;
+const int DRAWABLE_ENVELOPE_SUSTAIN_WIDTH = 50;
 const float DRAWABLE_ENVELOPE_INIT_VALUES = 0.5f;
 const int DRAWABLE_ENVELOPE_HEIGHT = 100;
 

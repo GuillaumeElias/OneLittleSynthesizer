@@ -7,7 +7,9 @@
 
 namespace
 {
-    const int PADDING_LEFT = 60;
+    const int PADDING_LEFT_ATTACK = 120;
+    const int PADDING_LEFT_SUSTAIN = PADDING_LEFT_ATTACK + DRAWABLE_ENVELOPE_BAR_WIDTH * DRAWABLE_ENVELOPE_NB_VALUES;
+    const int PADDING_LEFT_RELEASE = PADDING_LEFT_SUSTAIN + DRAWABLE_ENVELOPE_SUSTAIN_WIDTH;
 }
 
 //=================================================================
@@ -31,22 +33,18 @@ DrawableEnvelopeUI::DrawableEnvelopeUI(AudioProcessorValueTreeState& processorPa
     , updater( this )
     , parameters( processorParameters )
 {
+    //Filter env amount slider
+    envAmountAttachment = new SliderAttachment (parameters, "filterEnvAmount", envAmountSlider);
+    envAmountSlider.setSliderStyle(Slider::SliderStyle::LinearVertical );
+    envAmountSlider.setPopupDisplayEnabled (true, false, this);
 
     //Attack slider
     attackAttachment = new SliderAttachment (parameters, "filterAttack", attackSlider);
     attackSlider.setSliderStyle(Slider::SliderStyle::LinearVertical );
+    attackSlider.setPopupDisplayEnabled (true, false, this);
 
-    //Sustain slider
-    sustainAttachment = new SliderAttachment (parameters, "filterSustain", sustainSlider);
-    sustainSlider.setSliderStyle(Slider::SliderStyle::LinearVertical );
-
-    //Release slider
-    releaseAttachment = new SliderAttachment (parameters, "filterRelease", releaseSlider);
-    releaseSlider.setSliderStyle(Slider::SliderStyle::LinearVertical );
-
+    addAndMakeVisible(envAmountSlider);
     addAndMakeVisible(attackSlider);
-    addAndMakeVisible(sustainSlider);
-    addAndMakeVisible(releaseSlider);
 }
 
 //=================================================================
@@ -57,15 +55,23 @@ void DrawableEnvelopeUI::paint(Graphics & g)
     g.setColour (Colours::white);
     g.setFont (10.0f);
 
+    //labels
+    Rectangle<int> bounds (getLocalBounds());
+    g.drawFittedText ("Filter env amt", bounds.removeFromLeft(70), Justification::topLeft, 1);
+    g.drawFittedText ("Attack time", bounds, Justification::topLeft, 1);
+
     //PAINT ENVELOPE CONTOUR
-    const std::vector<float> & attackValues = DrawableEnvelope::getValuesAttack();
-    Point<float> pa(PADDING_LEFT, height - height * attackValues[0]);
-    for( int i = 0; i < attackValues.size(); i++ )
-    {
-        Point<float> pb(PADDING_LEFT + DRAWABLE_ENVELOPE_BAR_WIDTH * i + DRAWABLE_ENVELOPE_BAR_WIDTH, height - height * attackValues[i]);
-        g.drawLine( Line<float>( pa, pb ), 2.f );
-        pa = pb;
-    }
+    //-attack-
+    paintContour(g, DrawableEnvelope::getValuesAttack(), PADDING_LEFT_ATTACK);
+
+    //-sustain bar and joint lines before and after-
+    float sustainY = height - DrawableEnvelope::getSustainLevel() * height;
+    g.drawLine(PADDING_LEFT_SUSTAIN, height - height * DrawableEnvelope::getValuesAttack()[DRAWABLE_ENVELOPE_NB_VALUES - 1], PADDING_LEFT_SUSTAIN, sustainY, 2.f);
+    g.drawLine(PADDING_LEFT_SUSTAIN, sustainY, PADDING_LEFT_RELEASE, sustainY, 2.f);
+    g.drawLine(PADDING_LEFT_RELEASE, sustainY, PADDING_LEFT_RELEASE, height - height * DrawableEnvelope::getValuesRelease()[0], 2.f);
+
+    //-release-
+    paintContour(g, DrawableEnvelope::getValuesRelease(), PADDING_LEFT_RELEASE);
 
     //PAINT PROGRESS INDICATOR
     for( const auto & envPair : envProgressMap )
@@ -82,7 +88,7 @@ void DrawableEnvelopeUI::paint(Graphics & g)
             case DECAY:
             {
                 float xTime = curDeltaTime / DrawableEnvelope::getAttackTime() * DRAWABLE_ENVELOPE_NB_VALUES;
-                float posX = PADDING_LEFT + xTime * DRAWABLE_ENVELOPE_BAR_WIDTH;
+                float posX = PADDING_LEFT_ATTACK + xTime * DRAWABLE_ENVELOPE_BAR_WIDTH;
 
                 g.drawLine(posX, height, posX, height * ( 1.f - curGain), 1.f);
 
@@ -91,12 +97,16 @@ void DrawableEnvelopeUI::paint(Graphics & g)
 
             case SUSTAIN:
             {
-                //TODO
+                g.drawLine(PADDING_LEFT_SUSTAIN, height, PADDING_LEFT_SUSTAIN, height * ( 1.f - curGain), 1.f);
+                break;
             }
 
             case RELEASE:
             {
-                //TODO
+                float xTime = curDeltaTime / DrawableEnvelope::getReleaseTime() * DRAWABLE_ENVELOPE_NB_VALUES;
+                float posX = PADDING_LEFT_RELEASE + xTime * DRAWABLE_ENVELOPE_BAR_WIDTH;
+
+                g.drawLine(posX, height, posX, height * ( 1.f - curGain), 1.f);
             }
         }
     }
@@ -128,9 +138,8 @@ void DrawableEnvelopeUI::onProgress(int voiceNumber, const EnvelopeProgress & pr
 //=================================================================
 void DrawableEnvelopeUI::resized()
 {
-    attackSlider.setBounds(0, 18, 20, 72);
-    sustainSlider.setBounds(20, 18, 20, 72);
-    releaseSlider.setBounds(40, 18, 20, 72);
+    envAmountSlider.setBounds(20, 18, 20, 72);
+    attackSlider.setBounds(80, 18, 20, 72);
 }
 
 
@@ -150,12 +159,56 @@ void DrawableEnvelopeUI::mouseDrag(const MouseEvent & event)
 //=================================================================
 void DrawableEnvelopeUI::handleClick(int x, int y)
 {
-    x -= PADDING_LEFT;
-    int index = roundToInt( x / DRAWABLE_ENVELOPE_BAR_WIDTH );
-    if(index >= 0 && index < DRAWABLE_ENVELOPE_NB_VALUES && y > 0 && y <= height )
+    if(y <= 0 && y > height)
     {
-        float value = 1.f - ((float)y / height);
-        DrawableEnvelope::setValueAttack(index, value);
+        return;
+    }
+
+    float value = 1.f - ((float)y / height);
+
+    bool release = false;
+    if(x < PADDING_LEFT_SUSTAIN)            //ATTACK
+    {
+        x -= PADDING_LEFT_ATTACK;
+    }
+    else if ( x < PADDING_LEFT_RELEASE)     //SUSTAIN
+    {
+        DrawableEnvelope::setSustainLevel(value);
+
+        updater.triggerAsyncUpdate();
+        return;
+    }
+    else                                    //RELEASE
+    {
+        x -= PADDING_LEFT_RELEASE;
+        release = true;
+    }
+
+    //set right value in vector based on x and y
+    int index = roundToInt( x / DRAWABLE_ENVELOPE_BAR_WIDTH );
+    if(index >= 0 && index < DRAWABLE_ENVELOPE_NB_VALUES )
+    {
+        if(release)
+        {
+            DrawableEnvelope::setValueRelease(index, value);
+        }
+        else
+        {
+            DrawableEnvelope::setValueAttack(index, value);
+        }
         updater.triggerAsyncUpdate();
     }
 }
+
+//=================================================================
+void DrawableEnvelopeUI::paintContour(Graphics & g, const std::vector<float> & values, int paddingLeft)
+{
+    Point<float> pa(paddingLeft, height - height * values[0]);
+    for( int i = 0; i < values.size(); i++ )
+    {
+        Point<float> pb(paddingLeft + DRAWABLE_ENVELOPE_BAR_WIDTH * i + DRAWABLE_ENVELOPE_BAR_WIDTH, height - height * values[i]);
+        g.drawLine( Line<float>( pa, pb ), 2.f );
+        pa = pb;
+    }
+}
+

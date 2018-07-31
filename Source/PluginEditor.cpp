@@ -40,7 +40,7 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
     filterFrequencyLabel.setColour (Label::textColourId, Colours::white);
     filterFrequencyLabel.attachToComponent (&filterFrequencySlider, true);
 
-    filterFreqAttachment = new SliderAttachment (parameters, "filterFreq", filterFrequencySlider);
+    filterFreqAttachment = new SliderAttachment (parameters, "filterCutoffFreq", filterFrequencySlider);
     filterFrequencySlider.setTextBoxStyle (Slider::NoTextBox, false, 120, 90);
     filterFrequencySlider.setPopupDisplayEnabled (true, false, this);
     filterFrequencySlider.setSkewFactorFromMidPoint (800.0);
@@ -127,15 +127,14 @@ void OneLittleSynthesizerAudioProcessorEditor::buttonClicked( Button * button )
     if( button == &resetParametersButton )
     {
         processor.setParameterValue("waveShape", INIT_WAVE_SHAPE);
-        processor.setParameterValue("filterFreq", INIT_FILTER_FREQUENCY);
+        processor.setParameterValue("filterCutoffFreq", INIT_FILTER_FREQUENCY);
         processor.setParameterValue("filterRes", INIT_FILTER_RESONANCE);
         processor.setParameterValue("envAttack", INIT_ENV_ATTACK);
         processor.setParameterValue("envDecay", INIT_ENV_DECAY);
         processor.setParameterValue("envSustain", INIT_ENV_SUSTAIN);
         processor.setParameterValue("envRelease", INIT_ENV_RELEASE);
         processor.setParameterValue("filterAttack", INIT_FILTER_ENV_ATTACK);
-        processor.setParameterValue("filterSustain", DRAWABLE_ENVELOPE_INIT_VALUES);
-        processor.setParameterValue("filterRelease", INIT_FILTER_ENV_RELEASE);
+        processor.setParameterValue("filterEnvAmount", INIT_FILTER_ENV_AMOUNT);
 
         DrawableEnvelope::resetValues();
         drawableEnvelopeUI.repaint();

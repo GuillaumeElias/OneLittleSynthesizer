@@ -44,6 +44,7 @@ void DrawableEnvelope::noteOff(bool allowTailOff)
     else
     {
         currentPhase = OFF;
+        notifyEndNote();
     }
 
     sampleIndex = 0;
@@ -79,15 +80,43 @@ float DrawableEnvelope::computeGain()
         values = &valuesRelease;
     }
 
+    //MAKE THE VALUE CONTINUOUS
     float gain = values->at(valueIndex);
+    float diffTime = xTime - valueIndex;
+    float nextValue = -1.f;
     if( valueIndex < values->size() - 1 )
     {
-        float diffTime = xTime - valueIndex;
-        gain += (values->at(valueIndex + 1) - gain) * diffTime;
+        nextValue = values->at(valueIndex + 1);
+    }
+    else if( currentPhase == ATTACK ) //if the next value is the sustain
+    {
+        nextValue = sustainLevel;
+    }
+
+    if( nextValue > 0 )
+    {
+        gain += (nextValue - gain) * diffTime; //add the decimal bit to make it continuous
     }
 
     notifyProgress(deltaTime, gain);
     sampleIndex++;
+
+    if(deltaTime >= totalTime)
+    {
+        if( currentPhase == ATTACK )
+        {
+            currentPhase = SUSTAIN;
+            notifyProgress(deltaTime, gain);
+        }
+        else if( currentPhase == RELEASE )
+        {
+            currentPhase = OFF;
+            sampleIndex = 0;
+            valueIndex = 0;
+            notifyProgress(deltaTime, gain);
+            notifyEndNote();
+        }
+    }
 
     return gain;
 }

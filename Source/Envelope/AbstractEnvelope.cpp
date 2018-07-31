@@ -16,8 +16,9 @@ AbstractEnvelope::AbstractEnvelope( int voiceNb )
 //============================================================================
 void AbstractEnvelope::notifyProgress(float deltaTime, float gain)
 {
-    float diffLastDeltaTime = deltaTime - lastDeltaTime;
-    if( diffLastDeltaTime > 0 && diffLastDeltaTime < ENV_PROGRESS_UPDATE_RATE)
+    //only notify listeners at ENV_PROGRESS_UPDATE_RATE when in the same phase
+    float diffTime = deltaTime - lastDeltaTime;
+    if( currentPhase == lastNotifyPhase && diffTime > 0 && diffTime < ENV_PROGRESS_UPDATE_RATE)
         return;
 
     EnvelopeProgress progress { currentPhase, deltaTime, gain };
@@ -28,6 +29,7 @@ void AbstractEnvelope::notifyProgress(float deltaTime, float gain)
     }
 
     lastDeltaTime = deltaTime;
+    lastNotifyPhase = currentPhase;
 }
 
 //============================================================================

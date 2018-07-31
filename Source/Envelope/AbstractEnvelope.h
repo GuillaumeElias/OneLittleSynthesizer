@@ -50,7 +50,7 @@ protected:
     void notifyEndNote();
 
     ListenerList<EnvelopeListener> listeners;
-    EnvelopePhase currentPhase;
+    EnvelopePhase currentPhase, lastNotifyPhase;
     int voiceNumber;
     float lastDeltaTime;
 };
