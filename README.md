@@ -1,5 +1,5 @@
 # OneLittleSynthesizer
-This is a little synthesizer. A work in progress.
+This is a little synthesizer. A work in progress. The idea is for me to experiment with DSP concepts such as Envelopes and Oscillators in order to learn progressively and maybe come up with alternative ideas along the way. Most of the algorithms in this project could be made more efficient but as long as the VST is decently usable, I'm fine with it.
 
 # How to build
 ## JUCE
