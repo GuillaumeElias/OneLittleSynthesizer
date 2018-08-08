@@ -19,7 +19,6 @@ const float INIT_ENV_DECAY = 100.f;
 const float INIT_ENV_SUSTAIN = 0.8f; //0->1
 const float INIT_ENV_RELEASE = 100.0f;
 const float ENV_PROGRESS_UPDATE_RATE = 0.01f; //in seconds
-const double FILTER_SMOOTH_RAMP_LENGTH = 0.0001; //in seconds
 
 const int NUMBER_OF_VOICES = 16;
 

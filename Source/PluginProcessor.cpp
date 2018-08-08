@@ -31,6 +31,33 @@ namespace
     {
         return String( roundToInt(number) );
     }
+
+    //=========================================================================
+    void addVectorToTree(const std::vector<float> & vect, ValueTree & tree, const Identifier & id)
+    {
+        ValueTree vectorTree = tree.getOrCreateChildWithName(id, nullptr);
+        vectorTree.removeAllChildren(nullptr);
+
+        for(float f : vect)
+        {
+            ValueTree element(Identifier("element"));
+            element.setProperty("value", f, nullptr);
+            vectorTree.appendChild(element, nullptr);
+        }
+    }
+
+    //=========================================================================
+    void iterateOnTree(const ValueTree & tree, const Identifier & subTreeId, const std::function< void(int, float) >& processElement)
+    {
+        ValueTree subTree = tree.getChildWithName( subTreeId );
+        if( subTree.isValid() )
+        {
+            for( int i=0; i < subTree.getNumChildren(); i++)
+            {
+                processElement(i, subTree.getChild(i).getProperty("value"));
+            }
+        }
+    }
 }
 
 AudioProcessor* JUCE_CALLTYPE createPluginFilter();
@@ -79,7 +106,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
     parameters.createAndAddParameter ("envDecay",
                                   "Envelope Decay",
                                   String(),
-                                  NormalisableRange<float> (1.f, 5000.f), //1 to 5000 ms
+                                  NormalisableRange<float> (1.f, 3000.f), //1 to 3000 ms
                                   INIT_ENV_DECAY,
                                   floatToStr,
                                   nullptr);
@@ -95,7 +122,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
     parameters.createAndAddParameter ("envRelease",
                                   "Envelope Sweet Release",
                                   String(),
-                                  NormalisableRange<float> (1.f, 5000.f), //1 to 5000 ms
+                                  NormalisableRange<float> (1.f, 3000.f), //1 to 3000 ms
                                   INIT_ENV_SUSTAIN,
                                   floatToStr,
                                   nullptr);
@@ -290,17 +317,41 @@ void OneLittleSynthesizerAudioProcessor::getStateInformation (MemoryBlock& destD
 {
     // SAVE STATE
     ValueTree state = parameters.copyState(); //thread-safe yeay
+    state.setProperty("drawableEnvSustain", DrawableEnvelope::getSustainLevel(), nullptr);
+    addVectorToTree( DrawableEnvelope::getValuesAttack(), state, "drawableEnvAttackValues");
+    addVectorToTree( DrawableEnvelope::getValuesRelease(), state, "drawableEnvReleaseValues");
+
     std::unique_ptr<XmlElement> xml (state.createXml());
+    logger.writeToLog (xml->createDocument(String::empty, false, false));
     copyXmlToBinary (*xml, destData);
 }
 
 //==============================================================================
 void OneLittleSynthesizerAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    //RESTORE STATE
+    // RESTORE STATE
     std::unique_ptr<XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
     if (xmlState.get() != nullptr && xmlState->hasTagName (parameters.state.getType()))
-            parameters.replaceState (ValueTree::fromXml (*xmlState)); //thread-safe ye
+    {
+        ValueTree state = ValueTree::fromXml (*xmlState);
+        parameters.replaceState (state); //thread-safe ye
+
+        if(state.hasProperty("drawableEnvSustain"))
+        {
+            DrawableEnvelope::setSustainLevel( state.getProperty("drawableEnvSustain" ) );
+        }
+
+        iterateOnTree( state ,"drawableEnvAttackValues", [](int i, float value)
+        {
+            DrawableEnvelope::setValueAttack(i, value );
+        });
+
+        iterateOnTree( state ,"drawableEnvReleaseValues", [](int i, float value)
+        {
+            DrawableEnvelope::setValueRelease(i, value );
+        });
+
+    }
 }
 
 //==============================================================================

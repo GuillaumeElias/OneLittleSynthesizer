@@ -182,6 +182,8 @@ void SynthVoice::updateFilterCoefficients()
 // =============================================================================
 void SynthVoice::onEndNote(int /*voiceNumber*/)
 {
+    drawableEnv.noteOff(false);
+
     angleDelta = 0.0;
     currentSynthSound = nullptr;
     clearCurrentNote();

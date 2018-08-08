@@ -39,6 +39,7 @@ class DrawableEnvelope : public AbstractEnvelope
         static float sustainLevel;
 
         int valueIndex, sampleIndex;
+        float currentGain, hitReleaseGainSustainRatio;
 
         double sampleRate;
 

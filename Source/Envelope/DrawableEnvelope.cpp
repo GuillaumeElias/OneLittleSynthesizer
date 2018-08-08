@@ -11,7 +11,7 @@ std::vector<float> DrawableEnvelope::valuesRelease( DRAWABLE_ENVELOPE_NB_VALUES,
 
 float DrawableEnvelope::attackTime = INIT_ENV_ATTACK / 1000.f; //ms to s
 float DrawableEnvelope::releaseTime = INIT_ENV_RELEASE / 1000.f;
-float DrawableEnvelope::sustainLevel = INIT_ENV_SUSTAIN;
+float DrawableEnvelope::sustainLevel = DRAWABLE_ENVELOPE_INIT_VALUES;
 
 //============================================================================
 DrawableEnvelope::DrawableEnvelope(AudioProcessorValueTreeState * processorParameters, double splRate, int voiceNumber)
@@ -20,6 +20,8 @@ DrawableEnvelope::DrawableEnvelope(AudioProcessorValueTreeState * processorParam
     , valueIndex( 0 )
     , sampleIndex( 0 )
     , sampleRate( splRate )
+    , currentGain( 0.0f )
+    , hitReleaseGainSustainRatio( 1.0f )
 {
 }
 
@@ -40,10 +42,15 @@ void DrawableEnvelope::noteOff(bool allowTailOff)
     if( allowTailOff )
     {
         currentPhase = RELEASE;
+        hitReleaseGainSustainRatio = currentGain / sustainLevel;
     }
     else
     {
         currentPhase = OFF;
+        hitReleaseGainSustainRatio = 1.0f;
+        sampleIndex = 0;
+        valueIndex = 0;
+        notifyProgress(0, 0);
         notifyEndNote();
     }
 
@@ -80,8 +87,8 @@ float DrawableEnvelope::computeGain()
         values = &valuesRelease;
     }
 
-    //MAKE THE VALUE CONTINUOUS
-    float gain = values->at(valueIndex);
+    //MAKE THE VALUE CONTINUOUS (smooth between steps)
+    currentGain = values->at(valueIndex);
     float diffTime = xTime - valueIndex;
     float nextValue = -1.f;
     if( valueIndex < values->size() - 1 )
@@ -95,10 +102,15 @@ float DrawableEnvelope::computeGain()
 
     if( nextValue > 0 )
     {
-        gain += (nextValue - gain) * diffTime; //add the decimal bit to make it continuous
+        currentGain += (nextValue - currentGain) * diffTime; //add the decimal bit to make it continuous
     }
 
-    notifyProgress(deltaTime, gain);
+    if(currentPhase == RELEASE)
+    {
+        currentGain *= hitReleaseGainSustainRatio;
+    }
+
+    notifyProgress(deltaTime, currentGain);
     sampleIndex++;
 
     if(deltaTime >= totalTime)
@@ -106,19 +118,23 @@ float DrawableEnvelope::computeGain()
         if( currentPhase == ATTACK )
         {
             currentPhase = SUSTAIN;
-            notifyProgress(deltaTime, gain);
+            currentGain = sustainLevel;
+            notifyProgress(deltaTime, currentGain);
         }
         else if( currentPhase == RELEASE )
         {
             currentPhase = OFF;
+            currentGain = 0.0f;
+
+            hitReleaseGainSustainRatio = 1.0f;
             sampleIndex = 0;
             valueIndex = 0;
-            notifyProgress(deltaTime, gain);
+            notifyProgress(0.0f, 0.0f);
             notifyEndNote();
         }
     }
 
-    return gain;
+    return currentGain;
 }
 
 //============================================================================
@@ -186,4 +202,5 @@ void DrawableEnvelope::resetValues()
 {
     valuesAttack = std::vector<float>( DRAWABLE_ENVELOPE_NB_VALUES, DRAWABLE_ENVELOPE_INIT_VALUES );
     valuesRelease = std::vector<float>( DRAWABLE_ENVELOPE_NB_VALUES, DRAWABLE_ENVELOPE_INIT_VALUES );
+    sustainLevel = DRAWABLE_ENVELOPE_INIT_VALUES;
 }
