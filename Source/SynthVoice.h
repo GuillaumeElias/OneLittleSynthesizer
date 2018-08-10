@@ -52,7 +52,7 @@ private:
 
     double currentAngle, angleDelta, level;
     float currentFilterFreq, lastFilterFreq; //filter cutoff freq at current sample
-    float filterResParam, filterCutoffParam, filterEnvAmountParam;
+    std::atomic<float> filterResParam, filterCutoffParam, filterEnvAmountParam;
 
     Oscillator osc;
     Envelope env;

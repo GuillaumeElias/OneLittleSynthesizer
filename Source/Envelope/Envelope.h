@@ -30,9 +30,9 @@ class Envelope : public AbstractEnvelope, private AudioProcessorValueTreeState::
         AudioProcessorValueTreeState* parameters;
 
         double sampleRate;
-        float attack, decay, sustain, release;
-        float decayDelta, hitReleaseGainRatio;
-        int sampleIndex;
-        float currentGain, hitReleaseGain;
+        Atomic<float> attack, decay, sustain, release;
+        Atomic<float> decayDelta, hitReleaseGainRatio, hitReleaseGain;
+        Atomic<int> sampleIndex;
+        float currentGain;
 
 };

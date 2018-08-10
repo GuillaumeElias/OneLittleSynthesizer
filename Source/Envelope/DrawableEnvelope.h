@@ -20,8 +20,8 @@ class DrawableEnvelope : public AbstractEnvelope
         float computeGain() override;
 
         //getters and setters for values shared across instances
-        static const std::vector<float> & getValuesAttack();
-        static const std::vector<float> & getValuesRelease();
+        static const std::vector<Atomic<float>> & getValuesAttack();
+        static const std::vector<Atomic<float>> & getValuesRelease();
         static float getSustainLevel();
         static float getAttackTime();
         static float getReleaseTime();
@@ -34,11 +34,12 @@ class DrawableEnvelope : public AbstractEnvelope
 
     private:
         //those values are shared between all the envelope instances
-        static std::vector<float> valuesAttack, valuesRelease;
-        static float attackTime, releaseTime;
-        static float sustainLevel;
+        static std::vector<Atomic<float>> valuesAttack, valuesRelease;
+        static Atomic<float> attackTime, releaseTime;
+        static Atomic<float> sustainLevel;
 
         int valueIndex, sampleIndex;
+        float totalTime;
         float currentGain, hitReleaseGainSustainRatio;
 
         double sampleRate;

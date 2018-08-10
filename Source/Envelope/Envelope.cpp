@@ -14,7 +14,7 @@ Envelope::Envelope( AudioProcessorValueTreeState* processorParameters, double sp
     , decay( INIT_ENV_DECAY / 1000.f )
     , sustain( INIT_ENV_SUSTAIN )
     , release( INIT_ENV_RELEASE / 1000.f )
-    , decayDelta ( 1 - sustain )
+    , decayDelta ( 1 - INIT_ENV_SUSTAIN )
     , sampleIndex( 0 )
     , currentGain( 0.f )
     , hitReleaseGain( 0.f )
@@ -62,13 +62,13 @@ void Envelope::noteOff( bool allowTailOff )
 //============================================================================
 float Envelope::computeGain()
 {
-    float deltaTime = sampleIndex / sampleRate;
+    float deltaTime = sampleIndex.get() / sampleRate;
 
     switch( currentPhase )
     {
         case ATTACK:
 
-            currentGain = deltaTime / attack;
+            currentGain = deltaTime / attack.get();
 
             if( currentGain >= 1.f )
             {
@@ -79,9 +79,9 @@ float Envelope::computeGain()
 
         case DECAY:
 
-            currentGain = 1 - deltaTime * decayDelta / decay;
+            currentGain = 1 - deltaTime * decayDelta.get() / decay.get();
 
-            if( currentGain <= sustain )
+            if( currentGain <= sustain.get() )
             {
                 sampleIndex = 0;
                 currentPhase = SUSTAIN;
@@ -91,13 +91,13 @@ float Envelope::computeGain()
 
         case SUSTAIN:
 
-            currentGain = sustain;
+            currentGain = sustain.get();
 
             break;
 
         case RELEASE:
 
-            currentGain = hitReleaseGain - deltaTime * hitReleaseGainRatio;
+            currentGain = hitReleaseGain.get() - deltaTime * hitReleaseGainRatio.get();
 
             if( currentGain <= 0.f )
             {
@@ -111,7 +111,7 @@ float Envelope::computeGain()
             currentGain = 0.f;
     }
 
-    sampleIndex++;
+    ++sampleIndex;
     notifyProgress(deltaTime, currentGain);
 
     return currentGain;
@@ -129,7 +129,7 @@ void Envelope::resetNote()
 void Envelope::triggerRelease()
 {
     hitReleaseGain = currentGain;
-    hitReleaseGainRatio = hitReleaseGain / release;
+    hitReleaseGainRatio = hitReleaseGain.get() / release.get();
     sampleIndex = 0;
     currentPhase = RELEASE;
 }
@@ -148,14 +148,14 @@ void Envelope::parameterChanged(const String& parameterID, float newValue )
     else if( parameterID == "envSustain" )
     {
         sustain = newValue;
-        decayDelta = 1 - sustain;
+        decayDelta = 1 - sustain.get();
     }
     else if( parameterID == "envRelease" )
     {
         release = newValue / 1000.f;
         if( currentPhase == RELEASE )
         {
-            hitReleaseGainRatio = hitReleaseGain / release;
+            hitReleaseGainRatio = hitReleaseGain.get() / release.get();
         }
     }
 }

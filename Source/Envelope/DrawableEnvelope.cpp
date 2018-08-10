@@ -6,12 +6,12 @@
 #include "DrawableEnvelope.h"
 
 //============================================================================
-std::vector<float> DrawableEnvelope::valuesAttack( DRAWABLE_ENVELOPE_NB_VALUES, DRAWABLE_ENVELOPE_INIT_VALUES );
-std::vector<float> DrawableEnvelope::valuesRelease( DRAWABLE_ENVELOPE_NB_VALUES, DRAWABLE_ENVELOPE_INIT_VALUES );
+std::vector<Atomic<float>> DrawableEnvelope::valuesAttack( DRAWABLE_ENVELOPE_NB_VALUES, DRAWABLE_ENVELOPE_INIT_VALUES );
+std::vector<Atomic<float>> DrawableEnvelope::valuesRelease( DRAWABLE_ENVELOPE_NB_VALUES, DRAWABLE_ENVELOPE_INIT_VALUES );
 
-float DrawableEnvelope::attackTime = INIT_ENV_ATTACK / 1000.f; //ms to s
-float DrawableEnvelope::releaseTime = INIT_ENV_RELEASE / 1000.f;
-float DrawableEnvelope::sustainLevel = DRAWABLE_ENVELOPE_INIT_VALUES;
+Atomic<float> DrawableEnvelope::attackTime = INIT_ENV_ATTACK / 1000.f; //ms to s
+Atomic<float> DrawableEnvelope::releaseTime = INIT_ENV_RELEASE / 1000.f;
+Atomic<float> DrawableEnvelope::sustainLevel = DRAWABLE_ENVELOPE_INIT_VALUES;
 
 //============================================================================
 DrawableEnvelope::DrawableEnvelope(AudioProcessorValueTreeState * processorParameters, double splRate, int voiceNumber)
@@ -42,7 +42,7 @@ void DrawableEnvelope::noteOff(bool allowTailOff)
     if( allowTailOff )
     {
         currentPhase = RELEASE;
-        hitReleaseGainSustainRatio = currentGain / sustainLevel;
+        hitReleaseGainSustainRatio = currentGain / sustainLevel.get();
     }
     else
     {
@@ -68,10 +68,10 @@ float DrawableEnvelope::computeGain()
 
     if(currentPhase == SUSTAIN)
     {
-        return sustainLevel;
+        return sustainLevel.get();
     }
 
-    float totalTime = (currentPhase == ATTACK ) ? attackTime : releaseTime;
+    float totalTime = (currentPhase == ATTACK ) ? attackTime.get() : releaseTime.get();
     float deltaTime = sampleIndex / sampleRate;
 
     float xTime = deltaTime / totalTime * DRAWABLE_ENVELOPE_NB_VALUES;
@@ -81,23 +81,23 @@ float DrawableEnvelope::computeGain()
         valueIndex = DRAWABLE_ENVELOPE_NB_VALUES - 1;
     }
 
-    std::vector<float> * values = &valuesAttack;
+    std::vector<Atomic<float>> * values = &valuesAttack;
     if(currentPhase == RELEASE)
     {
         values = &valuesRelease;
     }
 
     //MAKE THE VALUE CONTINUOUS (smooth between steps)
-    currentGain = values->at(valueIndex);
+    currentGain = values->at(valueIndex).get();
     float diffTime = xTime - valueIndex;
     float nextValue = -1.f;
     if( valueIndex < values->size() - 1 )
     {
-        nextValue = values->at(valueIndex + 1);
+        nextValue = values->at(valueIndex + 1).get();
     }
     else if( currentPhase == ATTACK ) //if the next value is the sustain
     {
-        nextValue = sustainLevel;
+        nextValue = sustainLevel.get();
     }
 
     if( nextValue > 0 )
@@ -118,7 +118,7 @@ float DrawableEnvelope::computeGain()
         if( currentPhase == ATTACK )
         {
             currentPhase = SUSTAIN;
-            currentGain = sustainLevel;
+            currentGain = sustainLevel.get();
             notifyProgress(deltaTime, currentGain);
         }
         else if( currentPhase == RELEASE )
@@ -138,13 +138,13 @@ float DrawableEnvelope::computeGain()
 }
 
 //============================================================================
-const std::vector<float> & DrawableEnvelope::getValuesAttack()
+const std::vector<Atomic<float>> & DrawableEnvelope::getValuesAttack()
 {
     return valuesAttack;
 }
 
 //============================================================================
-const std::vector<float> & DrawableEnvelope::getValuesRelease()
+const std::vector<Atomic<float>> & DrawableEnvelope::getValuesRelease()
 {
     return valuesRelease;
 }
@@ -152,19 +152,19 @@ const std::vector<float> & DrawableEnvelope::getValuesRelease()
 //============================================================================
 float DrawableEnvelope::getSustainLevel()
 {
-    return sustainLevel;
+    return sustainLevel.get();
 }
 
 //============================================================================
 float DrawableEnvelope::getAttackTime()
 {
-   return attackTime;
+   return attackTime.get();
 }
 
 //============================================================================
 float DrawableEnvelope::getReleaseTime()
 {
-    return releaseTime;
+    return releaseTime.get();
 }
 
 //============================================================================
@@ -200,7 +200,7 @@ void DrawableEnvelope::setReleaseTime(float release)
 //============================================================================
 void DrawableEnvelope::resetValues()
 {
-    valuesAttack = std::vector<float>( DRAWABLE_ENVELOPE_NB_VALUES, DRAWABLE_ENVELOPE_INIT_VALUES );
-    valuesRelease = std::vector<float>( DRAWABLE_ENVELOPE_NB_VALUES, DRAWABLE_ENVELOPE_INIT_VALUES );
+    valuesAttack = std::vector<Atomic<float>>( DRAWABLE_ENVELOPE_NB_VALUES, DRAWABLE_ENVELOPE_INIT_VALUES );
+    valuesRelease = std::vector<Atomic<float>>( DRAWABLE_ENVELOPE_NB_VALUES, DRAWABLE_ENVELOPE_INIT_VALUES );
     sustainLevel = DRAWABLE_ENVELOPE_INIT_VALUES;
 }

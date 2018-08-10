@@ -42,7 +42,7 @@ class DrawableEnvelopeUI : public Component, public EnvelopeListener
 
         void handleClick( int x, int y);
 
-        void paintContour(Graphics & g, const std::vector<float> & values, int paddingLeft);
+        void paintContour(Graphics & g, const std::vector<Atomic<float>> & values, int paddingLeft);
 
         AudioProcessorValueTreeState& parameters;
 

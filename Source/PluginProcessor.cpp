@@ -33,15 +33,15 @@ namespace
     }
 
     //=========================================================================
-    void addVectorToTree(const std::vector<float> & vect, ValueTree & tree, const Identifier & id)
+    void addVectorToTree(const std::vector<Atomic<float>> & vect, ValueTree & tree, const Identifier & id)
     {
         ValueTree vectorTree = tree.getOrCreateChildWithName(id, nullptr);
         vectorTree.removeAllChildren(nullptr);
 
-        for(float f : vect)
+        for(Atomic<float> f : vect)
         {
             ValueTree element(Identifier("element"));
-            element.setProperty("value", f, nullptr);
+            element.setProperty("value", f.get(), nullptr);
             vectorTree.appendChild(element, nullptr);
         }
     }

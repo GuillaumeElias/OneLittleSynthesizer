@@ -66,9 +66,9 @@ void DrawableEnvelopeUI::paint(Graphics & g)
 
     //-sustain bar and joint lines before and after-
     float sustainY = height - DrawableEnvelope::getSustainLevel() * height;
-    g.drawLine(PADDING_LEFT_SUSTAIN, height - height * DrawableEnvelope::getValuesAttack()[DRAWABLE_ENVELOPE_NB_VALUES - 1], PADDING_LEFT_SUSTAIN, sustainY, 2.f);
+    g.drawLine(PADDING_LEFT_SUSTAIN, height - height * DrawableEnvelope::getValuesAttack()[DRAWABLE_ENVELOPE_NB_VALUES - 1].get(), PADDING_LEFT_SUSTAIN, sustainY, 2.f);
     g.drawLine(PADDING_LEFT_SUSTAIN, sustainY, PADDING_LEFT_RELEASE, sustainY, 2.f);
-    g.drawLine(PADDING_LEFT_RELEASE, sustainY, PADDING_LEFT_RELEASE, height - height * DrawableEnvelope::getValuesRelease()[0], 2.f);
+    g.drawLine(PADDING_LEFT_RELEASE, sustainY, PADDING_LEFT_RELEASE, height - height * DrawableEnvelope::getValuesRelease()[0].get(), 2.f);
 
     //-release-
     paintContour(g, DrawableEnvelope::getValuesRelease(), PADDING_LEFT_RELEASE);
@@ -201,12 +201,12 @@ void DrawableEnvelopeUI::handleClick(int x, int y)
 }
 
 //=================================================================
-void DrawableEnvelopeUI::paintContour(Graphics & g, const std::vector<float> & values, int paddingLeft)
+void DrawableEnvelopeUI::paintContour(Graphics & g, const std::vector<Atomic<float>> & values, int paddingLeft)
 {
-    Point<float> pa(paddingLeft, height - height * values[0]);
+    Point<float> pa(paddingLeft, height - height * values[0].get());
     for( int i = 0; i < values.size(); i++ )
     {
-        Point<float> pb(paddingLeft + DRAWABLE_ENVELOPE_BAR_WIDTH * i + DRAWABLE_ENVELOPE_BAR_WIDTH, height - height * values[i]);
+        Point<float> pb(paddingLeft + DRAWABLE_ENVELOPE_BAR_WIDTH * i + DRAWABLE_ENVELOPE_BAR_WIDTH, height - height * values[i].get());
         g.drawLine( Line<float>( pa, pb ), 2.f );
         pa = pb;
     }
