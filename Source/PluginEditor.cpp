@@ -18,8 +18,7 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
 {
     setSize (370, 420);
 
-    getLookAndFeel().setColour (Slider::thumbColourId, Colours::white);
-    getLookAndFeel().setColour (Label::textColourId, Colours::white);
+    setLookAndFeel(&lookAndFeel);
 
     //Reset parameters button
     resetParametersButton.setButtonText("Reset");
@@ -79,6 +78,7 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
 OneLittleSynthesizerAudioProcessorEditor::~OneLittleSynthesizerAudioProcessorEditor()
 {
     resetParametersButton.removeListener(this);
+    setLookAndFeel (nullptr);
 }
 
 //==============================================================================

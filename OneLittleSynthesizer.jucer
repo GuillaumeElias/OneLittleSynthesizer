@@ -41,6 +41,10 @@
       <FILE id="wWYLwq" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="HVGMLw" name="Synth.cpp" compile="1" resource="0" file="Source/Synth.cpp"/>
       <FILE id="ZbvPEq" name="Synth.h" compile="0" resource="0" file="Source/Synth.h"/>
+      <FILE id="YejOtR" name="PluginLookAndFeel.cpp" compile="1" resource="0"
+            file="Source/PluginLookAndFeel.cpp"/>
+      <FILE id="KCLquj" name="PluginLookAndFeel.h" compile="0" resource="0"
+            file="Source/PluginLookAndFeel.h"/>
       <FILE id="aWhjPY" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="XLRhPM" name="PluginProcessor.h" compile="0" resource="0"

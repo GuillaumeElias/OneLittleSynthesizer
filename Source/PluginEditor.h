@@ -7,6 +7,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
+#include "PluginLookAndFeel.h"
 #include "Envelope/EnvelopeUI.h"
 #include "Envelope/DrawableEnvelopeUI.h"
 
@@ -43,6 +44,7 @@ private:
     AudioProcessorValueTreeState& parameters;
 
     MidiKeyboardComponent midiKeyboard;
+    PluginLookAndFeel lookAndFeel;
 
     TextButton resetParametersButton;
 

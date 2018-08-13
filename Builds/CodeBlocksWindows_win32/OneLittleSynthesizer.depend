@@ -4941,7 +4941,7 @@
 	"AppConfig.h"
 	<juce_audio_basics/juce_audio_basics.cpp>
 
-1534192659 c:\users\guillaume\documents\cpp\onelittlesynthesizer\jucelibrarycode\appconfig.h
+1534195525 c:\users\guillaume\documents\cpp\onelittlesynthesizer\jucelibrarycode\appconfig.h
 
 1518286000 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\jucelibrarycode\include_juce_audio_devices.cpp
 	"AppConfig.h"
@@ -5046,4 +5046,84 @@
 1518286000 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\jucelibrarycode\include_juce_audio_plugin_client_standalone.cpp
 	"AppConfig.h"
 	<juce_audio_plugin_client/juce_audio_plugin_client_Standalone.cpp>
+
+1534192607 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\envelope\abstractenvelope.cpp
+	"AbstractEnvelope.h"
+
+1534192607 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\envelope\abstractenvelope.h
+	"../JuceLibraryCode/JuceHeader.h"
+	"../Constants.h"
+
+1534192607 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\envelope\drawableenvelope.cpp
+	"DrawableEnvelope.h"
+
+1534192607 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\envelope\drawableenvelope.h
+	"../JuceLibraryCode/JuceHeader.h"
+	"../Constants.h"
+	"AbstractEnvelope.h"
+
+1534192607 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\envelope\drawableenvelopeui.cpp
+	"DrawableEnvelopeUI.h"
+
+1534192607 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\envelope\drawableenvelopeui.h
+	"../JuceLibraryCode/JuceHeader.h"
+	"DrawableEnvelope.h"
+	<map>
+
+1534192607 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\envelope\envelope.cpp
+	"Envelope.h"
+
+1534192607 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\envelope\envelope.h
+	"../JuceLibraryCode/JuceHeader.h"
+	"../Constants.h"
+	"AbstractEnvelope.h"
+
+1534192607 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\envelope\envelopeui.cpp
+	"EnvelopeUI.h"
+
+1534192607 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\envelope\envelopeui.h
+	<map>
+	"../JuceLibraryCode/JuceHeader.h"
+	"AbstractEnvelope.h"
+	"../Constants.h"
+
+1534192607 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\pluginprocessor.cpp
+	"PluginProcessor.h"
+	"PluginEditor.h"
+	"Envelope/AbstractEnvelope.h"
+
+1534192607 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\pluginprocessor.h
+	"../JuceLibraryCode/JuceHeader.h"
+	"Synth.h"
+
+1529159564 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\synth.h
+	"SynthSound.h"
+	"SynthVoice.h"
+	"../JuceLibraryCode/JuceHeader.h"
+
+1534192607 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\synthvoice.h
+	"../JuceLibraryCode/JuceHeader.h"
+	"SynthSound.h"
+	"Oscillator.h"
+	"Constants.h"
+	"Envelope/Envelope.h"
+	"Envelope/DrawableEnvelope.h"
+	<map>
+
+1534195889 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\plugineditor.h
+	"../JuceLibraryCode/JuceHeader.h"
+	"PluginProcessor.h"
+	"PluginLookAndFeel.h"
+	"Envelope/EnvelopeUI.h"
+	"Envelope/DrawableEnvelopeUI.h"
+
+1534195753 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\pluginlookandfeel.h
+	"../JuceLibraryCode/JuceHeader.h"
+
+1529159564 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\synth.cpp
+	"Synth.h"
+
+1534192607 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\synthvoice.cpp
+	"SynthVoice.h"
+	"SynthSound.h"
 

@@ -441,6 +441,9 @@
     <ClCompile Include="..\..\Source\Synth.cpp">
       <Filter>OneLittleSynthesizer\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\PluginLookAndFeel.cpp">
+      <Filter>OneLittleSynthesizer\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp">
       <Filter>OneLittleSynthesizer\Source</Filter>
     </ClCompile>
@@ -2418,6 +2421,9 @@
       <Filter>OneLittleSynthesizer\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Synth.h">
+      <Filter>OneLittleSynthesizer\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PluginLookAndFeel.h">
       <Filter>OneLittleSynthesizer\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginProcessor.h">
