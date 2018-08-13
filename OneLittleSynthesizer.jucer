@@ -11,7 +11,7 @@
               pluginIsSynth="1" pluginWantsMidiIn="1" pluginProducesMidiOut="0"
               pluginIsMidiEffectPlugin="0" pluginEditorRequiresKeys="1" pluginAUExportPrefix="OneLittleSynthesizerAU"
               pluginRTASCategory="" aaxIdentifier="com.guillaumeelias.OneLittleSynthesizer"
-              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="5.2.0">
+              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="5.3.0">
   <MAINGROUP id="Boogcv" name="OneLittleSynthesizer">
     <GROUP id="{22BBBFC2-8997-3B2D-3CCC-6D49C1B2253C}" name="Source">
       <GROUP id="{6B9A2E4A-B0A1-D35B-D764-03D9DBEB0285}" name="Envelope">
