@@ -10,12 +10,13 @@ namespace
     const float MARGIN = 1.0f;
     const float TWO_MARGINS = 2 * MARGIN;
     const float HANDLE_THICKNESS = 5.0f;
+    const Typeface::Ptr MECHANICAL_TYPEFACE = Typeface::createSystemTypefaceFor(BinaryData::Mechanical_otf, BinaryData::Mechanical_otfSize);
 }
 
 //================================================================================
 PluginLookAndFeel::PluginLookAndFeel()
 {
-    LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypefaceName ("Courier New Bold");
+    LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypeface(MECHANICAL_TYPEFACE);
     setColour (Slider::thumbColourId, Colours::white);
     setColour (Label::textColourId, Colours::white);
 }

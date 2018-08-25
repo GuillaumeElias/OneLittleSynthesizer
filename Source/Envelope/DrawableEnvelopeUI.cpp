@@ -57,7 +57,7 @@ void DrawableEnvelopeUI::paint(Graphics & g)
 
     //labels
     Rectangle<int> bounds (getLocalBounds());
-    g.drawFittedText ("Filter env amt", bounds.removeFromLeft(70), Justification::topLeft, 1);
+    g.drawFittedText ("Filter env amt", bounds.removeFromLeft(75), Justification::topLeft, 1);
     g.drawFittedText ("Attack time", bounds, Justification::topLeft, 1);
 
     //PAINT ENVELOPE CONTOUR
@@ -139,7 +139,7 @@ void DrawableEnvelopeUI::onProgress(int voiceNumber, const EnvelopeProgress & pr
 void DrawableEnvelopeUI::resized()
 {
     envAmountSlider.setBounds(20, 18, 20, 72);
-    attackSlider.setBounds(80, 18, 20, 72);
+    attackSlider.setBounds(86, 18, 20, 72);
 }
 
 

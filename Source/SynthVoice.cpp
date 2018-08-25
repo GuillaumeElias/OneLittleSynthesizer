@@ -100,7 +100,6 @@ void SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSamp
 
             //compute filter cutoff freq from drawableEnvelope gain and filterFreq parameter
             float totalFilterFreq = filterCutoffParam + drawableEnv.computeGain() * MAX_FILTER_CUTOFF_FREQUENCY * filterEnvAmountParam;
-
             if( totalFilterFreq <= 0.f )
             {
                 currentSample = 0.f; //if filter cutoff is 0 then the note is silent

@@ -4941,7 +4941,7 @@
 	"AppConfig.h"
 	<juce_audio_basics/juce_audio_basics.cpp>
 
-1534195525 c:\users\guillaume\documents\cpp\onelittlesynthesizer\jucelibrarycode\appconfig.h
+1535200244 c:\users\guillaume\documents\cpp\onelittlesynthesizer\jucelibrarycode\appconfig.h
 
 1518286000 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\jucelibrarycode\include_juce_audio_devices.cpp
 	"AppConfig.h"
@@ -5010,7 +5010,7 @@
 1522258508 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\oscillator.h
 	"../JuceLibraryCode/JuceHeader.h"
 
-1522676242 c:\users\guillaume\documents\cpp\onelittlesynthesizer\jucelibrarycode\juceheader.h
+1535193578 c:\users\guillaume\documents\cpp\onelittlesynthesizer\jucelibrarycode\juceheader.h
 	"AppConfig.h"
 	<juce_audio_basics/juce_audio_basics.h>
 	<juce_audio_devices/juce_audio_devices.h>
@@ -5028,6 +5028,7 @@
 	<juce_gui_extra/juce_gui_extra.h>
 	<juce_opengl/juce_opengl.h>
 	<juce_video/juce_video.h>
+	"BinaryData.h"
 
 1534192607 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\constants.h
 	"../JuceLibraryCode/JuceHeader.h"
@@ -5087,7 +5088,7 @@
 	"AbstractEnvelope.h"
 	"../Constants.h"
 
-1534192607 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\pluginprocessor.cpp
+1535195480 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\pluginprocessor.cpp
 	"PluginProcessor.h"
 	"PluginEditor.h"
 	"Envelope/AbstractEnvelope.h"
@@ -5117,13 +5118,24 @@
 	"Envelope/EnvelopeUI.h"
 	"Envelope/DrawableEnvelopeUI.h"
 
-1534195753 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\pluginlookandfeel.h
+1535192234 c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\pluginlookandfeel.h
 	"../JuceLibraryCode/JuceHeader.h"
 
 1529159564 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\synth.cpp
 	"Synth.h"
 
-1534192607 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\synthvoice.cpp
+1535192391 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\synthvoice.cpp
 	"SynthVoice.h"
 	"SynthSound.h"
+
+1534196898 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\plugineditor.cpp
+	"PluginProcessor.h"
+	"PluginEditor.h"
+
+1535200243 c:\users\guillaume\documents\cpp\onelittlesynthesizer\jucelibrarycode\binarydata.h
+
+1535200243 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\jucelibrarycode\binarydata.cpp
+
+1535198056 source:c:\users\guillaume\documents\cpp\onelittlesynthesizer\source\pluginlookandfeel.cpp
+	"PluginLookAndFeel.h"
 

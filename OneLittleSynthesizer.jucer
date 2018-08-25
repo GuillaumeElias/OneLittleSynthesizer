@@ -13,6 +13,9 @@
               pluginRTASCategory="" aaxIdentifier="com.guillaumeelias.OneLittleSynthesizer"
               pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="5.3.0">
   <MAINGROUP id="Boogcv" name="OneLittleSynthesizer">
+    <GROUP id="{3577654D-0449-1222-3E3F-E0D1E3EA1478}" name="Resources">
+      <FILE id="UP6Ljn" name="Mechanical.otf" compile="0" resource="1" file="Resources/Mechanical.otf"/>
+    </GROUP>
     <GROUP id="{22BBBFC2-8997-3B2D-3CCC-6D49C1B2253C}" name="Source">
       <GROUP id="{6B9A2E4A-B0A1-D35B-D764-03D9DBEB0285}" name="Envelope">
         <FILE id="l6egg7" name="AbstractEnvelope.cpp" compile="1" resource="0"

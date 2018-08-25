@@ -51,7 +51,6 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
 
     filterResAttachment = new SliderAttachment (parameters, "filterRes", filterResonanceSlider);
     filterResonanceSlider.setTextBoxStyle (Slider::NoTextBox, false, 120, 90);
-    filterResonanceSlider.setPopupDisplayEnabled (true, false, this);
 
     setFocusContainer(true);
     envelopeUI.setWantsKeyboardFocus(false);
