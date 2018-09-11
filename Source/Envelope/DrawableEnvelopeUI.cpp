@@ -10,6 +10,20 @@ namespace
     const int PADDING_LEFT_ATTACK = 120;
     const int PADDING_LEFT_SUSTAIN = PADDING_LEFT_ATTACK + DRAWABLE_ENVELOPE_BAR_WIDTH * DRAWABLE_ENVELOPE_NB_VALUES;
     const int PADDING_LEFT_RELEASE = PADDING_LEFT_SUSTAIN + DRAWABLE_ENVELOPE_SUSTAIN_WIDTH;
+
+    //==============================================================
+    void setEnvelopeValue(int index, float value, bool release)
+    {
+        if(release)
+        {
+            DrawableEnvelope::setValueRelease(index, value);
+        }
+        else
+        {
+            DrawableEnvelope::setValueAttack(index, value);
+        }
+    }
+
 }
 
 //=================================================================
@@ -32,6 +46,8 @@ DrawableEnvelopeUI::DrawableEnvelopeUI(AudioProcessorValueTreeState& processorPa
     : height( DRAWABLE_ENVELOPE_HEIGHT )
     , updater( this )
     , parameters( processorParameters )
+    , lastMouseDragIndex( -1 )
+    , lastMouseDragValue( -1 )
 {
     //Filter env amount slider
     envAmountAttachment = new SliderAttachment (parameters, "filterEnvAmount", envAmountSlider);
@@ -146,18 +162,25 @@ void DrawableEnvelopeUI::resized()
 //=================================================================
 void DrawableEnvelopeUI::mouseDown( const MouseEvent & event)
 {
-    handleClick(event.getMouseDownX(), event.getMouseDownY());
+    handleClick(event.getMouseDownX(), event.getMouseDownY(), false);
 }
 
 //=================================================================
 void DrawableEnvelopeUI::mouseDrag(const MouseEvent & event)
 {
     Point<int> position = event.getPosition();
-    handleClick(position.getX(), position.getY());
+    handleClick(position.getX(), position.getY(), true);
 }
 
 //=================================================================
-void DrawableEnvelopeUI::handleClick(int x, int y)
+void DrawableEnvelopeUI::mouseUp( const MouseEvent &event)
+{
+    lastMouseDragIndex = -1;
+    lastMouseDragValue = -1;
+}
+
+//=================================================================
+void DrawableEnvelopeUI::handleClick(int x, int y, bool drag)
 {
     if(y <= 0 && y > height)
     {
@@ -188,16 +211,53 @@ void DrawableEnvelopeUI::handleClick(int x, int y)
     int index = roundToInt( x / DRAWABLE_ENVELOPE_BAR_WIDTH );
     if(index >= 0 && index < DRAWABLE_ENVELOPE_NB_VALUES )
     {
-        if(release)
+        if(drag)
         {
-            DrawableEnvelope::setValueRelease(index, value);
+            fillAllPointsTillIndex(index, value, release);
         }
         else
         {
-            DrawableEnvelope::setValueAttack(index, value);
+            setEnvelopeValue(index, value, release);
         }
+
         updater.triggerAsyncUpdate();
     }
+}
+
+//=================================================================
+void DrawableEnvelopeUI::fillAllPointsTillIndex(int index, float value, bool release)
+{
+    if(lastMouseDragIndex == index)
+    {
+        return;
+    }
+
+    if(lastMouseDragIndex >= 0)
+    {
+        int diffIndexes = index - lastMouseDragIndex;
+        float valueInc = (value - lastMouseDragValue) / abs(diffIndexes);
+        float valueDelta = value;
+
+        if(diffIndexes > 0) //drag right -> iterate towards left back to last index
+        {
+            for(int i=index; i > lastMouseDragIndex; i--)
+            {
+                setEnvelopeValue(i, valueDelta, release);
+                valueDelta -= valueInc;
+            }
+        }
+        else //drag left -> iterate towards right back to last index
+        {
+            for(int i=index; i < lastMouseDragIndex; i++)
+            {
+                setEnvelopeValue(i, valueDelta, release);
+                valueDelta -= valueInc;
+            }
+        }
+
+    }
+    lastMouseDragIndex = index;
+    lastMouseDragValue = value;
 }
 
 //=================================================================

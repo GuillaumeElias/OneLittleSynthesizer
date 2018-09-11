@@ -39,14 +39,18 @@ class DrawableEnvelopeUI : public Component, public EnvelopeListener
     private:
         void mouseDown( const MouseEvent & event) override;
         void mouseDrag( const MouseEvent & event) override;
+        void mouseUp( const MouseEvent &event) override;
 
-        void handleClick( int x, int y);
+        void handleClick( int x, int y, bool drag);
+        void fillAllPointsTillIndex(int index, float value, bool release);
 
         void paintContour(Graphics & g, const std::vector<Atomic<float>> & values, int paddingLeft);
 
         AudioProcessorValueTreeState& parameters;
 
         int height;
+        int lastMouseDragIndex;
+        float lastMouseDragValue;
 
         //Attack slider
         Slider attackSlider;

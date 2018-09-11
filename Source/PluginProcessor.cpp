@@ -322,7 +322,6 @@ void OneLittleSynthesizerAudioProcessor::getStateInformation (MemoryBlock& destD
     addVectorToTree( DrawableEnvelope::getValuesRelease(), state, "drawableEnvReleaseValues");
 
     std::unique_ptr<XmlElement> xml (state.createXml());
-    logger.writeToLog (xml->createDocument(String::empty, false, false));
     copyXmlToBinary (*xml, destData);
 }
 
