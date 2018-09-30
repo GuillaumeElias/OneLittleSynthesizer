@@ -25,11 +25,13 @@ class DrawableEnvelope : public AbstractEnvelope
         static float getSustainLevel();
         static float getAttackTime();
         static float getReleaseTime();
+        static bool isLoop();
         static void setValueAttack(int index, float value);
         static void setValueRelease(int index, float value);
         static void setAttackTime(float attack);
         static void setSustainLevel(float sustain);
         static void setReleaseTime(float release);
+        static void setLoop(float loop);
         static void resetValues();
 
     private:
@@ -37,6 +39,7 @@ class DrawableEnvelope : public AbstractEnvelope
         static std::vector<Atomic<float>> valuesAttack, valuesRelease;
         static Atomic<float> attackTime, releaseTime;
         static Atomic<float> sustainLevel;
+        static Atomic<bool> loop;
 
         int valueIndex, sampleIndex;
         float totalTime;

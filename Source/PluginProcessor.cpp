@@ -142,6 +142,13 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   INIT_FILTER_ENV_AMOUNT,
                                   [](float val){ return floatToStr(val * 100) + " %"; },
                                   nullptr);
+    parameters.createAndAddParameter("loopDrawableEnvelope",
+                                    "Loop Drawable Envelope",
+                                    "Loop",
+                                    NormalisableRange<float> (0.0f, 1.0f, 1.0f),
+                                    0.0f,
+                                    [](float value){ return value < 0.5f ? "Off" : "On"; },
+                                    nullptr, false, true, true);
 
     parameters.state = ValueTree (Identifier ("OneLittleSynthesizer"));
 
@@ -154,6 +161,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
 
     parameters.addParameterListener("filterAttack", this);
     parameters.addParameterListener("envRelease", this);
+    parameters.addParameterListener("loopDrawableEnvelope", this);
 }
 
 //==============================================================================
@@ -377,17 +385,19 @@ void OneLittleSynthesizerAudioProcessor::parameterChanged(const String& paramete
     if( parameterID == "filterAttack" )
     {
         DrawableEnvelope::setAttackTime( newValue / 1000.f );
-        if( auto editor = dynamic_cast<OneLittleSynthesizerAudioProcessorEditor *> ( getActiveEditor() ) )
-        {
-            editor->getDrawableEnvelopeUI()->repaint();
-        }
     }
     else if( parameterID == "envRelease" )
     {
         DrawableEnvelope::setReleaseTime( newValue / 1000.f );
-        if( auto editor = dynamic_cast<OneLittleSynthesizerAudioProcessorEditor *> ( getActiveEditor() ) )
-        {
-            editor->getDrawableEnvelopeUI()->repaint();
-        }
+    }
+    else if( parameterID == "loopDrawableEnvelope" )
+    {
+        DrawableEnvelope::setLoop( newValue > 0.5f );
+    }
+
+    //repaint editor if available
+    if( auto editor = dynamic_cast<OneLittleSynthesizerAudioProcessorEditor *> ( getActiveEditor() ) )
+    {
+        editor->getDrawableEnvelopeUI()->repaint();
     }
 }

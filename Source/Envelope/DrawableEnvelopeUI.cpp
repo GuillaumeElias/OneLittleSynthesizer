@@ -59,8 +59,12 @@ DrawableEnvelopeUI::DrawableEnvelopeUI(AudioProcessorValueTreeState& processorPa
     attackSlider.setSliderStyle(Slider::SliderStyle::LinearVertical );
     attackSlider.setPopupDisplayEnabled (true, false, this);
 
+    //Loop button
+    loopButtonAttachment = new ButtonAttachment(parameters, "loopDrawableEnvelope", loopButton);
+
     addAndMakeVisible(envAmountSlider);
     addAndMakeVisible(attackSlider);
+    addAndMakeVisible(loopButton);
 }
 
 //=================================================================
@@ -74,7 +78,8 @@ void DrawableEnvelopeUI::paint(Graphics & g)
     //labels
     Rectangle<int> bounds (getLocalBounds());
     g.drawFittedText ("Filter env amt", bounds.removeFromLeft(75), Justification::topLeft, 1);
-    g.drawFittedText ("Attack time", bounds, Justification::topLeft, 1);
+    g.drawFittedText ("Attack time", bounds.removeFromLeft(245), Justification::topLeft, 1);
+    g.drawFittedText ("Loop", bounds.withTop(3), Justification::topLeft, 1);
 
     //PAINT ENVELOPE CONTOUR
     //-attack-
@@ -156,8 +161,8 @@ void DrawableEnvelopeUI::resized()
 {
     envAmountSlider.setBounds(20, 18, 20, 72);
     attackSlider.setBounds(86, 18, 20, 72);
+    loopButton.setBounds(350, 0, 14, 14);
 }
-
 
 //=================================================================
 void DrawableEnvelopeUI::mouseDown( const MouseEvent & event)

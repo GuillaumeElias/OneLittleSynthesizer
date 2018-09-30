@@ -12,6 +12,7 @@
 //==============================================================================
 
 typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
+typedef AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
 
 //==============================================================================
 class DrawableEnvelopeUI;
@@ -59,6 +60,10 @@ class DrawableEnvelopeUI : public Component, public EnvelopeListener
         //Filter env amount
         Slider envAmountSlider;
         ScopedPointer<SliderAttachment> envAmountAttachment;
+
+        //Loop button
+        ToggleButton loopButton;
+        ScopedPointer<ButtonAttachment> loopButtonAttachment;
 
         std::map <int, EnvelopeProgress> envProgressMap;
 

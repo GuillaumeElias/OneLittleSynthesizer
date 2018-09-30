@@ -12,6 +12,7 @@ std::vector<Atomic<float>> DrawableEnvelope::valuesRelease( DRAWABLE_ENVELOPE_NB
 Atomic<float> DrawableEnvelope::attackTime = INIT_ENV_ATTACK / 1000.f; //ms to s
 Atomic<float> DrawableEnvelope::releaseTime = INIT_ENV_RELEASE / 1000.f;
 Atomic<float> DrawableEnvelope::sustainLevel = DRAWABLE_ENVELOPE_INIT_VALUES;
+Atomic<bool> DrawableEnvelope::loop = false;
 
 //============================================================================
 DrawableEnvelope::DrawableEnvelope(AudioProcessorValueTreeState * processorParameters, double splRate, int voiceNumber)
@@ -99,6 +100,10 @@ float DrawableEnvelope::computeGain()
     {
         nextValue = sustainLevel.get();
     }
+    else if( isLoop() ) //if it's at the end of the loop
+    {
+        nextValue = values->front().get();
+    }
 
     if( nextValue > 0 )
     {
@@ -117,13 +122,21 @@ float DrawableEnvelope::computeGain()
     {
         if( currentPhase == ATTACK )
         {
-            currentPhase = SUSTAIN;
+            if(isLoop())
+            {
+                currentPhase = RELEASE;
+                hitReleaseGainSustainRatio = currentGain / sustainLevel.get();
+            }
+            else
+            {
+                currentPhase = SUSTAIN;
+            }
             currentGain = sustainLevel.get();
             notifyProgress(deltaTime, currentGain);
         }
         else if( currentPhase == RELEASE )
         {
-            currentPhase = OFF;
+            currentPhase = isLoop() ? ATTACK : OFF;
             currentGain = 0.0f;
 
             hitReleaseGainSustainRatio = 1.0f;
@@ -168,6 +181,12 @@ float DrawableEnvelope::getReleaseTime()
 }
 
 //============================================================================
+bool DrawableEnvelope::isLoop()
+{
+    return loop.get();
+}
+
+//============================================================================
 void DrawableEnvelope::setValueAttack(int index, float value)
 {
     valuesAttack[index] = value;
@@ -195,6 +214,12 @@ void DrawableEnvelope::setSustainLevel(float sustain)
 void DrawableEnvelope::setReleaseTime(float release)
 {
     releaseTime = release;
+}
+
+//============================================================================
+void DrawableEnvelope::setLoop(float loopArg)
+{
+    loop = loopArg;
 }
 
 //============================================================================

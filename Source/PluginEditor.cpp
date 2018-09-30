@@ -134,6 +134,7 @@ void OneLittleSynthesizerAudioProcessorEditor::buttonClicked( Button * button )
         processor.setParameterValue("envRelease", INIT_ENV_RELEASE);
         processor.setParameterValue("filterAttack", INIT_FILTER_ENV_ATTACK);
         processor.setParameterValue("filterEnvAmount", INIT_FILTER_ENV_AMOUNT);
+        processor.setParameterValue("loopDrawableEnvelope", 0.0f);
 
         DrawableEnvelope::resetValues();
         drawableEnvelopeUI.repaint();

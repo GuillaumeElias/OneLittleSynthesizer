@@ -13,4 +13,5 @@ public:
     PluginLookAndFeel();
 
     void drawLinearSlider (Graphics &, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle, Slider &) override;
+    void drawToggleButton (Graphics&, ToggleButton& button, bool isMouseOverButton, bool isButtonDown);
 };

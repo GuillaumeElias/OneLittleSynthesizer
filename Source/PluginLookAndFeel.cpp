@@ -10,7 +10,10 @@ namespace
     const float MARGIN = 1.0f;
     const float TWO_MARGINS = 2 * MARGIN;
     const float HANDLE_THICKNESS = 5.0f;
+    const int BORDER = 4;
+    const int TWO_BORDERS = 2 * BORDER;
     const Typeface::Ptr MECHANICAL_TYPEFACE = Typeface::createSystemTypefaceFor(BinaryData::Mechanical_otf, BinaryData::Mechanical_otfSize);
+    const Colour CHECKBOX_BACKGROUND_COLOUR = Colour(38, 50, 56);
 }
 
 //================================================================================
@@ -35,4 +38,20 @@ void PluginLookAndFeel::drawLinearSlider (Graphics & g, int x, int y, int width,
     g.setColour(slider.findColour (Slider::thumbColourId));
     g.fillRect(slider.isHorizontal() ? Rectangle<float> (MARGIN + sliderPos - HANDLE_THICKNESS, y + MARGIN, HANDLE_THICKNESS, height - TWO_MARGINS)
                                       : Rectangle<float> (x + MARGIN, MARGIN + sliderPos - HANDLE_THICKNESS, width - TWO_MARGINS, HANDLE_THICKNESS));
+}
+
+//================================================================================
+void PluginLookAndFeel::drawToggleButton (Graphics& g,
+                                    ToggleButton& button,
+                                    bool isMouseOverButton,
+                                    bool isButtonDown)
+{
+    g.setColour(CHECKBOX_BACKGROUND_COLOUR);
+    g.fillRect(0, 0, button.getWidth(), button.getHeight());
+
+    if(button.getToggleState())
+    {
+        g.setColour(button.findColour (ToggleButton::tickColourId));
+        g.fillRect(BORDER, BORDER, button.getWidth() - TWO_BORDERS, button.getHeight() - TWO_BORDERS);
+    }
 }
