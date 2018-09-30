@@ -7,7 +7,9 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
-#include "EnvelopeUI.h"
+#include "PluginLookAndFeel.h"
+#include "Envelope/EnvelopeUI.h"
+#include "Envelope/DrawableEnvelopeUI.h"
 
 //==============================================================================
 
@@ -30,6 +32,9 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
+    EnvelopeUI * getEnvelopeUI();
+    DrawableEnvelopeUI * getDrawableEnvelopeUI();
+
 private:
     void buttonClicked ( Button * button) override;
     bool keyPressed (const KeyPress &key, Component *originatingComponent) override;
@@ -39,6 +44,7 @@ private:
     AudioProcessorValueTreeState& parameters;
 
     MidiKeyboardComponent midiKeyboard;
+    PluginLookAndFeel lookAndFeel;
 
     TextButton resetParametersButton;
 
@@ -57,8 +63,9 @@ private:
     Label filterResonanceLabel;
     ScopedPointer<SliderAttachment> filterResAttachment;
 
-    //ENVELOPE
+    //ENVELOPES
     EnvelopeUI envelopeUI;
+    DrawableEnvelopeUI drawableEnvelopeUI;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OneLittleSynthesizerAudioProcessorEditor)
 };

@@ -14,11 +14,11 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
     , parameters (params)
     , midiKeyboard (p.keyboardState, MidiKeyboardComponent::horizontalKeyboard)
     , envelopeUI(params)
+    , drawableEnvelopeUI(params)
 {
-    setSize (450, 320);
+    setSize (370, 420);
 
-    getLookAndFeel().setColour (Slider::thumbColourId, Colours::white);
-    getLookAndFeel().setColour (Label::textColourId, Colours::white);
+    setLookAndFeel(&lookAndFeel);
 
     //Reset parameters button
     resetParametersButton.setButtonText("Reset");
@@ -39,7 +39,7 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
     filterFrequencyLabel.setColour (Label::textColourId, Colours::white);
     filterFrequencyLabel.attachToComponent (&filterFrequencySlider, true);
 
-    filterFreqAttachment = new SliderAttachment (parameters, "filterFreq", filterFrequencySlider);
+    filterFreqAttachment = new SliderAttachment (parameters, "filterCutoffFreq", filterFrequencySlider);
     filterFrequencySlider.setTextBoxStyle (Slider::NoTextBox, false, 120, 90);
     filterFrequencySlider.setPopupDisplayEnabled (true, false, this);
     filterFrequencySlider.setSkewFactorFromMidPoint (800.0);
@@ -51,10 +51,10 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
 
     filterResAttachment = new SliderAttachment (parameters, "filterRes", filterResonanceSlider);
     filterResonanceSlider.setTextBoxStyle (Slider::NoTextBox, false, 120, 90);
-    filterResonanceSlider.setPopupDisplayEnabled (true, false, this);
 
     setFocusContainer(true);
     envelopeUI.setWantsKeyboardFocus(false);
+    drawableEnvelopeUI.setWantsKeyboardFocus(false);
     midiKeyboard.setWantsKeyboardFocus(false);
 
     //Making the components visible
@@ -67,6 +67,7 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
     addAndMakeVisible(filterResonanceSlider);
     addAndMakeVisible(midiKeyboard);
     addAndMakeVisible(envelopeUI);
+    addAndMakeVisible(drawableEnvelopeUI);
 
     //Adding key listener for moving filter with left and right arrows
     this->addKeyListener(this);
@@ -76,6 +77,7 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
 OneLittleSynthesizerAudioProcessorEditor::~OneLittleSynthesizerAudioProcessorEditor()
 {
     resetParametersButton.removeListener(this);
+    setLookAndFeel (nullptr);
 }
 
 //==============================================================================
@@ -103,6 +105,19 @@ void OneLittleSynthesizerAudioProcessorEditor::resized()
     filterResonanceSlider.setBounds (100, 120, bounds.getWidth() - 100 , 20);
 
     envelopeUI.setBounds(0, 150, getWidth(), 100);
+    drawableEnvelopeUI.setBounds(0, 250, getWidth(), DRAWABLE_ENVELOPE_HEIGHT - 1);
+}
+
+//==============================================================================
+EnvelopeUI * OneLittleSynthesizerAudioProcessorEditor::getEnvelopeUI()
+{
+    return &envelopeUI;
+}
+
+//==============================================================================
+DrawableEnvelopeUI * OneLittleSynthesizerAudioProcessorEditor::getDrawableEnvelopeUI()
+{
+    return &drawableEnvelopeUI;
 }
 
 //==============================================================================
@@ -111,12 +126,18 @@ void OneLittleSynthesizerAudioProcessorEditor::buttonClicked( Button * button )
     if( button == &resetParametersButton )
     {
         processor.setParameterValue("waveShape", INIT_WAVE_SHAPE);
-        processor.setParameterValue("filterFreq", INIT_FILTER_FREQUENCY);
+        processor.setParameterValue("filterCutoffFreq", INIT_FILTER_FREQUENCY);
         processor.setParameterValue("filterRes", INIT_FILTER_RESONANCE);
         processor.setParameterValue("envAttack", INIT_ENV_ATTACK);
         processor.setParameterValue("envDecay", INIT_ENV_DECAY);
         processor.setParameterValue("envSustain", INIT_ENV_SUSTAIN);
         processor.setParameterValue("envRelease", INIT_ENV_RELEASE);
+        processor.setParameterValue("filterAttack", INIT_FILTER_ENV_ATTACK);
+        processor.setParameterValue("filterEnvAmount", INIT_FILTER_ENV_AMOUNT);
+        processor.setParameterValue("loopDrawableEnvelope", 0.0f);
+
+        DrawableEnvelope::resetValues();
+        drawableEnvelopeUI.repaint();
     }
 }
 

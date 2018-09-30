@@ -1,9 +1,9 @@
 # OneLittleSynthesizer
-This is a little synthesizer. A work in progress.
+This is a little synthesizer. A work in progress. The idea is for me to experiment with DSP concepts such as Envelopes and Oscillators in order to learn progressively and maybe come up with alternative ideas along the way. Most of the algorithms in this project could be made more efficient but as long as the VST is decently usable, I'm fine with it.
 
 # How to build
 ## JUCE
-This project is using JUCE 5.3.0. If you want to build it, you need to download it there: https://shop.juce.com/get-juce. For the existing builds to work, you will need to put the SDK content under C:/JUCE or modifying the JUCE module paths with Projucer.
+This project is using JUCE 5.3.1. If you want to build it, you need to download it there: https://shop.juce.com/get-juce. For the existing builds to work, you will need to put the SDK content under C:/JUCE or modifying the JUCE module paths with Projucer.
 
 ## VST
 This project is using VST version 2.4 (but you can set another version using the Projucer if you want). You can download their latest SDK there: https://www.steinberg.net/en/company/developers.html

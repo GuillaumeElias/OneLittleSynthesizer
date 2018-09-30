@@ -6,17 +6,19 @@
 #include "Envelope.h"
 
 //============================================================================
-Envelope::Envelope( AudioProcessorValueTreeState* processorParameters, double splRate )
-    : parameters( processorParameters )
+Envelope::Envelope( AudioProcessorValueTreeState* processorParameters, double splRate, int voiceNumber )
+    : AbstractEnvelope( voiceNumber )
+    , parameters( processorParameters )
     , sampleRate( splRate )
     , attack( INIT_ENV_ATTACK / 1000.f ) //converts milliseconds to seconds
     , decay( INIT_ENV_DECAY / 1000.f )
     , sustain( INIT_ENV_SUSTAIN )
     , release( INIT_ENV_RELEASE / 1000.f )
-    , currentPhase( OFF )
+    , decayDelta ( 1 - INIT_ENV_SUSTAIN )
     , sampleIndex( 0 )
     , currentGain( 0.f )
     , hitReleaseGain( 0.f )
+    , hitReleaseGainRatio ( 0.f )
 {
     parameters->addParameterListener("envAttack", this);
     parameters->addParameterListener("envDecay", this);
@@ -31,18 +33,6 @@ Envelope::~Envelope()
     parameters->removeParameterListener("envDecay", this);
     parameters->removeParameterListener("envSustain", this);
     parameters->removeParameterListener("envRelease", this);
-}
-
-//============================================================================
-void Envelope::addEnvelopeListener( EnvelopeListener * listener )
-{
-    listeners.add( listener );
-}
-
-//============================================================================
-void Envelope::removeEnvelipeListener( EnvelopeListener * listener )
-{
-    listeners.remove( listener );
 }
 
 //============================================================================
@@ -72,13 +62,13 @@ void Envelope::noteOff( bool allowTailOff )
 //============================================================================
 float Envelope::computeGain()
 {
-    float deltaTime = sampleIndex / sampleRate;
+    float deltaTime = sampleIndex.get() / sampleRate;
 
     switch( currentPhase )
     {
         case ATTACK:
 
-            currentGain = deltaTime / attack;
+            currentGain = deltaTime / attack.get();
 
             if( currentGain >= 1.f )
             {
@@ -89,9 +79,9 @@ float Envelope::computeGain()
 
         case DECAY:
 
-            currentGain = 1 - deltaTime * sustain / decay;
+            currentGain = 1 - deltaTime * decayDelta.get() / decay.get();
 
-            if( currentGain <= sustain )
+            if( currentGain <= sustain.get() )
             {
                 sampleIndex = 0;
                 currentPhase = SUSTAIN;
@@ -101,13 +91,13 @@ float Envelope::computeGain()
 
         case SUSTAIN:
 
-            currentGain = sustain;
+            currentGain = sustain.get();
 
             break;
 
         case RELEASE:
 
-            currentGain = hitReleaseGain - deltaTime * hitReleaseGain / release;
+            currentGain = hitReleaseGain.get() - deltaTime * hitReleaseGainRatio.get();
 
             if( currentGain <= 0.f )
             {
@@ -121,7 +111,8 @@ float Envelope::computeGain()
             currentGain = 0.f;
     }
 
-    sampleIndex++;
+    ++sampleIndex;
+    notifyProgress(deltaTime, currentGain);
 
     return currentGain;
 }
@@ -138,17 +129,9 @@ void Envelope::resetNote()
 void Envelope::triggerRelease()
 {
     hitReleaseGain = currentGain;
+    hitReleaseGainRatio = hitReleaseGain.get() / release.get();
     sampleIndex = 0;
     currentPhase = RELEASE;
-}
-
-//============================================================================
-void Envelope::notifyEndNote()
-{
-    for( auto listener : listeners.getListeners() )
-    {
-        listener->onEndNote();
-    }
 }
 
 //============================================================================
@@ -165,9 +148,14 @@ void Envelope::parameterChanged(const String& parameterID, float newValue )
     else if( parameterID == "envSustain" )
     {
         sustain = newValue;
+        decayDelta = 1 - sustain.get();
     }
     else if( parameterID == "envRelease" )
     {
         release = newValue / 1000.f;
+        if( currentPhase == RELEASE )
+        {
+            hitReleaseGainRatio = hitReleaseGain.get() / release.get();
+        }
     }
 }

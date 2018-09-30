@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <CodeBlocks_project_file>
   <FileVersion major="1" minor="6"/>
   <Project>
@@ -324,27 +323,63 @@
       <Add library="kernel32"/>
       <Add library="comctl32"/>
     </Linker>
+    <Unit filename="../../Resources/Mechanical.otf">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
+    <Unit filename="../../Source/Envelope/AbstractEnvelope.cpp">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+    </Unit>
+    <Unit filename="../../Source/Envelope/Envelope.cpp">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+    </Unit>
+    <Unit filename="../../Source/Envelope/Envelope.h">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
+    <Unit filename="../../Source/Envelope/EnvelopeUI.cpp">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+    </Unit>
+    <Unit filename="../../Source/Envelope/EnvelopeUI.h">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
+    <Unit filename="../../Source/Envelope/DrawableEnvelope.cpp">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+    </Unit>
+    <Unit filename="../../Source/Envelope/DrawableEnvelope.h">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
+    <Unit filename="../../Source/Envelope/AbstractEnvelope.h">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
+    <Unit filename="../../Source/Envelope/DrawableEnvelopeUI.cpp">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+    </Unit>
+    <Unit filename="../../Source/Envelope/DrawableEnvelopeUI.h">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
     <Unit filename="../../Source/Constants.h">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="../../Source/Envelope.cpp">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-    </Unit>
-    <Unit filename="../../Source/Envelope.h">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="../../Source/EnvelopeUI.cpp">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-    </Unit>
-    <Unit filename="../../Source/EnvelopeUI.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -385,6 +420,16 @@
       <Option target="Shared Code | Release"/>
     </Unit>
     <Unit filename="../../Source/Synth.h">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
+    <Unit filename="../../Source/PluginLookAndFeel.cpp">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+    </Unit>
+    <Unit filename="../../Source/PluginLookAndFeel.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -8553,6 +8598,16 @@
       <Option link="0"/>
     </Unit>
     <Unit filename="../../JuceLibraryCode/AppConfig.h">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
+    <Unit filename="../../JuceLibraryCode/BinaryData.cpp">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+    </Unit>
+    <Unit filename="../../JuceLibraryCode/BinaryData.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>

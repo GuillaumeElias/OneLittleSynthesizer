@@ -7,31 +7,37 @@
 #include "SynthSound.h"
 
 // =============================================================================
-SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters )
+SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters, int voiceNumber )
     : parameters( processorParameters )
     , currentSynthSound( nullptr )
     , currentAngle (0)
     , angleDelta (0)
     , level (0)
-    , filterFreq( INIT_FILTER_FREQUENCY )
-    , filterRes ( INIT_FILTER_RESONANCE )
+    , currentFilterFreq( INIT_FILTER_FREQUENCY )
+    , lastFilterFreq( -1.f )
+    , filterResParam ( INIT_FILTER_RESONANCE )
+    , filterCutoffParam( INIT_FILTER_FREQUENCY )
+    , filterEnvAmountParam( INIT_FILTER_ENV_AMOUNT )
     , osc( processorParameters )
-    , env( processorParameters, getSampleRate() )
+    , env( processorParameters, getSampleRate(), voiceNumber )
+    , drawableEnv( processorParameters, getSampleRate(), voiceNumber )
 {
     env.addEnvelopeListener(this);
 
-    parameters->addParameterListener("filterFreq", this);
+    parameters->addParameterListener("filterCutoffFreq", this);
     parameters->addParameterListener("filterRes", this);
+    parameters->addParameterListener("filterEnvAmount", this);
 
 }
 
 // =============================================================================
 SynthVoice::~SynthVoice()
 {
-    parameters->removeParameterListener("filterFreq", this);
+    parameters->removeParameterListener("filterCutoffFreq", this);
     parameters->removeParameterListener("filterRes", this);
+    parameters->removeParameterListener("filterEnvAmount", this);
 
-    env.removeEnvelipeListener(this);
+    env.removeEnvelopeListener(this);
 }
 
 // =============================================================================
@@ -60,12 +66,14 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity,
     angleDelta = TWO_PI * frequency / getSampleRate();
 
     env.noteOn();
+    drawableEnv.noteOn();
 }
 
 // =============================================================================
 void SynthVoice::stopNote (float /*velocity*/, bool allowTailOff)
 {
     env.noteOff( allowTailOff );
+    drawableEnv.noteOff( allowTailOff );
 }
 
 // =============================================================================
@@ -90,8 +98,21 @@ void SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSamp
             //calculate currentSample value from oscillator, envelope and velocity
             float currentSample = (float) ( osc.renderWave(currentAngle) * env.computeGain() * level );
 
-            //apply filter
-            currentSample = filter.processSample(currentSample);
+            //compute filter cutoff freq from drawableEnvelope gain and filterFreq parameter
+            float totalFilterFreq = filterCutoffParam + drawableEnv.computeGain() * MAX_FILTER_CUTOFF_FREQUENCY * filterEnvAmountParam;
+            if( totalFilterFreq <= 0.f )
+            {
+                currentSample = 0.f; //if filter cutoff is 0 then the note is silent
+            }
+            else
+            {
+                //set filter freq based on drawableEnvelopeGain
+                setCurrentFilterFreq( totalFilterFreq );
+
+                //apply filter
+                currentSample = filter.processSample(currentSample);
+            }
+
 
             for (int i = outputBuffer.getNumChannels(); --i >= 0;)
                 outputBuffer.addSample (i, startSample, currentSample);
@@ -105,15 +126,31 @@ void SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSamp
 }
 
 // =============================================================================
+Envelope * SynthVoice::getEnvelope()
+{
+    return &env;
+}
+
+// =============================================================================
+DrawableEnvelope * SynthVoice::getDrawableEnvelope()
+{
+    return &drawableEnv;
+}
+
+// =============================================================================
 void SynthVoice::parameterChanged(const String& parameterID, float newValue )
 {
-    if(parameterID == "filterFreq")
+    if(parameterID == "filterCutoffFreq")
     {
-        filterFreq = newValue;
+        filterCutoffParam = newValue;
     }
     else if(parameterID == "filterRes")
     {
-        filterRes = newValue;
+        filterResParam = newValue;
+    }
+    else if(parameterID == "filterEnvAmount")
+    {
+        filterEnvAmountParam = newValue;
     }
 
     if ( getSampleRate() > 0 ) //makes sure the voice has been initialized
@@ -123,16 +160,29 @@ void SynthVoice::parameterChanged(const String& parameterID, float newValue )
 }
 
 // =============================================================================
+void SynthVoice::setCurrentFilterFreq( float newFilterFreq )
+{
+    if( lastFilterFreq == newFilterFreq ) return;
+
+    lastFilterFreq = currentFilterFreq;
+    currentFilterFreq = newFilterFreq;
+
+    filter.parameters->setCutOffFrequency(getSampleRate(), currentFilterFreq, filterResParam);
+}
+
+// =============================================================================
 void SynthVoice::updateFilterCoefficients()
 {
     filter.parameters->type = dsp::StateVariableFilter::Parameters<double>::Type::lowPass;
-    filter.parameters->setCutOffFrequency(getSampleRate(), filterFreq, filterRes);
+    filter.parameters->setCutOffFrequency(getSampleRate(), currentFilterFreq, filterResParam);
 }
 
 
 // =============================================================================
-void SynthVoice::onEndNote()
+void SynthVoice::onEndNote(int /*voiceNumber*/)
 {
+    drawableEnv.noteOff(false);
+
     angleDelta = 0.0;
     currentSynthSound = nullptr;
     clearCurrentNote();

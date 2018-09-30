@@ -3,12 +3,27 @@
  * You can reuse it in accordance with GPLv3. Note that it doesn't come with any warranty.
  */
 
-#include "../JuceLibraryCode/JuceHeader.h"
 #include "EnvelopeUI.h"
+
+//==============================================================================
+EnvelopeUIUpdater::EnvelopeUIUpdater(EnvelopeUI * envUI)
+    : envelopeUI( envUI )
+{
+}
+
+//==============================================================================
+void EnvelopeUIUpdater::handleAsyncUpdate()
+{
+    if(envelopeUI->isShowing())
+    {
+        envelopeUI->repaint();
+    }
+}
 
 //==============================================================================
 EnvelopeUI::EnvelopeUI(AudioProcessorValueTreeState& processorParameters)
     : parameters( processorParameters )
+    , updater( this )
 {
     //Attack slider
     attackAttachment = new SliderAttachment (parameters, "envAttack", attackSlider);
@@ -66,26 +81,76 @@ void EnvelopeUI::paint (Graphics& g)
 //==============================================================================
 void EnvelopeUI::paintEnvelope (Graphics& g)
 {
-    static float edgeX = 220.f;
-    static float edgeY = 25.f;
-    static float height = 63.f;
-    static float sustainLength = 30.f;
+    //PAINT ENVELOPE CONTOUR
+
+    static const float edgeX = 220.f;
+    static const float edgeY = 25.f;
+    static const float height = 63.f;
+    static const float sustainLength = 30.f;
+    static const float bottomY = edgeY + height;
     float att = *parameters.getRawParameterValue("envAttack") / 30.f;
     float dec = *parameters.getRawParameterValue("envDecay") / 30.f;
     float sus = *parameters.getRawParameterValue("envSustain") * height;
     float rel = *parameters.getRawParameterValue("envRelease") / 30.f;
 
-    Point<float> startPoint (edgeX, edgeY + height);
+    Point<float> startPoint (edgeX, bottomY);
     Point<float> attackPoint(edgeX + att, edgeY);
-    Point<float> decayPoint (attackPoint.getX() + dec, edgeY + height - sus);
+    Point<float> decayPoint (attackPoint.getX() + dec, bottomY - sus);
     Point<float> sustainPoint(decayPoint.getX() + sustainLength, decayPoint.getY());
-    Point<float> releasePoint(sustainPoint.getX() + rel, edgeY + height);
+    Point<float> releasePoint(sustainPoint.getX() + rel, bottomY);
 
     g.setColour (Colours::white);
     g.drawLine( Line<float>(startPoint, attackPoint), 2.f);
     g.drawLine( Line<float>(attackPoint, decayPoint), 2.f);
     g.drawLine( Line<float>(decayPoint, sustainPoint), 2.f);
     g.drawLine( Line<float>(sustainPoint, releasePoint), 2.f);
+
+    //PAINT PROGRESS INDICATOR
+
+    for( const auto & envPair : envProgressMap )
+    {
+        EnvelopePhase curPhase = envPair.second.phase;
+        const float curDeltaTime = envPair.second.deltaTime;
+        const float curGain = envPair.second.gain;
+
+        g.setColour ( VOICES_COLOURS[ envPair.first ] );
+
+        switch( curPhase )
+        {
+            case ATTACK:
+            {
+                float posX = curDeltaTime * 33.33f; //1000 / 30
+
+                g.drawLine(edgeX + posX, bottomY, edgeX + posX, bottomY - height * curGain, 1.f);
+
+                break;
+            }
+            case DECAY:
+            {
+                float startX = edgeX + att;
+                float posX = curDeltaTime * 33.33f;
+                g.drawLine(startX + posX, bottomY, startX + posX, bottomY - height * curGain, 1.f);
+
+                break;
+            }
+
+            case SUSTAIN:
+            {
+                float startX = edgeX + att + dec;
+                g.drawLine(startX, bottomY, startX, bottomY - height * curGain, 1.f);
+                break;
+            }
+
+            case RELEASE:
+            {
+                float startX = edgeX + att + dec + sustainLength;
+                float posX = curDeltaTime * 33.33f;
+                g.drawLine(startX + posX, edgeY + height, startX + posX, bottomY - height * curGain, 1.f);
+
+                break;
+            }
+        }
+    }
 }
 
 //==============================================================================
@@ -103,3 +168,26 @@ void EnvelopeUI::parameterChanged( const String& parameterID, float newValue )
     repaint();
 }
 
+//==============================================================================
+void EnvelopeUI::onEndNote( int voiceNumber )
+{
+    if( envProgressMap.find( voiceNumber ) != envProgressMap.end() )
+    {
+        if( envProgressMap[ voiceNumber ].phase != OFF )
+        {
+            updater.triggerAsyncUpdate();
+        }
+        envProgressMap[ voiceNumber ].phase = OFF;
+        envProgressMap[ voiceNumber ].deltaTime = 0.f;
+    }
+}
+
+//==============================================================================
+void EnvelopeUI::onProgress(int voiceNumber, const EnvelopeProgress & progress)
+{
+    envProgressMap[voiceNumber] = {progress.phase, progress.deltaTime, progress.gain};
+
+    //TODO only update every 100 samples or so
+
+    updater.triggerAsyncUpdate();
+}

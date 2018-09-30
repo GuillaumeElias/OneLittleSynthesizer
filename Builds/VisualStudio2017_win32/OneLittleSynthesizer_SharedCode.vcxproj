@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <Project DefaultTargets="Build"
          ToolsVersion="15.0"
          xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
@@ -154,12 +153,16 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Envelope.cpp"/>
-    <ClCompile Include="..\..\Source\EnvelopeUI.cpp"/>
+    <ClCompile Include="..\..\Source\Envelope\AbstractEnvelope.cpp"/>
+    <ClCompile Include="..\..\Source\Envelope\Envelope.cpp"/>
+    <ClCompile Include="..\..\Source\Envelope\EnvelopeUI.cpp"/>
+    <ClCompile Include="..\..\Source\Envelope\DrawableEnvelope.cpp"/>
+    <ClCompile Include="..\..\Source\Envelope\DrawableEnvelopeUI.cpp"/>
     <ClCompile Include="..\..\Source\Oscillator.cpp"/>
     <ClCompile Include="..\..\Source\SynthSound.cpp"/>
     <ClCompile Include="..\..\Source\SynthVoice.cpp"/>
     <ClCompile Include="..\..\Source\Synth.cpp"/>
+    <ClCompile Include="..\..\Source\PluginLookAndFeel.cpp"/>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\Source\PluginEditor.cpp"/>
     <ClCompile Include="C:\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
@@ -1926,6 +1929,7 @@
     <ClCompile Include="C:\JUCE\modules\juce_video\juce_video.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_basics.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_devices.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_formats.cpp"/>
@@ -1944,13 +1948,17 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Envelope\Envelope.h"/>
+    <ClInclude Include="..\..\Source\Envelope\EnvelopeUI.h"/>
+    <ClInclude Include="..\..\Source\Envelope\DrawableEnvelope.h"/>
+    <ClInclude Include="..\..\Source\Envelope\AbstractEnvelope.h"/>
+    <ClInclude Include="..\..\Source\Envelope\DrawableEnvelopeUI.h"/>
     <ClInclude Include="..\..\Source\Constants.h"/>
-    <ClInclude Include="..\..\Source\Envelope.h"/>
-    <ClInclude Include="..\..\Source\EnvelopeUI.h"/>
     <ClInclude Include="..\..\Source\Oscillator.h"/>
     <ClInclude Include="..\..\Source\SynthSound.h"/>
     <ClInclude Include="..\..\Source\SynthVoice.h"/>
     <ClInclude Include="..\..\Source\Synth.h"/>
+    <ClInclude Include="..\..\Source\PluginLookAndFeel.h"/>
     <ClInclude Include="..\..\Source\PluginProcessor.h"/>
     <ClInclude Include="..\..\Source\PluginEditor.h"/>
     <ClInclude Include="C:\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>
@@ -2649,9 +2657,11 @@
     <ClInclude Include="C:\JUCE\modules\juce_video\playback\juce_VideoComponent.h"/>
     <ClInclude Include="C:\JUCE\modules\juce_video\juce_video.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\AppConfig.h"/>
+    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\Mechanical.otf"/>
     <None Include="C:\JUCE\modules\juce_audio_formats\codecs\flac\Flac Licence.txt"/>
     <None Include="C:\JUCE\modules\juce_audio_formats\codecs\oggvorbis\Ogg Vorbis Licence.txt"/>
     <None Include="C:\JUCE\modules\juce_graphics\image_formats\jpglib\changes to libjpeg for JUCE.txt"/>

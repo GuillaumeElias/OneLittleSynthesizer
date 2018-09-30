@@ -8,15 +8,16 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SynthSound.h"
 #include "Oscillator.h"
-#include "Envelope.h"
 #include "Constants.h"
+#include "Envelope/Envelope.h"
+#include "Envelope/DrawableEnvelope.h"
 
 #include <map>
 
 class SynthVoice : public SynthesiserVoice, private EnvelopeListener, private AudioProcessorValueTreeState::Listener
 {
 public:
-    SynthVoice( AudioProcessorValueTreeState * processorParameters );
+    SynthVoice( AudioProcessorValueTreeState * processorParameters, int voiceNumber);
     ~SynthVoice();
 
     void prepareToPlay();
@@ -35,20 +36,26 @@ public:
 
     void renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override;
 
+    Envelope * getEnvelope();
+    DrawableEnvelope * getDrawableEnvelope();
+
 private:
 
     void parameterChanged(const String& parameterID, float newValue ) override; //callback from parameter change
-    void onEndNote() override; //callback from Envelope
+    void onEndNote( int /*voiceNumber*/ ) override; //callback from Envelope
 
+    void setCurrentFilterFreq( float newFilterFreq );
     void updateFilterCoefficients();
 
     AudioProcessorValueTreeState * parameters;
     SynthSound * currentSynthSound;
 
     double currentAngle, angleDelta, level;
-    float filterFreq, filterRes;
+    float currentFilterFreq, lastFilterFreq; //filter cutoff freq at current sample
+    std::atomic<float> filterResParam, filterCutoffParam, filterEnvAmountParam;
 
     Oscillator osc;
     Envelope env;
+    DrawableEnvelope drawableEnv;
     dsp::StateVariableFilter::Filter<double> filter;
 };

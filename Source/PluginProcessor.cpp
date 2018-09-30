@@ -5,6 +5,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "Envelope/AbstractEnvelope.h"
 
 namespace
 {
@@ -30,6 +31,33 @@ namespace
     {
         return String( roundToInt(number) );
     }
+
+    //=========================================================================
+    void addVectorToTree(const std::vector<Atomic<float>> & vect, ValueTree & tree, const Identifier & id)
+    {
+        ValueTree vectorTree = tree.getOrCreateChildWithName(id, nullptr);
+        vectorTree.removeAllChildren(nullptr);
+
+        for(Atomic<float> f : vect)
+        {
+            ValueTree element(Identifier("element"));
+            element.setProperty("value", f.get(), nullptr);
+            vectorTree.appendChild(element, nullptr);
+        }
+    }
+
+    //=========================================================================
+    void iterateOnTree(const ValueTree & tree, const Identifier & subTreeId, const std::function< void(int, float) >& processElement)
+    {
+        ValueTree subTree = tree.getChildWithName( subTreeId );
+        if( subTree.isValid() )
+        {
+            for( int i=0; i < subTree.getNumChildren(); i++)
+            {
+                processElement(i, subTree.getChild(i).getProperty("value"));
+            }
+        }
+    }
 }
 
 AudioProcessor* JUCE_CALLTYPE createPluginFilter();
@@ -51,12 +79,12 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
 								  Oscillator::waveShapeToString, //value to text
                                   nullptr);
 
-    parameters.createAndAddParameter ("filterFreq",
+    parameters.createAndAddParameter ("filterCutoffFreq",
                                   "Filter Frequency",
                                   String(),
-                                  NormalisableRange<float> (0.f, 2000.0f), //0 to 2000 Hz
+                                  NormalisableRange<float> (0.f, MAX_FILTER_CUTOFF_FREQUENCY), //0 to 2000 Hz
                                   INIT_FILTER_FREQUENCY,
-                                  floatToStr,
+                                  [](float val){ return floatToStr(val) + " Hz"; },
                                   nullptr);
 
     parameters.createAndAddParameter ("filterRes",
@@ -64,7 +92,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   String(),
                                   NormalisableRange<float> (0.1f, 6.0f), //Q
                                   INIT_FILTER_RESONANCE,
-                                  floatToStr,
+                                  [](float val){ return floatToStr(val * 10); },
                                   nullptr);
 
     parameters.createAndAddParameter ("envAttack",
@@ -78,7 +106,7 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
     parameters.createAndAddParameter ("envDecay",
                                   "Envelope Decay",
                                   String(),
-                                  NormalisableRange<float> (1.f, 5000.f), //1 to 5000 ms
+                                  NormalisableRange<float> (1.f, 3000.f), //1 to 3000 ms
                                   INIT_ENV_DECAY,
                                   floatToStr,
                                   nullptr);
@@ -88,25 +116,52 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   String(),
                                   NormalisableRange<float> (0.f, 1.f), //0 -> 1
                                   INIT_ENV_SUSTAIN,
-                                  nullptr, //no need for remapping
+                                  nullptr, //no need to show the value
                                   nullptr);
 
     parameters.createAndAddParameter ("envRelease",
                                   "Envelope Sweet Release",
                                   String(),
-                                  NormalisableRange<float> (1.f, 5000.f), //1 to 5000 ms
+                                  NormalisableRange<float> (1.f, 3000.f), //1 to 3000 ms
                                   INIT_ENV_SUSTAIN,
                                   floatToStr,
                                   nullptr);
+
+    parameters.createAndAddParameter ("filterAttack",
+                                  "Filter Attack",
+                                  String(),
+                                  NormalisableRange<float> (0.f, 5000), //1 to 5000 ms
+                                  INIT_FILTER_ENV_ATTACK,
+                                  [](float val){ return floatToStr(val) + " ms"; },
+                                  nullptr);
+
+    parameters.createAndAddParameter ("filterEnvAmount",
+                                  "Filter Attack",
+                                  String(),
+                                  NormalisableRange<float> (0.f, 1.f), //0 to 1
+                                  INIT_FILTER_ENV_AMOUNT,
+                                  [](float val){ return floatToStr(val * 100) + " %"; },
+                                  nullptr);
+    parameters.createAndAddParameter("loopDrawableEnvelope",
+                                    "Loop Drawable Envelope",
+                                    "Loop",
+                                    NormalisableRange<float> (0.0f, 1.0f, 1.0f),
+                                    0.0f,
+                                    [](float value){ return value < 0.5f ? "Off" : "On"; },
+                                    nullptr, false, true, true);
 
     parameters.state = ValueTree (Identifier ("OneLittleSynthesizer"));
 
     for(int i=0; i < NUMBER_OF_VOICES; i++)
     {
-        synth.addVoice( new SynthVoice( &parameters ) );
+        synth.addVoice( new SynthVoice( &parameters, i ) );
     }
 
     synth.addSound( new SynthSound( &parameters ) );
+
+    parameters.addParameterListener("filterAttack", this);
+    parameters.addParameterListener("envRelease", this);
+    parameters.addParameterListener("loopDrawableEnvelope", this);
 }
 
 //==============================================================================
@@ -250,7 +305,19 @@ bool OneLittleSynthesizerAudioProcessor::hasEditor() const
 //==============================================================================
 AudioProcessorEditor* OneLittleSynthesizerAudioProcessor::createEditor()
 {
-    return new OneLittleSynthesizerAudioProcessorEditor (*this, parameters);
+    OneLittleSynthesizerAudioProcessorEditor * editor = new OneLittleSynthesizerAudioProcessorEditor (*this, parameters);
+
+    EnvelopeUI * envelopeUI = editor->getEnvelopeUI();
+    DrawableEnvelopeUI * drawableEnvelopeUI = editor->getDrawableEnvelopeUI();
+
+    for(int i=0; i < NUMBER_OF_VOICES; i++)
+    {
+        SynthVoice * synthVoice = dynamic_cast<SynthVoice *> ( synth.getVoice(i) );
+        synthVoice->getEnvelope()->addEnvelopeListener(envelopeUI);
+        synthVoice->getDrawableEnvelope()->addEnvelopeListener(drawableEnvelopeUI);
+    }
+
+    return editor;
 }
 
 //==============================================================================
@@ -258,6 +325,10 @@ void OneLittleSynthesizerAudioProcessor::getStateInformation (MemoryBlock& destD
 {
     // SAVE STATE
     ValueTree state = parameters.copyState(); //thread-safe yeay
+    state.setProperty("drawableEnvSustain", DrawableEnvelope::getSustainLevel(), nullptr);
+    addVectorToTree( DrawableEnvelope::getValuesAttack(), state, "drawableEnvAttackValues");
+    addVectorToTree( DrawableEnvelope::getValuesRelease(), state, "drawableEnvReleaseValues");
+
     std::unique_ptr<XmlElement> xml (state.createXml());
     copyXmlToBinary (*xml, destData);
 }
@@ -265,10 +336,29 @@ void OneLittleSynthesizerAudioProcessor::getStateInformation (MemoryBlock& destD
 //==============================================================================
 void OneLittleSynthesizerAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    //RESTORE STATE
+    // RESTORE STATE
     std::unique_ptr<XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
     if (xmlState.get() != nullptr && xmlState->hasTagName (parameters.state.getType()))
-            parameters.replaceState (ValueTree::fromXml (*xmlState)); //thread-safe ye
+    {
+        ValueTree state = ValueTree::fromXml (*xmlState);
+        parameters.replaceState (state); //thread-safe ye
+
+        if(state.hasProperty("drawableEnvSustain"))
+        {
+            DrawableEnvelope::setSustainLevel( state.getProperty("drawableEnvSustain" ) );
+        }
+
+        iterateOnTree( state ,"drawableEnvAttackValues", [](int i, float value)
+        {
+            DrawableEnvelope::setValueAttack(i, value );
+        });
+
+        iterateOnTree( state ,"drawableEnvReleaseValues", [](int i, float value)
+        {
+            DrawableEnvelope::setValueRelease(i, value );
+        });
+
+    }
 }
 
 //==============================================================================
@@ -287,4 +377,27 @@ void OneLittleSynthesizerAudioProcessor::setParameterValue(String paramName, flo
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new OneLittleSynthesizerAudioProcessor();
+}
+
+//============================================================================
+void OneLittleSynthesizerAudioProcessor::parameterChanged(const String& parameterID, float newValue )
+{
+    if( parameterID == "filterAttack" )
+    {
+        DrawableEnvelope::setAttackTime( newValue / 1000.f );
+    }
+    else if( parameterID == "envRelease" )
+    {
+        DrawableEnvelope::setReleaseTime( newValue / 1000.f );
+    }
+    else if( parameterID == "loopDrawableEnvelope" )
+    {
+        DrawableEnvelope::setLoop( newValue > 0.5f );
+    }
+
+    //repaint editor if available
+    if( auto editor = dynamic_cast<OneLittleSynthesizerAudioProcessorEditor *> ( getActiveEditor() ) )
+    {
+        editor->getDrawableEnvelopeUI()->repaint();
+    }
 }
