@@ -7,17 +7,18 @@
 #include "Constants.h"
 
 //==================================================================================
-Oscillator::Oscillator(AudioProcessorValueTreeState * processorParameters)
+Oscillator::Oscillator(AudioProcessorValueTreeState * processorParameters, const String & waveShapeParamName)
  : parameters( processorParameters )
  , currentWaveShape( SINE )
+ , waveShapeParameterName( waveShapeParamName )
 {
-    parameters->addParameterListener("waveShape", this);
+    parameters->addParameterListener( waveShapeParamName, this);
 }
 
 //==================================================================================
 Oscillator::~Oscillator()
 {
-    parameters->removeParameterListener("waveShape", this);
+    parameters->removeParameterListener(waveShapeParameterName, this);
 }
 
 //==================================================================================
@@ -90,7 +91,7 @@ float Oscillator::renderSquare(double currentPhase)
 void Oscillator::parameterChanged(const String& parameterID, float newValue )
 {
     int waveShapeInt = static_cast<int>(newValue);
-    if(parameterID == "waveShape")
+    if(parameterID == waveShapeParameterName)
     {
         switch (waveShapeInt)
         {

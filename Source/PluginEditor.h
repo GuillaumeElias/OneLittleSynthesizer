@@ -48,10 +48,20 @@ private:
 
     TextButton resetParametersButton;
 
-    //WAVE SHAPE
-	WaveShapeSlider waveShapeSlider;
-    Label waveShapeLabel;
-    ScopedPointer<SliderAttachment> waveShapeAttachment;
+    //WAVE SHAPE OSC 1
+	WaveShapeSlider waveShapeSlider1;
+    Label waveShapeLabel1;
+    ScopedPointer<SliderAttachment> waveShapeAttachment1;
+
+    //WAVE SHAPE OSC 2
+    WaveShapeSlider waveShapeSlider2;
+    Label waveShapeLabel2;
+    ScopedPointer<SliderAttachment> waveShapeAttachment2;
+
+    //WAVE MIX
+    Slider waveMixSlider;
+    Label waveMixLabel;
+    ScopedPointer<SliderAttachment> waveMixAttachment;
 
     //FILTER FREQ
     Slider filterFrequencySlider;

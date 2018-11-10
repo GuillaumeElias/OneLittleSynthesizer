@@ -71,12 +71,28 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
 {
     Logger::setCurrentLogger(&logger);
 
-    parameters.createAndAddParameter ("waveShape",       // parameter ID
-                                  "Wave shape",       // parameter name
+    parameters.createAndAddParameter ("waveShape1",       // parameter ID
+                                  "Wave shape osc 1",       // parameter name
                                   String(),     // parameter label (suffix)
                                   NormalisableRange<float> (1.f, 4.f, 1.f),    // range
                                   INIT_WAVE_SHAPE,         // default value
 								  Oscillator::waveShapeToString, //value to text
+                                  nullptr);
+
+    parameters.createAndAddParameter("waveShape2", 
+                                  "Wave shape osc 2", 
+                                  String(),
+                                  NormalisableRange<float>(1.f, 4.f, 1.f),
+                                  INIT_WAVE_SHAPE,
+                                  Oscillator::waveShapeToString,
+                                  nullptr);
+
+    parameters.createAndAddParameter("waveMix",
+                                  "Wave mix",
+                                  String(),
+                                  NormalisableRange<float>(0.f, 1.f), //0 -> 1
+                                  0.5f,
+                                  [](float val) { return floatToStr(val * 100) + " %"; },
                                   nullptr);
 
     parameters.createAndAddParameter ("filterCutoffFreq",

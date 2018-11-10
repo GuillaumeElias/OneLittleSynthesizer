@@ -11,7 +11,7 @@ class Oscillator : private AudioProcessorValueTreeState::Listener
     enum WaveShape { SINE, SAW, TRIANGLE, SQUARE, SILENCE};
 
     public:
-        Oscillator(AudioProcessorValueTreeState * processorParameters);
+        Oscillator(AudioProcessorValueTreeState * processorParameters, const String & waveShapeParameterName);
         ~Oscillator();
 
         float renderWave( double currentPhase );
@@ -28,5 +28,6 @@ class Oscillator : private AudioProcessorValueTreeState::Listener
 
         AudioProcessorValueTreeState * parameters;
         WaveShape currentWaveShape;
+        String waveShapeParameterName;
 
 };

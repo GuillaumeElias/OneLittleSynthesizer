@@ -53,8 +53,9 @@ private:
     double currentAngle, angleDelta, level;
     float currentFilterFreq, lastFilterFreq; //filter cutoff freq at current sample
     std::atomic<float> filterResParam, filterCutoffParam, filterEnvAmountParam;
+    std::atomic<float> waveMix;
 
-    Oscillator osc;
+    Oscillator osc1, osc2;
     Envelope env;
     DrawableEnvelope drawableEnv;
     dsp::StateVariableFilter::Filter<double> filter;

@@ -417,6 +417,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\FMEngine.cpp">
+      <Filter>OneLittleSynthesizer\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Envelope\AbstractEnvelope.cpp">
       <Filter>OneLittleSynthesizer\Source\Envelope</Filter>
     </ClCompile>
@@ -2399,6 +2402,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\FMEngine.h">
+      <Filter>OneLittleSynthesizer\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Envelope\Envelope.h">
       <Filter>OneLittleSynthesizer\Source\Envelope</Filter>
     </ClInclude>

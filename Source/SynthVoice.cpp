@@ -18,7 +18,8 @@ SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters, int 
     , filterResParam ( INIT_FILTER_RESONANCE )
     , filterCutoffParam( INIT_FILTER_FREQUENCY )
     , filterEnvAmountParam( INIT_FILTER_ENV_AMOUNT )
-    , osc( processorParameters )
+    , osc1( processorParameters, "waveShape1" )
+    , osc2( processorParameters, "waveShape2" )
     , env( processorParameters, getSampleRate(), voiceNumber )
     , drawableEnv( processorParameters, getSampleRate(), voiceNumber )
 {
@@ -27,6 +28,7 @@ SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters, int 
     parameters->addParameterListener("filterCutoffFreq", this);
     parameters->addParameterListener("filterRes", this);
     parameters->addParameterListener("filterEnvAmount", this);
+    parameters->addParameterListener("waveMix", this);
 
 }
 
@@ -36,6 +38,7 @@ SynthVoice::~SynthVoice()
     parameters->removeParameterListener("filterCutoffFreq", this);
     parameters->removeParameterListener("filterRes", this);
     parameters->removeParameterListener("filterEnvAmount", this);
+    parameters->removeParameterListener("waveMix", this);
 
     env.removeEnvelopeListener(this);
 }
@@ -96,7 +99,11 @@ void SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSamp
         while (--numSamples >= 0)
         {
             //calculate currentSample value from oscillator, envelope and velocity
-            float currentSample = (float) ( osc.renderWave(currentAngle) * env.computeGain() * level );
+
+            float osc1Sample = osc1.renderWave(currentAngle) * waveMix;
+            float osc2Sample = osc2.renderWave(currentAngle) * (1 - waveMix);
+
+            float currentSample = (float) ( ( osc1Sample + osc2Sample ) * env.computeGain() * level );
 
             //compute filter cutoff freq from drawableEnvelope gain and filterFreq parameter
             float totalFilterFreq = filterCutoffParam + drawableEnv.computeGain() * MAX_FILTER_CUTOFF_FREQUENCY * filterEnvAmountParam;
@@ -151,6 +158,11 @@ void SynthVoice::parameterChanged(const String& parameterID, float newValue )
     else if(parameterID == "filterEnvAmount")
     {
         filterEnvAmountParam = newValue;
+    }
+    else if (parameterID == "waveMix")
+    {
+        waveMix = newValue;
+        return;
     }
 
     if ( getSampleRate() > 0 ) //makes sure the voice has been initialized

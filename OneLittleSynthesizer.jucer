@@ -17,6 +17,8 @@
       <FILE id="UP6Ljn" name="Mechanical.otf" compile="0" resource="1" file="Resources/Mechanical.otf"/>
     </GROUP>
     <GROUP id="{22BBBFC2-8997-3B2D-3CCC-6D49C1B2253C}" name="Source">
+      <FILE id="v9BNeZ" name="FMEngine.cpp" compile="1" resource="0" file="Source/FMEngine.cpp"/>
+      <FILE id="xZXbaA" name="FMEngine.h" compile="0" resource="0" file="Source/FMEngine.h"/>
       <GROUP id="{6B9A2E4A-B0A1-D35B-D764-03D9DBEB0285}" name="Envelope">
         <FILE id="l6egg7" name="AbstractEnvelope.cpp" compile="1" resource="0"
               file="Source/Envelope/AbstractEnvelope.cpp"/>

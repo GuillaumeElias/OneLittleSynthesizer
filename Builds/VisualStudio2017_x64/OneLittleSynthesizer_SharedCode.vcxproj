@@ -147,6 +147,7 @@
     <Lib/>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\FMEngine.cpp"/>
     <ClCompile Include="..\..\Source\Envelope\AbstractEnvelope.cpp"/>
     <ClCompile Include="..\..\Source\Envelope\Envelope.cpp"/>
     <ClCompile Include="..\..\Source\Envelope\EnvelopeUI.cpp"/>
@@ -1942,6 +1943,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\FMEngine.h"/>
     <ClInclude Include="..\..\Source\Envelope\Envelope.h"/>
     <ClInclude Include="..\..\Source\Envelope\EnvelopeUI.h"/>
     <ClInclude Include="..\..\Source\Envelope\DrawableEnvelope.h"/>
