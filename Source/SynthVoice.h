@@ -50,7 +50,8 @@ private:
     AudioProcessorValueTreeState * parameters;
     SynthSound * currentSynthSound;
 
-    double currentAngle, angleDelta, level;
+    double level;
+    float osc2FrequencyOffsetRatio;
     float currentFilterFreq, lastFilterFreq; //filter cutoff freq at current sample
     std::atomic<float> filterResParam, filterCutoffParam, filterEnvAmountParam;
     std::atomic<float> waveMix;

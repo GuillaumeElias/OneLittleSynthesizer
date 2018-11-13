@@ -10,14 +10,14 @@
 SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters, int voiceNumber )
     : parameters( processorParameters )
     , currentSynthSound( nullptr )
-    , currentAngle (0)
-    , angleDelta (0)
     , level (0)
+    , osc2FrequencyOffsetRatio( 1.0f )
     , currentFilterFreq( INIT_FILTER_FREQUENCY )
     , lastFilterFreq( -1.f )
     , filterResParam ( INIT_FILTER_RESONANCE )
     , filterCutoffParam( INIT_FILTER_FREQUENCY )
     , filterEnvAmountParam( INIT_FILTER_ENV_AMOUNT )
+    , waveMix( 0.5f )
     , osc1( processorParameters, "waveShape1" )
     , osc2( processorParameters, "waveShape2" )
     , env( processorParameters, getSampleRate(), voiceNumber )
@@ -29,6 +29,7 @@ SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters, int 
     parameters->addParameterListener("filterRes", this);
     parameters->addParameterListener("filterEnvAmount", this);
     parameters->addParameterListener("waveMix", this);
+    parameters->addParameterListener("osc2FreqOffset", this);
 
 }
 
@@ -39,6 +40,7 @@ SynthVoice::~SynthVoice()
     parameters->removeParameterListener("filterRes", this);
     parameters->removeParameterListener("filterEnvAmount", this);
     parameters->removeParameterListener("waveMix", this);
+    parameters->removeParameterListener("osc2FreqOffset", this);
 
     env.removeEnvelopeListener(this);
 }
@@ -61,12 +63,11 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity,
                 int /*currentPitchWheelPosition*/)
 {
     currentSynthSound = dynamic_cast<SynthSound *> ( sound );
-    currentAngle = 0.0;
     level = velocity * 0.15;
 
     double frequency = MidiMessage::getMidiNoteInHertz (midiNoteNumber);
-
-    angleDelta = TWO_PI * frequency / getSampleRate();
+    osc1.setFrequency(frequency);
+    osc2.setFrequency(frequency * osc2FrequencyOffsetRatio);
 
     env.noteOn();
     drawableEnv.noteOn();
@@ -94,14 +95,15 @@ void SynthVoice::controllerMoved (int /*controllerNumber*/, int /*newValue*/)
 // =============================================================================
 void SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples)
 {
-    if (angleDelta != 0.0)
+    if (level > 0.0)
     {
         while (--numSamples >= 0)
         {
+
             //calculate currentSample value from oscillator, envelope and velocity
 
-            float osc1Sample = osc1.renderWave(currentAngle) * waveMix;
-            float osc2Sample = osc2.renderWave(currentAngle) * (1 - waveMix);
+            float osc1Sample = osc1.renderWave() * waveMix;
+            float osc2Sample = osc2.renderWave() * (1 - waveMix);
 
             float currentSample = (float) ( ( osc1Sample + osc2Sample ) * env.computeGain() * level );
 
@@ -124,8 +126,7 @@ void SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSamp
             for (int i = outputBuffer.getNumChannels(); --i >= 0;)
                 outputBuffer.addSample (i, startSample, currentSample);
 
-            currentAngle += angleDelta;
-            currentAngle = std::fmod(currentAngle, TWO_PI);
+            
 
             ++startSample;
         }
@@ -164,6 +165,12 @@ void SynthVoice::parameterChanged(const String& parameterID, float newValue )
         waveMix = newValue;
         return;
     }
+    else if (parameterID == "osc2FreqOffset")
+    {
+        osc2FrequencyOffsetRatio = newValue;
+        osc2.setFrequency(osc1.getFrequency() * osc2FrequencyOffsetRatio);
+        return;
+    }
 
     if ( getSampleRate() > 0 ) //makes sure the voice has been initialized
     {
@@ -195,7 +202,7 @@ void SynthVoice::onEndNote(int /*voiceNumber*/)
 {
     drawableEnv.noteOff(false);
 
-    angleDelta = 0.0;
+    level = 0.0;
     currentSynthSound = nullptr;
     clearCurrentNote();
 }

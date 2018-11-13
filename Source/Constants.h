@@ -12,6 +12,7 @@ const double TWO_PI = 2.0 * PI;
 
 const float INIT_FILTER_FREQUENCY = 400.0f; //Hz
 const float MAX_FILTER_CUTOFF_FREQUENCY = 1500.0f;
+const float MAX_OSC2_FREQUENCY_OFFSET_RATIO = 4.0f; //ratio
 const float INIT_FILTER_RESONANCE = 0.59f;
 const float INIT_WAVE_SHAPE = 1.f;
 const float INIT_ENV_ATTACK = 100.f; //milliseconds

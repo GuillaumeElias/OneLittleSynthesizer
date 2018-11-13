@@ -16,7 +16,7 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
     , envelopeUI(params)
     , drawableEnvelopeUI(params)
 {
-    setSize (370, 490);
+    setSize (370, 530);
 
     setLookAndFeel(&lookAndFeel);
 
@@ -42,6 +42,15 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
     waveShapeAttachment2 = new SliderAttachment(parameters, "waveShape2", waveShapeSlider2);
     waveShapeSlider2.setTextBoxStyle(Slider::NoTextBox, false, 120, 90);
     waveShapeSlider2.setPopupDisplayEnabled(true, false, this);
+
+    //Osc 2 Frequency offset
+    osc2FreqOffsetLabel.setText("Osc2 freq offset", dontSendNotification);
+    osc2FreqOffsetLabel.setColour(Label::textColourId, Colours::white);
+    osc2FreqOffsetLabel.attachToComponent(&osc2FreqOffsetSlider, true);
+
+    osc2FreqOffsetAttachment = new SliderAttachment(parameters, "osc2FreqOffset", osc2FreqOffsetSlider);
+    osc2FreqOffsetSlider.setTextBoxStyle(Slider::NoTextBox, false, 120, 90);
+    osc2FreqOffsetSlider.setPopupDisplayEnabled(true, false, this);
 
     //Wave mix
     waveMixLabel.setText("Wave mix", dontSendNotification);
@@ -81,6 +90,8 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
     addAndMakeVisible(waveShapeSlider1);
     addAndMakeVisible(waveShapeLabel2);
     addAndMakeVisible(waveShapeSlider2);
+    addAndMakeVisible(osc2FreqOffsetLabel);
+    addAndMakeVisible(osc2FreqOffsetSlider);
     addAndMakeVisible(waveMixLabel);
     addAndMakeVisible(waveMixSlider);
     addAndMakeVisible(filterFrequencyLabel);
@@ -123,17 +134,20 @@ void OneLittleSynthesizerAudioProcessorEditor::resized()
     waveShapeLabel2.setBounds(0, 80, bounds.getWidth(), 20);
     waveShapeSlider2.setBounds(100, 80, bounds.getWidth() - 100, 20);
 
-    waveMixLabel.setBounds(0, 120, bounds.getWidth(), 20);
-    waveMixSlider.setBounds(100, 120, bounds.getWidth() - 100, 20);
+    osc2FreqOffsetLabel.setBounds(0, 120, bounds.getWidth(), 20);
+    osc2FreqOffsetSlider.setBounds(100, 120, bounds.getWidth() - 100, 20);
 
-    filterFrequencyLabel.setBounds(0, 160, bounds.getWidth(), 20);
-    filterFrequencySlider.setBounds (100, 160, bounds.getWidth() - 100 , 20);
+    waveMixLabel.setBounds(0, 160, bounds.getWidth(), 20);
+    waveMixSlider.setBounds(100, 160, bounds.getWidth() - 100, 20);
 
-    filterResonanceLabel.setBounds(0, 200, bounds.getWidth(), 20);
-    filterResonanceSlider.setBounds (100, 200, bounds.getWidth() - 100 , 20);
+    filterFrequencyLabel.setBounds(0, 200, bounds.getWidth(), 20);
+    filterFrequencySlider.setBounds (100, 200, bounds.getWidth() - 100 , 20);
 
-    envelopeUI.setBounds(0, 230, getWidth(), 100);
-    drawableEnvelopeUI.setBounds(0, 320, getWidth(), DRAWABLE_ENVELOPE_HEIGHT - 1);
+    filterResonanceLabel.setBounds(0, 240, bounds.getWidth(), 20);
+    filterResonanceSlider.setBounds (100, 240, bounds.getWidth() - 100 , 20);
+
+    envelopeUI.setBounds(0, 270, getWidth(), 100);
+    drawableEnvelopeUI.setBounds(0, 360, getWidth(), DRAWABLE_ENVELOPE_HEIGHT - 1);
 }
 
 //==============================================================================
@@ -155,6 +169,8 @@ void OneLittleSynthesizerAudioProcessorEditor::buttonClicked( Button * button )
     {
         processor.setParameterValue("waveShape1", INIT_WAVE_SHAPE);
         processor.setParameterValue("waveShape2", INIT_WAVE_SHAPE);
+        processor.setParameterValue("osc2FreqOffset", 1.0f);
+        processor.setParameterValue("osc2Mod1Amount", 0.0f);
         processor.setParameterValue("waveMix", 0.5f);
         processor.setParameterValue("filterCutoffFreq", INIT_FILTER_FREQUENCY);
         processor.setParameterValue("filterRes", INIT_FILTER_RESONANCE);

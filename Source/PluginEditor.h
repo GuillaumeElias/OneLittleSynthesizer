@@ -58,6 +58,11 @@ private:
     Label waveShapeLabel2;
     ScopedPointer<SliderAttachment> waveShapeAttachment2;
 
+    //OSC 2 FREQ OFFSET
+    Slider osc2FreqOffsetSlider;
+    Label osc2FreqOffsetLabel;
+    ScopedPointer<SliderAttachment> osc2FreqOffsetAttachment;
+
     //WAVE MIX
     Slider waveMixSlider;
     Label waveMixLabel;

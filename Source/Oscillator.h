@@ -14,20 +14,29 @@ class Oscillator : private AudioProcessorValueTreeState::Listener
         Oscillator(AudioProcessorValueTreeState * processorParameters, const String & waveShapeParameterName);
         ~Oscillator();
 
-        float renderWave( double currentPhase );
+        float renderWave();
+        void setFrequency(double frequency);
+        double getFrequency() const;
 
 		static String waveShapeToString(float waveShapeFloat);
+        static void setSampleRate(double sampleRate);
 
     private:
-        float renderSine(double currentPhase);
-        float renderSaw(double currentPhase);
-        float renderTriangle(double currentPhase);
-        float renderSquare(double currentPhase);
+
+        float renderSine();
+        float renderSaw();
+        float renderTriangle();
+        float renderSquare();
+        void currentAngleTick();
 
         void parameterChanged(const String& parameterID, float newValue ) override;
 
+        static double sample_rate;
+
         AudioProcessorValueTreeState * parameters;
         WaveShape currentWaveShape;
+        double currentAngle, angleDelta, frequency;
+
         String waveShapeParameterName;
 
 };

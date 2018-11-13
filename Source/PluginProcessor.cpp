@@ -7,6 +7,9 @@
 #include "PluginEditor.h"
 #include "Envelope/AbstractEnvelope.h"
 
+#include <iomanip>
+#include <sstream>
+
 namespace
 {
     //=========================================================================
@@ -25,11 +28,19 @@ namespace
             }
         }
     }
+    
+    //=========================================================================
+    String floatToStrWithDecimals(float number, int precision)
+    {
+        std::stringstream stream;
+        stream << std::fixed << std::setprecision(precision) << number;
+        return stream.str();
+    }
 
     //=========================================================================
     String floatToStr(float number)
     {
-        return String( roundToInt(number) );
+        return floatToStrWithDecimals(number, 0);
     }
 
     //=========================================================================
@@ -85,6 +96,14 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   NormalisableRange<float>(1.f, 4.f, 1.f),
                                   INIT_WAVE_SHAPE,
                                   Oscillator::waveShapeToString,
+                                  nullptr);
+
+    parameters.createAndAddParameter("osc2FreqOffset",
+                                  "Osc 2 frequency offset",
+                                  String(),
+                                  NormalisableRange<float>(0.0f, MAX_OSC2_FREQUENCY_OFFSET_RATIO), //-10 to + 10
+                                  1.0f,
+                                  [](float val) { return floatToStrWithDecimals(val, 3); },
                                   nullptr);
 
     parameters.createAndAddParameter("waveMix",
