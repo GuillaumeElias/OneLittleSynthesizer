@@ -10,24 +10,25 @@
 SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters, int voiceNumber )
     : parameters( processorParameters )
     , currentSynthSound( nullptr )
-    , currentAngle (0)
-    , angleDelta (0)
     , level (0)
+    , osc2FrequencyOffsetRatio( 1.0f )
     , currentFilterFreq( INIT_FILTER_FREQUENCY )
     , lastFilterFreq( -1.f )
     , filterResParam ( INIT_FILTER_RESONANCE )
     , filterCutoffParam( INIT_FILTER_FREQUENCY )
     , filterEnvAmountParam( INIT_FILTER_ENV_AMOUNT )
-    , osc( processorParameters )
+    , osc1( processorParameters, "waveShape1" )
+    , osc2( processorParameters, "waveShape2" )
     , env( processorParameters, getSampleRate(), voiceNumber )
     , drawableEnv( processorParameters, getSampleRate(), voiceNumber )
+    , fmEngine( &osc1, &osc2, getSampleRate())
 {
     env.addEnvelopeListener(this);
 
     parameters->addParameterListener("filterCutoffFreq", this);
     parameters->addParameterListener("filterRes", this);
     parameters->addParameterListener("filterEnvAmount", this);
-
+    parameters->addParameterListener("osc2FreqOffset", this);
 }
 
 // =============================================================================
@@ -36,6 +37,7 @@ SynthVoice::~SynthVoice()
     parameters->removeParameterListener("filterCutoffFreq", this);
     parameters->removeParameterListener("filterRes", this);
     parameters->removeParameterListener("filterEnvAmount", this);
+    parameters->removeParameterListener("osc2FreqOffset", this);
 
     env.removeEnvelopeListener(this);
 }
@@ -58,12 +60,11 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity,
                 int /*currentPitchWheelPosition*/)
 {
     currentSynthSound = dynamic_cast<SynthSound *> ( sound );
-    currentAngle = 0.0;
     level = velocity * 0.15;
 
     double frequency = MidiMessage::getMidiNoteInHertz (midiNoteNumber);
-
-    angleDelta = TWO_PI * frequency / getSampleRate();
+    osc1.setFrequency(frequency);
+    osc2.setFrequency(frequency * osc2FrequencyOffsetRatio);
 
     env.noteOn();
     drawableEnv.noteOn();
@@ -91,12 +92,11 @@ void SynthVoice::controllerMoved (int /*controllerNumber*/, int /*newValue*/)
 // =============================================================================
 void SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples)
 {
-    if (angleDelta != 0.0)
+    if (level > 0.0)
     {
         while (--numSamples >= 0)
         {
-            //calculate currentSample value from oscillator, envelope and velocity
-            float currentSample = (float) ( osc.renderWave(currentAngle) * env.computeGain() * level );
+            float currentSample = (float) ( fmEngine.renderAndMixWaves() * env.computeGain() * level );
 
             //compute filter cutoff freq from drawableEnvelope gain and filterFreq parameter
             float totalFilterFreq = filterCutoffParam + drawableEnv.computeGain() * MAX_FILTER_CUTOFF_FREQUENCY * filterEnvAmountParam;
@@ -113,12 +113,8 @@ void SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSamp
                 currentSample = filter.processSample(currentSample);
             }
 
-
             for (int i = outputBuffer.getNumChannels(); --i >= 0;)
                 outputBuffer.addSample (i, startSample, currentSample);
-
-            currentAngle += angleDelta;
-            currentAngle = std::fmod(currentAngle, TWO_PI);
 
             ++startSample;
         }
@@ -152,6 +148,12 @@ void SynthVoice::parameterChanged(const String& parameterID, float newValue )
     {
         filterEnvAmountParam = newValue;
     }
+    else if (parameterID == "osc2FreqOffset")
+    {
+        osc2FrequencyOffsetRatio = newValue;
+        osc2.setFrequency( osc1.getFrequency() * osc2FrequencyOffsetRatio);
+        return;
+    }
 
     if ( getSampleRate() > 0 ) //makes sure the voice has been initialized
     {
@@ -183,7 +185,7 @@ void SynthVoice::onEndNote(int /*voiceNumber*/)
 {
     drawableEnv.noteOff(false);
 
-    angleDelta = 0.0;
+    level = 0.0;
     currentSynthSound = nullptr;
     clearCurrentNote();
 }

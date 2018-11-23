@@ -16,9 +16,12 @@ void Synth::prepareToPlay( float sampleRate )
 {
     setCurrentPlaybackSampleRate(sampleRate);
 
+    Oscillator::setSampleRate(sampleRate);
+
     for(int i=0; i < getNumVoices(); ++i)
     {
         SynthVoice * synthVoice = dynamic_cast<SynthVoice * > (getVoice(i));
         synthVoice->prepareToPlay();
     }
+
 }

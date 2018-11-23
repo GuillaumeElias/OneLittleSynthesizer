@@ -4,38 +4,60 @@
  */
 
 #include "Oscillator.h"
-#include "Constants.h"
+#include "../Constants.h"
+
+double Oscillator::sample_rate (0);
 
 //==================================================================================
-Oscillator::Oscillator(AudioProcessorValueTreeState * processorParameters)
+Oscillator::Oscillator(AudioProcessorValueTreeState * processorParameters, const String & waveShapeParamName)
  : parameters( processorParameters )
  , currentWaveShape( SINE )
+ , waveShapeParameterName( waveShapeParamName )
+ , currentAngle(0)
+ , angleDelta(0)
+ , frequency(0.0)
 {
-    parameters->addParameterListener("waveShape", this);
+    parameters->addParameterListener( waveShapeParamName, this);
 }
 
 //==================================================================================
 Oscillator::~Oscillator()
 {
-    parameters->removeParameterListener("waveShape", this);
+    parameters->removeParameterListener(waveShapeParameterName, this);
 }
 
 //==================================================================================
-float Oscillator::renderWave(double currentPhase)
+float Oscillator::renderWave(float angleInc)
 {
+    currentAngle += angleInc;
+    currentAngleTick();
+
     switch( currentWaveShape )
     {
     case SINE:
-        return renderSine(currentPhase);
+        return renderSine();
     case SAW:
-        return renderSaw(currentPhase);
+        return renderSaw();
     case TRIANGLE:
-        return renderTriangle(currentPhase);
+        return renderTriangle();
     case SQUARE:
-        return renderSquare(currentPhase);
+        return renderSquare();
     }
 
     return 0.f;
+}
+
+//==================================================================================
+void Oscillator::setFrequency(double frequency)
+{
+    this->frequency = frequency;
+    angleDelta = TWO_PI * frequency / sample_rate;
+}
+
+//==================================================================================
+double Oscillator::getFrequency() const
+{
+    return frequency;
 }
 
 //==================================================================================
@@ -56,28 +78,28 @@ String Oscillator::waveShapeToString(float waveShapeFloat)
 }
 
 //==================================================================================
-float Oscillator::renderSine(double currentPhase)
+float Oscillator::renderSine()
 {
-    return sin( currentPhase );
+    return sin(currentAngle);
 }
 
 //==================================================================================
-float Oscillator::renderSaw(double currentPhase)
+float Oscillator::renderSaw()
 {
-    return 1.0f - (2.0f * currentPhase / TWO_PI);
+    return 1.0f - (2.0f * currentAngle / TWO_PI);
 }
 
 //==================================================================================
-float Oscillator::renderTriangle(double currentPhase)
+float Oscillator::renderTriangle()
 {
-    double value = -1.0 + (2.0 * currentPhase / TWO_PI);
+    double value = -1.0 + (2.0 * currentAngle / TWO_PI);
     return 2.0 * ( fabs(value) - 0.5 );
 }
 
 //==================================================================================
-float Oscillator::renderSquare(double currentPhase)
+float Oscillator::renderSquare()
 {
-    if (currentPhase <= PI){
+    if (currentAngle <= PI){
         return 1.0f;
     }
     else
@@ -87,10 +109,17 @@ float Oscillator::renderSquare(double currentPhase)
 }
 
 //==================================================================================
+void Oscillator::currentAngleTick()
+{
+    currentAngle += angleDelta;
+    currentAngle = std::fmod(currentAngle, TWO_PI);
+}
+
+//==================================================================================
 void Oscillator::parameterChanged(const String& parameterID, float newValue )
 {
     int waveShapeInt = static_cast<int>(newValue);
-    if(parameterID == "waveShape")
+    if(parameterID == waveShapeParameterName)
     {
         switch (waveShapeInt)
         {
@@ -108,4 +137,10 @@ void Oscillator::parameterChanged(const String& parameterID, float newValue )
             break;
         }
     }
+}
+
+//==================================================================================
+void Oscillator::setSampleRate(double sampleRate)
+{
+    sample_rate = sampleRate;
 }
