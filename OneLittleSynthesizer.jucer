@@ -17,8 +17,16 @@
       <FILE id="UP6Ljn" name="Mechanical.otf" compile="0" resource="1" file="Resources/Mechanical.otf"/>
     </GROUP>
     <GROUP id="{22BBBFC2-8997-3B2D-3CCC-6D49C1B2253C}" name="Source">
-      <FILE id="v9BNeZ" name="FMEngine.cpp" compile="1" resource="0" file="Source/FMEngine.cpp"/>
-      <FILE id="xZXbaA" name="FMEngine.h" compile="0" resource="0" file="Source/FMEngine.h"/>
+      <GROUP id="{25A1D3CA-D175-CFBD-F1B6-C21902E75A40}" name="Oscillator">
+        <FILE id="VGSy7R" name="OscillatorBlep.cpp" compile="1" resource="0"
+              file="Source/OscillatorBlep.cpp"/>
+        <FILE id="avGpdU" name="OscillatorBlep.h" compile="0" resource="0"
+              file="Source/OscillatorBlep.h"/>
+        <FILE id="v9BNeZ" name="FMEngine.cpp" compile="1" resource="0" file="Source/FMEngine.cpp"/>
+        <FILE id="xZXbaA" name="FMEngine.h" compile="0" resource="0" file="Source/FMEngine.h"/>
+        <FILE id="W9dV3S" name="Oscillator.cpp" compile="1" resource="0" file="Source/Oscillator.cpp"/>
+        <FILE id="FppX5k" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator.h"/>
+      </GROUP>
       <GROUP id="{6B9A2E4A-B0A1-D35B-D764-03D9DBEB0285}" name="Envelope">
         <FILE id="l6egg7" name="AbstractEnvelope.cpp" compile="1" resource="0"
               file="Source/Envelope/AbstractEnvelope.cpp"/>
@@ -38,8 +46,6 @@
               file="Source/Envelope/DrawableEnvelopeUI.h"/>
       </GROUP>
       <FILE id="IDaPh3" name="Constants.h" compile="0" resource="0" file="Source/Constants.h"/>
-      <FILE id="W9dV3S" name="Oscillator.cpp" compile="1" resource="0" file="Source/Oscillator.cpp"/>
-      <FILE id="FppX5k" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator.h"/>
       <FILE id="Y3qkZ7" name="SynthSound.cpp" compile="1" resource="0" file="Source/SynthSound.cpp"/>
       <FILE id="hUVoLa" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
       <FILE id="luDU4C" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>

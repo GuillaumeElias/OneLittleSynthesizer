@@ -6,6 +6,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "Envelope/AbstractEnvelope.h"
+#include "Oscillator/FMEngine.h"
 
 #include <iomanip>
 #include <sstream>
@@ -99,11 +100,19 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   nullptr);
 
     parameters.createAndAddParameter("osc2FreqOffset",
-                                  "Osc 2 frequency offset",
+                                  "Osc 2 freq offset ratio",
                                   String(),
-                                  NormalisableRange<float>(0.0f, MAX_OSC2_FREQUENCY_OFFSET_RATIO), //-10 to + 10
+                                  NormalisableRange<float>(0.0f, MAX_OSC2_FREQUENCY_OFFSET_RATIO),
                                   1.0f,
-                                  [](float val) { return floatToStrWithDecimals(val, 3); },
+                                  [](float val) { return floatToStrWithDecimals(val, 4); },
+                                  nullptr);
+
+    parameters.createAndAddParameter("osc2Mod1Amount",
+                                  "Osc 2 mod 1 amount",
+                                  String(),
+                                  NormalisableRange<float>(0.0f, 3.0f), //0 -> 1
+                                  1.0f,
+                                  [](float val) { return floatToStr(val * 100) + " %"; },
                                   nullptr);
 
     parameters.createAndAddParameter("waveMix",
@@ -197,12 +206,19 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
     parameters.addParameterListener("filterAttack", this);
     parameters.addParameterListener("envRelease", this);
     parameters.addParameterListener("loopDrawableEnvelope", this);
+    parameters.addParameterListener("waveMix", this);
+    parameters.addParameterListener("osc2Mod1Amount", this);
 }
 
 //==============================================================================
 OneLittleSynthesizerAudioProcessor::~OneLittleSynthesizerAudioProcessor()
 {
 	Logger::setCurrentLogger(nullptr);
+    parameters.removeParameterListener("filterAttack", this);
+    parameters.removeParameterListener("envRelease", this);
+    parameters.removeParameterListener("loopDrawableEnvelope", this);
+    parameters.removeParameterListener("waveMix", this);
+    parameters.removeParameterListener("osc2Mod1Amount", this);
 }
 
 //==============================================================================
@@ -428,6 +444,14 @@ void OneLittleSynthesizerAudioProcessor::parameterChanged(const String& paramete
     else if( parameterID == "loopDrawableEnvelope" )
     {
         DrawableEnvelope::setLoop( newValue > 0.5f );
+    }
+    else if (parameterID == "waveMix")
+    {
+        FMEngine::setWaveMix(newValue);
+    }
+    else if (parameterID == "osc2Mod1Amount")
+    {
+        FMEngine::setOsc2Mod1Amount(newValue);
     }
 
     //repaint editor if available

@@ -4,7 +4,7 @@
  */
 
 #include "Oscillator.h"
-#include "Constants.h"
+#include "../Constants.h"
 
 double Oscillator::sample_rate (0);
 
@@ -27,8 +27,9 @@ Oscillator::~Oscillator()
 }
 
 //==================================================================================
-float Oscillator::renderWave()
+float Oscillator::renderWave(float angleInc)
 {
+    currentAngle += angleInc;
     currentAngleTick();
 
     switch( currentWaveShape )

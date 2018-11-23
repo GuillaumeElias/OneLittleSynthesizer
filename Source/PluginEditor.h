@@ -58,10 +58,15 @@ private:
     Label waveShapeLabel2;
     ScopedPointer<SliderAttachment> waveShapeAttachment2;
 
-    //OSC 2 FREQ OFFSET
+    //OSC 2 FREQ OFFSET RATIO (frequency offset of oscillator 2 compated to oscillator 1, in ratio)
     Slider osc2FreqOffsetSlider;
     Label osc2FreqOffsetLabel;
     ScopedPointer<SliderAttachment> osc2FreqOffsetAttachment;
+
+    //OSC 2 MOD 1 AMOUNT (amount of FM modulation from osc 2 to osc 1)
+    Slider osc2Mod1Slider;
+    Label osc2Mod1Label;
+    ScopedPointer<SliderAttachment> osc2Mod1Attachment;
 
     //WAVE MIX
     Slider waveMixSlider;

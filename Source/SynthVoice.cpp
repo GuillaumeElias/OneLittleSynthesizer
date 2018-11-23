@@ -17,20 +17,18 @@ SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters, int 
     , filterResParam ( INIT_FILTER_RESONANCE )
     , filterCutoffParam( INIT_FILTER_FREQUENCY )
     , filterEnvAmountParam( INIT_FILTER_ENV_AMOUNT )
-    , waveMix( 0.5f )
     , osc1( processorParameters, "waveShape1" )
     , osc2( processorParameters, "waveShape2" )
     , env( processorParameters, getSampleRate(), voiceNumber )
     , drawableEnv( processorParameters, getSampleRate(), voiceNumber )
+    , fmEngine( &osc1, &osc2, getSampleRate())
 {
     env.addEnvelopeListener(this);
 
     parameters->addParameterListener("filterCutoffFreq", this);
     parameters->addParameterListener("filterRes", this);
     parameters->addParameterListener("filterEnvAmount", this);
-    parameters->addParameterListener("waveMix", this);
     parameters->addParameterListener("osc2FreqOffset", this);
-
 }
 
 // =============================================================================
@@ -39,7 +37,6 @@ SynthVoice::~SynthVoice()
     parameters->removeParameterListener("filterCutoffFreq", this);
     parameters->removeParameterListener("filterRes", this);
     parameters->removeParameterListener("filterEnvAmount", this);
-    parameters->removeParameterListener("waveMix", this);
     parameters->removeParameterListener("osc2FreqOffset", this);
 
     env.removeEnvelopeListener(this);
@@ -99,13 +96,7 @@ void SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSamp
     {
         while (--numSamples >= 0)
         {
-
-            //calculate currentSample value from oscillator, envelope and velocity
-
-            float osc1Sample = osc1.renderWave() * waveMix;
-            float osc2Sample = osc2.renderWave() * (1 - waveMix);
-
-            float currentSample = (float) ( ( osc1Sample + osc2Sample ) * env.computeGain() * level );
+            float currentSample = (float) ( fmEngine.renderAndMixWaves() * env.computeGain() * level );
 
             //compute filter cutoff freq from drawableEnvelope gain and filterFreq parameter
             float totalFilterFreq = filterCutoffParam + drawableEnv.computeGain() * MAX_FILTER_CUTOFF_FREQUENCY * filterEnvAmountParam;
@@ -122,11 +113,8 @@ void SynthVoice::renderNextBlock (AudioSampleBuffer& outputBuffer, int startSamp
                 currentSample = filter.processSample(currentSample);
             }
 
-
             for (int i = outputBuffer.getNumChannels(); --i >= 0;)
                 outputBuffer.addSample (i, startSample, currentSample);
-
-            
 
             ++startSample;
         }
@@ -160,15 +148,10 @@ void SynthVoice::parameterChanged(const String& parameterID, float newValue )
     {
         filterEnvAmountParam = newValue;
     }
-    else if (parameterID == "waveMix")
-    {
-        waveMix = newValue;
-        return;
-    }
     else if (parameterID == "osc2FreqOffset")
     {
         osc2FrequencyOffsetRatio = newValue;
-        osc2.setFrequency(osc1.getFrequency() * osc2FrequencyOffsetRatio);
+        osc2.setFrequency( osc1.getFrequency() * osc2FrequencyOffsetRatio);
         return;
     }
 

@@ -8,18 +8,23 @@
 
 class Oscillator : private AudioProcessorValueTreeState::Listener
 {
-    enum WaveShape { SINE, SAW, TRIANGLE, SQUARE, SILENCE};
-
     public:
+        enum WaveShape { SINE, SAW, TRIANGLE, SQUARE, SILENCE };
+
         Oscillator(AudioProcessorValueTreeState * processorParameters, const String & waveShapeParameterName);
         ~Oscillator();
 
-        float renderWave();
+        virtual float renderWave(float angleInc = 0); //renders the currentSample based on internal currentAngle + additional angleInc (0 by default)
         void setFrequency(double frequency);
         double getFrequency() const;
 
 		static String waveShapeToString(float waveShapeFloat);
         static void setSampleRate(double sampleRate);
+
+
+    protected:
+        WaveShape currentWaveShape;
+        double currentAngle, angleDelta, frequency;
 
     private:
 
@@ -34,8 +39,6 @@ class Oscillator : private AudioProcessorValueTreeState::Listener
         static double sample_rate;
 
         AudioProcessorValueTreeState * parameters;
-        WaveShape currentWaveShape;
-        double currentAngle, angleDelta, frequency;
 
         String waveShapeParameterName;
 

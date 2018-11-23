@@ -78,7 +78,7 @@ void DrawableEnvelopeUI::paint(Graphics & g)
     //labels
     Rectangle<int> bounds (getLocalBounds());
     g.drawFittedText ("Filter env amt", bounds.removeFromLeft(75), Justification::topLeft, 1);
-    g.drawFittedText ("Attack time", bounds.removeFromLeft(245), Justification::topLeft, 1);
+    g.drawFittedText ("Attack time", bounds.removeFromLeft(315), Justification::topLeft, 1);
     g.drawFittedText ("Loop", bounds.withTop(3), Justification::topLeft, 1);
 
     //PAINT ENVELOPE CONTOUR
@@ -161,7 +161,7 @@ void DrawableEnvelopeUI::resized()
 {
     envAmountSlider.setBounds(20, 18, 20, 72);
     attackSlider.setBounds(86, 18, 20, 72);
-    loopButton.setBounds(350, 0, 14, 14);
+    loopButton.setBounds(420, 0, 14, 14);
 }
 
 //=================================================================

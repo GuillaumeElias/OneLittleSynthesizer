@@ -12,7 +12,7 @@ const double TWO_PI = 2.0 * PI;
 
 const float INIT_FILTER_FREQUENCY = 400.0f; //Hz
 const float MAX_FILTER_CUTOFF_FREQUENCY = 1500.0f;
-const float MAX_OSC2_FREQUENCY_OFFSET_RATIO = 4.0f; //ratio
+const float MAX_OSC2_FREQUENCY_OFFSET_RATIO = 3.0f; //ratio
 const float INIT_FILTER_RESONANCE = 0.59f;
 const float INIT_WAVE_SHAPE = 1.f;
 const float INIT_ENV_ATTACK = 100.f; //milliseconds
@@ -26,7 +26,7 @@ const int NUMBER_OF_VOICES = 16;
 const float INIT_FILTER_ENV_ATTACK = 400.f; //milliseconds
 const float INIT_FILTER_ENV_AMOUNT = 0.5f; //0 to 1
 const int DRAWABLE_ENVELOPE_NB_VALUES = 16;
-const int DRAWABLE_ENVELOPE_BAR_WIDTH = 6;
+const int DRAWABLE_ENVELOPE_BAR_WIDTH = 8;
 const int DRAWABLE_ENVELOPE_SUSTAIN_WIDTH = 50;
 const float DRAWABLE_ENVELOPE_INIT_VALUES = 0.5f;
 const int DRAWABLE_ENVELOPE_HEIGHT = 100;

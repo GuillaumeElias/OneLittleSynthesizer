@@ -7,7 +7,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SynthSound.h"
-#include "Oscillator.h"
+#include "Oscillator/OscillatorBlep.h"
+#include "Oscillator/FMEngine.h"
 #include "Constants.h"
 #include "Envelope/Envelope.h"
 #include "Envelope/DrawableEnvelope.h"
@@ -54,9 +55,9 @@ private:
     float osc2FrequencyOffsetRatio;
     float currentFilterFreq, lastFilterFreq; //filter cutoff freq at current sample
     std::atomic<float> filterResParam, filterCutoffParam, filterEnvAmountParam;
-    std::atomic<float> waveMix;
 
-    Oscillator osc1, osc2;
+    OscillatorBlep osc1, osc2;
+    FMEngine fmEngine;
     Envelope env;
     DrawableEnvelope drawableEnv;
     dsp::StateVariableFilter::Filter<double> filter;

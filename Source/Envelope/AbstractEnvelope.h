@@ -26,8 +26,8 @@ struct EnvelopeProgress
 class EnvelopeListener
 {
 public:
-    virtual void onEndNote( int voiceNb ) {};
-    virtual void onProgress( int voiceNb, const EnvelopeProgress & progress ) {};
+    virtual void onEndNote( int ) {};
+    virtual void onProgress( int, const EnvelopeProgress &) {};
 };
 
 //==================================================================================
