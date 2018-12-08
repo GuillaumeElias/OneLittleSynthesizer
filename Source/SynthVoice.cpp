@@ -11,6 +11,7 @@ SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters, int 
     : parameters( processorParameters )
     , currentSynthSound( nullptr )
     , level (0)
+    , midiNoteShift(0)
     , osc2FrequencyOffsetRatio( 1.0f )
     , currentFilterFreq( INIT_FILTER_FREQUENCY )
     , lastFilterFreq( -1.f )
@@ -29,6 +30,7 @@ SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters, int 
     parameters->addParameterListener("filterRes", this);
     parameters->addParameterListener("filterEnvAmount", this);
     parameters->addParameterListener("osc2FreqOffset", this);
+    parameters->addParameterListener("octaveShift", this);
 }
 
 // =============================================================================
@@ -38,6 +40,7 @@ SynthVoice::~SynthVoice()
     parameters->removeParameterListener("filterRes", this);
     parameters->removeParameterListener("filterEnvAmount", this);
     parameters->removeParameterListener("osc2FreqOffset", this);
+    parameters->removeParameterListener("octaveShift", this);
 
     env.removeEnvelopeListener(this);
 }
@@ -62,7 +65,7 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity,
     currentSynthSound = dynamic_cast<SynthSound *> ( sound );
     level = velocity * 0.15;
 
-    double frequency = MidiMessage::getMidiNoteInHertz (midiNoteNumber);
+    double frequency = MidiMessage::getMidiNoteInHertz (midiNoteNumber + midiNoteShift);
     osc1.setFrequency(frequency);
     osc2.setFrequency(frequency * osc2FrequencyOffsetRatio);
 
@@ -152,6 +155,11 @@ void SynthVoice::parameterChanged(const String& parameterID, float newValue )
     {
         osc2FrequencyOffsetRatio = newValue;
         osc2.setFrequency( osc1.getFrequency() * osc2FrequencyOffsetRatio);
+        return;
+    }
+    else if (parameterID == "octaveShift")
+    {
+        midiNoteShift = newValue * 12;
         return;
     }
 

@@ -39,12 +39,14 @@ float OscillatorBlep::polyBlep(float t)
 {
     float dt = angleDelta / TWO_PI;
     // 0 <= t < 1
-    if (t < dt) {
+    if (t < dt)
+    {
         t /= dt;
         return t + t - t * t - 1.0f;
     }
     // -1 < t < 0
-    else if (t > 1.0f - dt) {
+    else if (t > 1.0f - dt)
+    {
         t = (t - 1.0f) / dt;
         return t * t + t + t + 1.0f;
     }

@@ -53,6 +53,7 @@ private:
 
     double level;
     float osc2FrequencyOffsetRatio;
+    int midiNoteShift;
     float currentFilterFreq, lastFilterFreq; //filter cutoff freq at current sample
     std::atomic<float> filterResParam, filterCutoffParam, filterEnvAmountParam;
 

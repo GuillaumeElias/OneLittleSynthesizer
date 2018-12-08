@@ -6,12 +6,31 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "PluginProcessor.h"
 
-class OctaveShifterUI : public Component
+class OctaveShifterUI : public Component, private Button::Listener, private AudioProcessorValueTreeState::Listener
 {
 public:
-    OctaveShifterUI(AudioProcessorValueTreeState& processorParameters);
+    OctaveShifterUI(OneLittleSynthesizerAudioProcessor& p, AudioProcessorValueTreeState& processorParameters);
+    ~OctaveShifterUI();
 
     void paint(Graphics&) override;
+
+    void resized() override;
+
+private:
+    void parameterChanged(const String& parameterID, float newValue ) override;
+    void buttonClicked(Button * button);
+    void refreshButtonColours();
+
+    OneLittleSynthesizerAudioProcessor& processor;
+    AudioProcessorValueTreeState & parameters;
+
+    int currentOctaveShift;
+    Colour plusButtonInitColour;
+    Colour minusButtonInitColour;
+
+    TextButton plusButton;
+    TextButton minusButton;
 };
 
