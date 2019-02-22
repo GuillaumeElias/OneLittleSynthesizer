@@ -27,24 +27,8 @@ namespace
 }
 
 //=================================================================
-DrawableEnvelopeUIUpdater::DrawableEnvelopeUIUpdater(DrawableEnvelopeUI * envUI)
-    : envelopeUI( envUI )
-{
-}
-
-//=================================================================
-void DrawableEnvelopeUIUpdater::handleAsyncUpdate()
-{
-    if(envelopeUI->isShowing())
-    {
-        envelopeUI->repaint();
-    }
-}
-
-//=================================================================
 DrawableEnvelopeUI::DrawableEnvelopeUI(AudioProcessorValueTreeState& processorParameters)
     : height( DRAWABLE_ENVELOPE_HEIGHT )
-    , updater( this )
     , parameters( processorParameters )
     , lastMouseDragIndex( -1 )
     , lastMouseDragValue( -1 )
@@ -132,28 +116,6 @@ void DrawableEnvelopeUI::paint(Graphics & g)
         }
     }
 
-}
-
-//==============================================================================
-void DrawableEnvelopeUI::onEndNote( int voiceNumber )
-{
-    if( envProgressMap.find( voiceNumber ) != envProgressMap.end() )
-    {
-        if( envProgressMap[ voiceNumber ].phase != OFF )
-        {
-            updater.triggerAsyncUpdate();
-        }
-        envProgressMap[ voiceNumber ].phase = OFF;
-        envProgressMap[ voiceNumber ].deltaTime = 0.f;
-    }
-}
-
-//==============================================================================
-void DrawableEnvelopeUI::onProgress(int voiceNumber, const EnvelopeProgress & progress)
-{
-    envProgressMap[voiceNumber] = {progress.phase, progress.deltaTime, progress.gain};
-
-    updater.triggerAsyncUpdate();
 }
 
 //=================================================================

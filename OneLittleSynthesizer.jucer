@@ -32,6 +32,10 @@
         <FILE id="FppX5k" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator/Oscillator.h"/>
       </GROUP>
       <GROUP id="{6B9A2E4A-B0A1-D35B-D764-03D9DBEB0285}" name="Envelope">
+        <FILE id="GKUike" name="AbstractEnvelopeUI.cpp" compile="1" resource="0"
+              file="Source/Envelope/AbstractEnvelopeUI.cpp"/>
+        <FILE id="qolN1y" name="AbstractEnvelopeUI.h" compile="0" resource="0"
+              file="Source/Envelope/AbstractEnvelopeUI.h"/>
         <FILE id="l6egg7" name="AbstractEnvelope.cpp" compile="1" resource="0"
               file="Source/Envelope/AbstractEnvelope.cpp"/>
         <FILE id="NlmWO7" name="Envelope.cpp" compile="1" resource="0" file="Source/Envelope/Envelope.cpp"/>

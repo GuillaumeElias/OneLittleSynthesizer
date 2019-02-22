@@ -151,6 +151,7 @@
     <ClCompile Include="..\..\Source\Oscillator\OscillatorBlep.cpp"/>
     <ClCompile Include="..\..\Source\Oscillator\FMEngine.cpp"/>
     <ClCompile Include="..\..\Source\Oscillator\Oscillator.cpp"/>
+    <ClCompile Include="..\..\Source\Envelope\AbstractEnvelopeUI.cpp"/>
     <ClCompile Include="..\..\Source\Envelope\AbstractEnvelope.cpp"/>
     <ClCompile Include="..\..\Source\Envelope\Envelope.cpp"/>
     <ClCompile Include="..\..\Source\Envelope\EnvelopeUI.cpp"/>
@@ -1949,6 +1950,7 @@
     <ClInclude Include="..\..\Source\Oscillator\OscillatorBlep.h"/>
     <ClInclude Include="..\..\Source\Oscillator\FMEngine.h"/>
     <ClInclude Include="..\..\Source\Oscillator\Oscillator.h"/>
+    <ClInclude Include="..\..\Source\Envelope\AbstractEnvelopeUI.h"/>
     <ClInclude Include="..\..\Source\Envelope\Envelope.h"/>
     <ClInclude Include="..\..\Source\Envelope\EnvelopeUI.h"/>
     <ClInclude Include="..\..\Source\Envelope\DrawableEnvelope.h"/>

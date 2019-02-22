@@ -432,6 +432,9 @@
     <ClCompile Include="..\..\Source\Oscillator\Oscillator.cpp">
       <Filter>OneLittleSynthesizer\Source\Oscillator</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Envelope\AbstractEnvelopeUI.cpp">
+      <Filter>OneLittleSynthesizer\Source\Envelope</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Envelope\AbstractEnvelope.cpp">
       <Filter>OneLittleSynthesizer\Source\Envelope</Filter>
     </ClCompile>
@@ -2422,6 +2425,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Oscillator\Oscillator.h">
       <Filter>OneLittleSynthesizer\Source\Oscillator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Envelope\AbstractEnvelopeUI.h">
+      <Filter>OneLittleSynthesizer\Source\Envelope</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Envelope\Envelope.h">
       <Filter>OneLittleSynthesizer\Source\Envelope</Filter>
