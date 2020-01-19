@@ -1,5 +1,7 @@
 # OneLittleSynthesizer
-This is a little synthesizer. A work in progress. The idea is for me to experiment with DSP concepts such as Envelopes and Oscillators in order to learn progressively and maybe come up with alternative ideas along the way. Most of the algorithms in this project could be made more efficient but as long as the VST is decently usable, I'm fine with it.
+This is my first attempt at making a synthesizer with the JUCE framework. The idea was to make a beginner-friendly synth with 2 oscillators (with cross-modulation capacity), 1 low-pass filter, 1 ADSR envelope as well as another hand-drawable envelope for controlling the filter cutoff. I wanted the user to be able to see the states of the notes he's playing within the envelope.
+
+![You can see the three different notes being played](https://raw.githubusercontent.com/GuillaumeElias/OneLittleSynthesizer/master/OneLittleSynthesizer-screenshot.png)
 
 # How to build
 ## JUCE
@@ -19,6 +21,12 @@ Existing builds are Windows-only at the moment :
 - **Builds/VisualStudio2017_x64/OneLittleSynthesizer.sln**: 64 bit build for VisualStudio 2017.
 
 If you're not on Windows and/or want to build the project on another platform, just open *OneLittleSynthesizer.jucer* with Projucer and add a new exporter to fit your environement.
+
+# Potential improvements:
+- Improve CPU-usage efficiency
+- Set OSC 2 frequency ratio to a scale that makes harmonic-sense (and that can snap by steps)
+- VST3 export
+- Presets
 
 # License
 This project is under GPLv3 license. See LICENSE file.
