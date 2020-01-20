@@ -4,7 +4,7 @@ This is my first attempt at making a synthesizer with the JUCE framework. The id
 ![You can see the three different notes being played](https://raw.githubusercontent.com/GuillaumeElias/OneLittleSynthesizer/master/OneLittleSynthesizer-screenshot.png)
 
 # Binaries
-Unfortunately I don't have the permission to distribute VST2 plugins so you will have to either build it yourself or send me a mail [mail](mailto:ipl.guillaume.elias@gmail.com?subject=[GitHub]OneLittleSynthesizer) to get the plugin in an executable form.
+Unfortunately I don't have the permission to distribute VST2 plugins so you will have to either build it yourself or send me a [mail](mailto:ipl.guillaume.elias@gmail.com?subject=[GitHub]OneLittleSynthesizer) to get the plugin in an executable form.
 
 # How to build
 ## JUCE
