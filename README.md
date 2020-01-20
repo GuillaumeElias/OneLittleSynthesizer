@@ -3,9 +3,12 @@ This is my first attempt at making a synthesizer with the JUCE framework. The id
 
 ![You can see the three different notes being played](https://raw.githubusercontent.com/GuillaumeElias/OneLittleSynthesizer/master/OneLittleSynthesizer-screenshot.png)
 
+# Binaries
+Unfortunately I don't have the permission to distribute VST2 plugins so you will have to either build it yourself or send me a mail [mail](mailto:ipl.guillaume.elias@gmail.com?subject=[GitHub]OneLittleSynthesizer) to get the plugin in an executable form.
+
 # How to build
 ## JUCE
-This project is using JUCE 5.3.1. If you want to build it, you need to download it there: https://shop.juce.com/get-juce. For the existing builds to work, you will need to put the SDK content under C:/JUCE or modifying the JUCE module paths with Projucer.
+This project is using JUCE 5.3.1. If you want to build it, you need to download it [here](https://github.com/WeAreROLI/JUCE/releases/tag/5.3.1). For the existing builds to work, you will need to put the SDK content under C:/JUCE or modifying the JUCE module paths with Projucer.
 
 ## VST
 This project is using VST version 2.4 (but you can set another version using the Projucer if you want). You can download their latest SDK there: https://www.steinberg.net/en/company/developers.html
