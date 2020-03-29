@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <CodeBlocks_project_file>
   <FileVersion major="1" minor="6"/>
   <Project>
@@ -28,6 +29,7 @@
           <Add option="-DJucePlugin_Build_RTAS=0"/>
           <Add option="-DJucePlugin_Build_AAX=0"/>
           <Add option="-DJucePlugin_Build_Standalone=1"/>
+          <Add option="-DJucePlugin_Build_Unity=0"/>
           <Add option="-DJUCE_SHARED_CODE=1"/>
           <Add option="-m32"/>
           <Add option="-O0"/>
@@ -35,6 +37,7 @@
           <Add option="-mstackrealign"/>
           <Add option="-g"/>
           <Add directory="."/>
+          <Add directory="C:/JUCE/modules/juce_audio_processors/format_types/VST3_SDK"/>
           <Add directory="../../JuceLibraryCode"/>
           <Add directory="C:/JUCE/modules"/>
         </Compiler>
@@ -78,17 +81,19 @@
           <Add option="-DJucePlugin_Build_RTAS=0"/>
           <Add option="-DJucePlugin_Build_AAX=0"/>
           <Add option="-DJucePlugin_Build_Standalone=0"/>
+          <Add option="-DJucePlugin_Build_Unity=0"/>
           <Add option="-m32"/>
           <Add option="-O0"/>
           <Add option="-std=c++14"/>
           <Add option="-mstackrealign"/>
           <Add option="-g"/>
           <Add directory="."/>
+          <Add directory="C:/JUCE/modules/juce_audio_processors/format_types/VST3_SDK"/>
           <Add directory="../../JuceLibraryCode"/>
           <Add directory="C:/JUCE/modules"/>
         </Compiler>
         <Linker>
-          <Add option="bin/Debug/OneLittleSynthesizer.lib"/>
+          <Add option="&quot;bin/Debug/OneLittleSynthesizer.lib&quot;"/>
           <Add option="-m32"/>
           <Add library="comdlg32"/>
           <Add library="imm32"/>
@@ -103,7 +108,7 @@
           <Add library="winmm"/>
           <Add library="ws2_32"/>
           <Add library="wsock32"/>
-          <Add directory="bin/Debug"/>
+          <Add directory="&quot;bin/Debug&quot;"/>
         </Linker>
       </Target>
       <Target title="Standalone Plugin | Debug">
@@ -129,17 +134,19 @@
           <Add option="-DJucePlugin_Build_RTAS=0"/>
           <Add option="-DJucePlugin_Build_AAX=0"/>
           <Add option="-DJucePlugin_Build_Standalone=1"/>
+          <Add option="-DJucePlugin_Build_Unity=0"/>
           <Add option="-m32"/>
           <Add option="-O0"/>
           <Add option="-std=c++14"/>
           <Add option="-mstackrealign"/>
           <Add option="-g"/>
           <Add directory="."/>
+          <Add directory="C:/JUCE/modules/juce_audio_processors/format_types/VST3_SDK"/>
           <Add directory="../../JuceLibraryCode"/>
           <Add directory="C:/JUCE/modules"/>
         </Compiler>
         <Linker>
-          <Add option="bin/Debug/OneLittleSynthesizer.lib"/>
+          <Add option="&quot;bin/Debug/OneLittleSynthesizer.lib&quot;"/>
           <Add option="-m32"/>
           <Add library="comdlg32"/>
           <Add library="imm32"/>
@@ -154,7 +161,7 @@
           <Add library="winmm"/>
           <Add library="ws2_32"/>
           <Add library="wsock32"/>
-          <Add directory="bin/Debug"/>
+          <Add directory="&quot;bin/Debug&quot;"/>
         </Linker>
       </Target>
       <Target title="Shared Code | Release">
@@ -178,12 +185,14 @@
           <Add option="-DJucePlugin_Build_RTAS=0"/>
           <Add option="-DJucePlugin_Build_AAX=0"/>
           <Add option="-DJucePlugin_Build_Standalone=1"/>
+          <Add option="-DJucePlugin_Build_Unity=0"/>
           <Add option="-DJUCE_SHARED_CODE=1"/>
           <Add option="-m32"/>
           <Add option="-O3"/>
           <Add option="-std=c++14"/>
           <Add option="-mstackrealign"/>
           <Add directory="."/>
+          <Add directory="C:/JUCE/modules/juce_audio_processors/format_types/VST3_SDK"/>
           <Add directory="../../JuceLibraryCode"/>
           <Add directory="C:/JUCE/modules"/>
         </Compiler>
@@ -227,16 +236,18 @@
           <Add option="-DJucePlugin_Build_RTAS=0"/>
           <Add option="-DJucePlugin_Build_AAX=0"/>
           <Add option="-DJucePlugin_Build_Standalone=0"/>
+          <Add option="-DJucePlugin_Build_Unity=0"/>
           <Add option="-m32"/>
           <Add option="-O3"/>
           <Add option="-std=c++14"/>
           <Add option="-mstackrealign"/>
           <Add directory="."/>
+          <Add directory="C:/JUCE/modules/juce_audio_processors/format_types/VST3_SDK"/>
           <Add directory="../../JuceLibraryCode"/>
           <Add directory="C:/JUCE/modules"/>
         </Compiler>
         <Linker>
-          <Add option="bin/Release/OneLittleSynthesizer.lib"/>
+          <Add option="&quot;bin/Release/OneLittleSynthesizer.lib&quot;"/>
           <Add option="-m32"/>
           <Add option="-s"/>
           <Add library="comdlg32"/>
@@ -252,7 +263,7 @@
           <Add library="winmm"/>
           <Add library="ws2_32"/>
           <Add library="wsock32"/>
-          <Add directory="bin/Release"/>
+          <Add directory="&quot;bin/Release&quot;"/>
         </Linker>
       </Target>
       <Target title="Standalone Plugin | Release">
@@ -277,16 +288,18 @@
           <Add option="-DJucePlugin_Build_RTAS=0"/>
           <Add option="-DJucePlugin_Build_AAX=0"/>
           <Add option="-DJucePlugin_Build_Standalone=1"/>
+          <Add option="-DJucePlugin_Build_Unity=0"/>
           <Add option="-m32"/>
           <Add option="-O3"/>
           <Add option="-std=c++14"/>
           <Add option="-mstackrealign"/>
           <Add directory="."/>
+          <Add directory="C:/JUCE/modules/juce_audio_processors/format_types/VST3_SDK"/>
           <Add directory="../../JuceLibraryCode"/>
           <Add directory="C:/JUCE/modules"/>
         </Compiler>
         <Linker>
-          <Add option="bin/Release/OneLittleSynthesizer.lib"/>
+          <Add option="&quot;bin/Release/OneLittleSynthesizer.lib&quot;"/>
           <Add option="-m32"/>
           <Add option="-s"/>
           <Add library="comdlg32"/>
@@ -302,7 +315,7 @@
           <Add library="winmm"/>
           <Add library="ws2_32"/>
           <Add library="wsock32"/>
-          <Add directory="bin/Release"/>
+          <Add directory="&quot;bin/Release&quot;"/>
         </Linker>
       </Target>
     </Build>
@@ -915,7 +928,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_audio_basics/juce_audio_basics.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_audio_basics/juce_audio_basics.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -1035,6 +1048,12 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
+    <Unit filename="C:/JUCE/modules/juce_audio_devices/native/juce_linux_Bela.cpp">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
     <Unit filename="C:/JUCE/modules/juce_audio_devices/native/juce_linux_JackAudio.cpp">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
@@ -1125,7 +1144,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_audio_devices/juce_audio_devices.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_audio_devices/juce_audio_devices.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -2067,7 +2086,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_audio_formats/juce_audio_formats.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_audio_formats/juce_audio_formats.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -2655,7 +2674,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_audio_plugin_client/juce_audio_plugin_client.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -2710,6 +2729,12 @@
       <Option link="0"/>
     </Unit>
     <Unit filename="C:/JUCE/modules/juce_audio_processors/format_types/juce_LADSPAPluginFormat.h">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
+    <Unit filename="C:/JUCE/modules/juce_audio_processors/format_types/juce_LegacyAudioParameter.cpp">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -2949,7 +2974,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_audio_processors/juce_audio_processors.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_audio_processors/juce_audio_processors.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -3153,7 +3178,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_audio_utils/juce_audio_utils.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_audio_utils/juce_audio_utils.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -4551,7 +4576,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_core/juce_core.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_core/juce_core.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -4641,7 +4666,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_cryptography/juce_cryptography.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_cryptography/juce_cryptography.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -4755,7 +4780,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_data_structures/juce_data_structures.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_data_structures/juce_data_structures.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -5067,7 +5092,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_dsp/juce_dsp.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_dsp/juce_dsp.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -5331,7 +5356,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_events/juce_events.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_events/juce_events.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -6321,7 +6346,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_graphics/juce_graphics.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_graphics/juce_graphics.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -7659,6 +7684,18 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
+    <Unit filename="C:/JUCE/modules/juce_gui_basics/properties/juce_MultiChoicePropertyComponent.cpp">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
+    <Unit filename="C:/JUCE/modules/juce_gui_basics/properties/juce_MultiChoicePropertyComponent.h">
+      <Option target="Shared Code | Debug"/>
+      <Option target="Shared Code | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
     <Unit filename="C:/JUCE/modules/juce_gui_basics/properties/juce_PropertyComponent.cpp">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
@@ -7995,7 +8032,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_gui_basics/juce_gui_basics.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_gui_basics/juce_gui_basics.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -8361,7 +8398,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_gui_extra/juce_gui_extra.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_gui_extra/juce_gui_extra.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -8559,79 +8596,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="C:/JUCE/modules/juce_opengl/juce_opengl.h">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="C:/JUCE/modules/juce_video/capture/juce_CameraDevice.cpp">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="C:/JUCE/modules/juce_video/capture/juce_CameraDevice.h">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="C:/JUCE/modules/juce_video/native/juce_android_CameraDevice.h">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="C:/JUCE/modules/juce_video/native/juce_mac_CameraDevice.h">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="C:/JUCE/modules/juce_video/native/juce_mac_Video.h">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="C:/JUCE/modules/juce_video/native/juce_win32_CameraDevice.h">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="C:/JUCE/modules/juce_video/native/juce_win32_Video.h">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="C:/JUCE/modules/juce_video/playback/juce_VideoComponent.cpp">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="C:/JUCE/modules/juce_video/playback/juce_VideoComponent.h">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="C:/JUCE/modules/juce_video/juce_video.cpp">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="C:/JUCE/modules/juce_video/juce_video.mm">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-      <Option compile="0"/>
-      <Option link="0"/>
-    </Unit>
-    <Unit filename="C:/JUCE/modules/juce_video/juce_video.h">
+    <Unit filename="../../../../../../../JUCE-5.3.1/modules/juce_opengl/juce_opengl.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
@@ -8721,15 +8686,14 @@
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
     </Unit>
-    <Unit filename="../../JuceLibraryCode/include_juce_video.cpp">
-      <Option target="Shared Code | Debug"/>
-      <Option target="Shared Code | Release"/>
-    </Unit>
     <Unit filename="../../JuceLibraryCode/JuceHeader.h">
       <Option target="Shared Code | Debug"/>
       <Option target="Shared Code | Release"/>
       <Option compile="0"/>
       <Option link="0"/>
+    </Unit>
+    <Unit filename="resources.rc">
+      <Option compilerVar="WINDRES"/>
     </Unit>
   </Project>
 </CodeBlocks_project_file>

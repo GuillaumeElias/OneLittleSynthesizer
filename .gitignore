@@ -77,3 +77,13 @@
 # Code Blocks files
 /Builds/CodeBlocksWindows_win32/bin/*
 /Builds/CodeBlocksWindows_win32/OneLittleSynthesizer.layout
+
+# MacOS files
+
+**/MacOSX/build
+contents.xcworkspacedata
+.DS_Store
+**/Builds/MacOSX/**/Index
+**/Builds/MacOSX/**/Intermediates.noindex
+**/doxygen/doc
+**/doxygen/build

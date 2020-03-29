@@ -29,7 +29,6 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <juce_opengl/juce_opengl.h>
-#include <juce_video/juce_video.h>
 
 #include "BinaryData.h"
 
@@ -43,6 +42,7 @@
 namespace ProjectInfo
 {
     const char* const  projectName    = "OneLittleSynthesizer";
+    const char* const  companyName    = "";
     const char* const  versionString  = "0.0.1";
     const int          versionNumber  = 0x1;
 }
