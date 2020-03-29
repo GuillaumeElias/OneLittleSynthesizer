@@ -93,11 +93,12 @@ void EnvelopeUI::paintEnvelope (Graphics& g)
 
     //PAINT PROGRESS INDICATOR
 
-    for( const auto & envPair : envProgressMap )
+    for( const auto & envPair : envelopesMap )
     {
-        EnvelopePhase curPhase = envPair.second.phase;
-        const float curDeltaTime = envPair.second.deltaTime;
-        const float curGain = envPair.second.gain;
+		EnvelopeProgress progress = envPair.second->getEnvProgress();
+        EnvelopePhase curPhase = progress.phase;
+        const float curDeltaTime = progress.deltaTime;
+        const float curGain = progress.gain;
 
         g.setColour ( VOICES_COLOURS[ envPair.first ] );
 

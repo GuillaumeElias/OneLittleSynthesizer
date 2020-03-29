@@ -9,6 +9,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "AbstractEnvelopeUI.h"
 #include "../Constants.h"
+#include "Envelope.h"
 
 //------------------------------------------------------------------------------
 
@@ -31,6 +32,8 @@ private:
     void parameterChanged(const String& parameterID, float newValue ) override;
 
     AudioProcessorValueTreeState& parameters;
+
+	Envelope * envelope;
 
     //Attack slider
     Slider attackSlider;

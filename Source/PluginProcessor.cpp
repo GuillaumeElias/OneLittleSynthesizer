@@ -369,9 +369,11 @@ AudioProcessorEditor* OneLittleSynthesizerAudioProcessor::createEditor()
     for(int i=0; i < NUMBER_OF_VOICES; i++)
     {
         SynthVoice * synthVoice = dynamic_cast<SynthVoice *> ( synth.getVoice(i) );
-        synthVoice->getEnvelope()->addEnvelopeListener(envelopeUI);
-        synthVoice->getDrawableEnvelope()->addEnvelopeListener(drawableEnvelopeUI);
-    }
+		synthVoice->setEnvelopeUpdater(std::make_unique<EnvelopeUIUpdater>(envelopeUI));
+		synthVoice->setDrawableEnvUpdater(std::make_unique<EnvelopeUIUpdater>(drawableEnvelopeUI));
+		envelopeUI->addEnvelope(i,synthVoice->getEnvelope());
+		drawableEnvelopeUI->addEnvelope(i, synthVoice->getDrawableEnvelope());
+	}
 
     return editor;
 }

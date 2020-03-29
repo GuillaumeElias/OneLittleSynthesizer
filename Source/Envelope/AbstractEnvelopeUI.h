@@ -5,33 +5,33 @@
 
 #pragma once
 
-#include <map>
-
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "AbstractEnvelope.h"
 
-class AbstractEnvelopeUI;
+ //====AbstractEnvelopeUI========================================================
+class AbstractEnvelopeUI : public Component
+{
+public:
+	AbstractEnvelopeUI();
+
+	void addEnvelope(int voiceNumber, AbstractEnvelope * env);
+protected:
+	std::map<int, AbstractEnvelope *> envelopesMap;
+};
+
 
 //----EnvelopeUIUpdater---------------------------------------------------------
-class EnvelopeUIUpdater : public AsyncUpdater
+class EnvelopeUIUpdater : public AsyncUpdater, public EnvelopeListener
 {
 public:
     EnvelopeUIUpdater(AbstractEnvelopeUI * envelopeUI);
     void handleAsyncUpdate() override;
+
+	void onProgress(int voiceNumber, const EnvelopeProgress & progress) override;
+	void onEndNote(int voiceNumber) override;
+
 private:
     AbstractEnvelopeUI * envelopeUI;
 };
 
 
-//====AbstractEnvelopeUI========================================================
-class AbstractEnvelopeUI : public Component, public EnvelopeListener
-{
-public:
-    AbstractEnvelopeUI();
-    void onProgress(int voiceNumber, const EnvelopeProgress & progress) override;
-    void onEndNote(int voiceNumber) override;
-
-protected:
-    std::map <int, EnvelopeProgress> envProgressMap;
-    EnvelopeUIUpdater updater;
-};

@@ -23,6 +23,8 @@ SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters, int 
     , env( processorParameters, getSampleRate(), voiceNumber )
     , drawableEnv( processorParameters, getSampleRate(), voiceNumber )
     , fmEngine( &osc1, &osc2, getSampleRate())
+	, envUpdater(nullptr)
+	, drawableEnvUpdater(nullptr)
 {
     env.addEnvelopeListener(this);
 
@@ -36,6 +38,8 @@ SynthVoice::SynthVoice( AudioProcessorValueTreeState * processorParameters, int 
 // =============================================================================
 SynthVoice::~SynthVoice()
 {
+	level = 0;
+
     parameters->removeParameterListener("filterCutoffFreq", this);
     parameters->removeParameterListener("filterRes", this);
     parameters->removeParameterListener("filterEnvAmount", this);
@@ -43,6 +47,16 @@ SynthVoice::~SynthVoice()
     parameters->removeParameterListener("octaveShift", this);
 
     env.removeEnvelopeListener(this);
+
+	if (envUpdater)
+	{
+		env.removeEnvelopeListener(envUpdater.get());
+	}
+
+	if (drawableEnvUpdater)
+	{
+		drawableEnv.removeEnvelopeListener(drawableEnvUpdater.get());
+	}
 }
 
 // =============================================================================
@@ -134,6 +148,30 @@ Envelope * SynthVoice::getEnvelope()
 DrawableEnvelope * SynthVoice::getDrawableEnvelope()
 {
     return &drawableEnv;
+}
+
+//==============================================================================
+void SynthVoice::setEnvelopeUpdater(std::unique_ptr<EnvelopeUIUpdater> envelopeUIUpdater)
+{
+	if (envUpdater) 
+	{
+		env.removeEnvelopeListener(envUpdater.get());
+	}
+
+	envUpdater = std::move(envelopeUIUpdater);
+	env.addEnvelopeListener(envUpdater.get());
+}
+
+//==============================================================================
+void SynthVoice::setDrawableEnvUpdater(std::unique_ptr<EnvelopeUIUpdater> envelopeUIUpdater)
+{
+	if (drawableEnvUpdater)
+	{
+		drawableEnv.removeEnvelopeListener(drawableEnvUpdater.get());
+	}
+
+	drawableEnvUpdater = std::move(envelopeUIUpdater);
+	drawableEnv.addEnvelopeListener(drawableEnvUpdater.get());
 }
 
 // =============================================================================

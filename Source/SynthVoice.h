@@ -12,6 +12,7 @@
 #include "Constants.h"
 #include "Envelope/Envelope.h"
 #include "Envelope/DrawableEnvelope.h"
+#include "Envelope/AbstractEnvelopeUI.h"
 
 #include <map>
 
@@ -40,6 +41,9 @@ public:
     Envelope * getEnvelope();
     DrawableEnvelope * getDrawableEnvelope();
 
+	void setEnvelopeUpdater(std::unique_ptr<EnvelopeUIUpdater> envelopeUIUpdater);
+	void setDrawableEnvUpdater(std::unique_ptr<EnvelopeUIUpdater> envelopeUIUpdater);
+
 private:
 
     void parameterChanged(const String& parameterID, float newValue ) override; //callback from parameter change
@@ -59,7 +63,12 @@ private:
 
     OscillatorBlep osc1, osc2;
     FMEngine fmEngine;
+
     Envelope env;
+	std::unique_ptr<EnvelopeUIUpdater> envUpdater;
+
     DrawableEnvelope drawableEnv;
+	std::unique_ptr <EnvelopeUIUpdater> drawableEnvUpdater;
+
     dsp::StateVariableFilter::Filter<double> filter;
 };

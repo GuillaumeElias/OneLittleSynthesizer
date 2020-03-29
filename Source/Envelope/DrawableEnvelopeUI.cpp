@@ -79,11 +79,12 @@ void DrawableEnvelopeUI::paint(Graphics & g)
     paintContour(g, DrawableEnvelope::getValuesRelease(), PADDING_LEFT_RELEASE);
 
     //PAINT PROGRESS INDICATOR
-    for( const auto & envPair : envProgressMap )
+    for( const auto & envPair : envelopesMap)
     {
-        EnvelopePhase curPhase = envPair.second.phase;
-        const float curDeltaTime = envPair.second.deltaTime;
-        const float curGain = envPair.second.gain;
+		EnvelopeProgress progress = envPair.second->getEnvProgress();
+        EnvelopePhase curPhase = progress.phase;
+        const float curDeltaTime = progress.deltaTime;
+        const float curGain = progress.gain;
 
         g.setColour ( VOICES_COLOURS[ envPair.first ] );
 
@@ -165,7 +166,7 @@ void DrawableEnvelopeUI::handleClick(int x, int y, bool drag)
     {
         DrawableEnvelope::setSustainLevel(value);
 
-        updater.triggerAsyncUpdate();
+		repaint();
         return;
     }
     else                                    //RELEASE
@@ -187,7 +188,7 @@ void DrawableEnvelopeUI::handleClick(int x, int y, bool drag)
             setEnvelopeValue(index, value, release);
         }
 
-        updater.triggerAsyncUpdate();
+		repaint();
     }
 }
 

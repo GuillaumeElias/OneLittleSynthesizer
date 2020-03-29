@@ -5,13 +5,26 @@
 
 #include "AbstractEnvelopeUI.h"
 
-//-----------------EnvelopeUIUpdater--------------------------------------------
+ //==================AbstractEnvelopeUI==========================================
+AbstractEnvelopeUI::AbstractEnvelopeUI()
+{
+
+}
+
+//==============================================================================
+void AbstractEnvelopeUI::addEnvelope(int voiceNumber, AbstractEnvelope * env)
+{
+	envelopesMap[voiceNumber] = env;
+}
+
+
+//==================EnvelopeUIUpdater===========================================
 EnvelopeUIUpdater::EnvelopeUIUpdater(AbstractEnvelopeUI * envUI)
     : envelopeUI(envUI)
 {
 }
 
-//------------------------------------------------------------------------------
+//==============================================================================
 void EnvelopeUIUpdater::handleAsyncUpdate()
 {
     if (envelopeUI->isShowing())
@@ -20,32 +33,14 @@ void EnvelopeUIUpdater::handleAsyncUpdate()
     }
 }
 
-
-//==================AbstractEnvelopeUI==========================================
-AbstractEnvelopeUI::AbstractEnvelopeUI()
-    : updater(this)
+//==============================================================================
+void EnvelopeUIUpdater::onEndNote(int voiceNumber)
 {
-
+	triggerAsyncUpdate();
 }
 
 //==============================================================================
-void AbstractEnvelopeUI::onEndNote(int voiceNumber)
+void EnvelopeUIUpdater::onProgress(int voiceNumber, const EnvelopeProgress & progress)
 {
-    if (envProgressMap.find(voiceNumber) != envProgressMap.end())
-    {
-        if (envProgressMap[voiceNumber].phase != OFF)
-        {
-            updater.triggerAsyncUpdate();
-        }
-        envProgressMap[voiceNumber].phase = OFF;
-        envProgressMap[voiceNumber].deltaTime = 0.f;
-    }
-}
-
-//==============================================================================
-void AbstractEnvelopeUI::onProgress(int voiceNumber, const EnvelopeProgress & progress)
-{
-    envProgressMap[voiceNumber] = { progress.phase, progress.deltaTime, progress.gain };
-
-    updater.triggerAsyncUpdate();
+    triggerAsyncUpdate();
 }
