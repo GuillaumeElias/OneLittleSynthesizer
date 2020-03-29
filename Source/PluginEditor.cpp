@@ -13,6 +13,7 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
     , processor (p)
     , parameters (params)
     , midiKeyboard (p.keyboardState, MidiKeyboardComponent::horizontalKeyboard)
+    , octaveShifterUI(p, parameters)
     , envelopeUI(params)
     , drawableEnvelopeUI(params)
 {
@@ -90,11 +91,13 @@ OneLittleSynthesizerAudioProcessorEditor::OneLittleSynthesizerAudioProcessorEdit
     filterResonanceSlider.setTextBoxStyle (Slider::NoTextBox, false, 120, 90);
 
     setFocusContainer(true);
+    octaveShifterUI.setWantsKeyboardFocus(false);
     envelopeUI.setWantsKeyboardFocus(false);
     drawableEnvelopeUI.setWantsKeyboardFocus(false);
     midiKeyboard.setWantsKeyboardFocus(false);
 
     //Making the components visible
+    addAndMakeVisible(octaveShifterUI);
     addAndMakeVisible(resetParametersButton);
     addAndMakeVisible(waveShapeLabel1);
     addAndMakeVisible(waveShapeSlider1);
@@ -138,6 +141,7 @@ void OneLittleSynthesizerAudioProcessorEditor::resized()
 
     midiKeyboard.setBounds (bounds.removeFromBottom (70) );
 
+    octaveShifterUI.setBounds(10, 10, 80, 20);
     resetParametersButton.setBounds(bounds.getWidth() - 55, 10, 45, 20);
 
     waveShapeLabel1.setBounds(0, 40, bounds.getWidth(), 20);
@@ -196,6 +200,7 @@ void OneLittleSynthesizerAudioProcessorEditor::buttonClicked( Button * button )
         processor.setParameterValue("filterAttack", INIT_FILTER_ENV_ATTACK);
         processor.setParameterValue("filterEnvAmount", INIT_FILTER_ENV_AMOUNT);
         processor.setParameterValue("loopDrawableEnvelope", 0.0f);
+        processor.setParameterValue("octaveShift", 0.0f);
 
         DrawableEnvelope::resetValues();
         drawableEnvelopeUI.repaint();

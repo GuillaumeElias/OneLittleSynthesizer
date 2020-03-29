@@ -22,6 +22,8 @@ const float INIT_ENV_RELEASE = 100.0f;
 const float ENV_PROGRESS_UPDATE_RATE = 0.01f; //in seconds
 
 const int NUMBER_OF_VOICES = 16;
+const int OCTAVE_SHIFT_MIN = -4;
+const int OCTAVE_SHIFT_MAX = 4;
 
 const float INIT_FILTER_ENV_ATTACK = 400.f; //milliseconds
 const float INIT_FILTER_ENV_AMOUNT = 0.5f; //0 to 1

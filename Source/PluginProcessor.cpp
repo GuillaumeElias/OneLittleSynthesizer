@@ -29,7 +29,7 @@ namespace
             }
         }
     }
-    
+
     //=========================================================================
     String floatToStrWithDecimals(float number, int precision)
     {
@@ -91,8 +91,8 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
 								  Oscillator::waveShapeToString, //value to text
                                   nullptr);
 
-    parameters.createAndAddParameter("waveShape2", 
-                                  "Wave shape osc 2", 
+    parameters.createAndAddParameter("waveShape2",
+                                  "Wave shape osc 2",
                                   String(),
                                   NormalisableRange<float>(1.f, 4.f, 1.f),
                                   INIT_WAVE_SHAPE,
@@ -187,12 +187,17 @@ OneLittleSynthesizerAudioProcessor::OneLittleSynthesizerAudioProcessor()
                                   [](float val){ return floatToStr(val * 100) + " %"; },
                                   nullptr);
     parameters.createAndAddParameter("loopDrawableEnvelope",
-                                    "Loop Drawable Envelope",
-                                    "Loop",
-                                    NormalisableRange<float> (0.0f, 1.0f, 1.0f),
-                                    0.0f,
-                                    [](float value){ return value < 0.5f ? "Off" : "On"; },
-                                    nullptr, false, true, true);
+                                  "Loop Drawable Envelope",
+                                  "Loop",
+                                  NormalisableRange<float> (0.0f, 1.0f, 1.0f),
+                                  0.0f,
+                                  [](float value){ return value < 0.5f ? "Off" : "On"; },
+                                  nullptr, false, true, true);
+    parameters.createAndAddParameter("octaveShift",
+                                  "Octave Shift",
+                                  String(),
+                                  NormalisableRange<float>(OCTAVE_SHIFT_MIN, OCTAVE_SHIFT_MAX, 1.0),
+                                  0, nullptr, nullptr);
 
     parameters.state = ValueTree (Identifier ("OneLittleSynthesizer"));
 
@@ -364,9 +369,11 @@ AudioProcessorEditor* OneLittleSynthesizerAudioProcessor::createEditor()
     for(int i=0; i < NUMBER_OF_VOICES; i++)
     {
         SynthVoice * synthVoice = dynamic_cast<SynthVoice *> ( synth.getVoice(i) );
-        synthVoice->getEnvelope()->addEnvelopeListener(envelopeUI);
-        synthVoice->getDrawableEnvelope()->addEnvelopeListener(drawableEnvelopeUI);
-    }
+		synthVoice->setEnvelopeUpdater(std::make_unique<EnvelopeUIUpdater>(envelopeUI));
+		synthVoice->setDrawableEnvUpdater(std::make_unique<EnvelopeUIUpdater>(drawableEnvelopeUI));
+		envelopeUI->addEnvelope(i,synthVoice->getEnvelope());
+		drawableEnvelopeUI->addEnvelope(i, synthVoice->getDrawableEnvelope());
+	}
 
     return editor;
 }

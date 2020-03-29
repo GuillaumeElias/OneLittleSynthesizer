@@ -17,17 +17,25 @@
       <FILE id="UP6Ljn" name="Mechanical.otf" compile="0" resource="1" file="Resources/Mechanical.otf"/>
     </GROUP>
     <GROUP id="{22BBBFC2-8997-3B2D-3CCC-6D49C1B2253C}" name="Source">
+      <FILE id="tPLiUg" name="OctaveShifterUI.cpp" compile="1" resource="0"
+            file="Source/OctaveShifterUI.cpp"/>
+      <FILE id="ktchfH" name="OctaveShifterUI.h" compile="0" resource="0"
+            file="Source/OctaveShifterUI.h"/>
       <GROUP id="{25A1D3CA-D175-CFBD-F1B6-C21902E75A40}" name="Oscillator">
         <FILE id="VGSy7R" name="OscillatorBlep.cpp" compile="1" resource="0"
-              file="Source/OscillatorBlep.cpp"/>
+              file="Source/Oscillator/OscillatorBlep.cpp"/>
         <FILE id="avGpdU" name="OscillatorBlep.h" compile="0" resource="0"
-              file="Source/OscillatorBlep.h"/>
-        <FILE id="v9BNeZ" name="FMEngine.cpp" compile="1" resource="0" file="Source/FMEngine.cpp"/>
-        <FILE id="xZXbaA" name="FMEngine.h" compile="0" resource="0" file="Source/FMEngine.h"/>
-        <FILE id="W9dV3S" name="Oscillator.cpp" compile="1" resource="0" file="Source/Oscillator.cpp"/>
-        <FILE id="FppX5k" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator.h"/>
+              file="Source/Oscillator/OscillatorBlep.h"/>
+        <FILE id="v9BNeZ" name="FMEngine.cpp" compile="1" resource="0" file="Source/Oscillator/FMEngine.cpp"/>
+        <FILE id="xZXbaA" name="FMEngine.h" compile="0" resource="0" file="Source/Oscillator/FMEngine.h"/>
+        <FILE id="W9dV3S" name="Oscillator.cpp" compile="1" resource="0" file="Source/Oscillator/Oscillator.cpp"/>
+        <FILE id="FppX5k" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator/Oscillator.h"/>
       </GROUP>
       <GROUP id="{6B9A2E4A-B0A1-D35B-D764-03D9DBEB0285}" name="Envelope">
+        <FILE id="GKUike" name="AbstractEnvelopeUI.cpp" compile="1" resource="0"
+              file="Source/Envelope/AbstractEnvelopeUI.cpp"/>
+        <FILE id="qolN1y" name="AbstractEnvelopeUI.h" compile="0" resource="0"
+              file="Source/Envelope/AbstractEnvelopeUI.h"/>
         <FILE id="l6egg7" name="AbstractEnvelope.cpp" compile="1" resource="0"
               file="Source/Envelope/AbstractEnvelope.cpp"/>
         <FILE id="NlmWO7" name="Envelope.cpp" compile="1" resource="0" file="Source/Envelope/Envelope.cpp"/>

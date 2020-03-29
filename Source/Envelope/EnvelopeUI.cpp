@@ -5,25 +5,11 @@
 
 #include "EnvelopeUI.h"
 
-//==============================================================================
-EnvelopeUIUpdater::EnvelopeUIUpdater(EnvelopeUI * envUI)
-    : envelopeUI( envUI )
-{
-}
-
-//==============================================================================
-void EnvelopeUIUpdater::handleAsyncUpdate()
-{
-    if(envelopeUI->isShowing())
-    {
-        envelopeUI->repaint();
-    }
-}
+#include "AbstractEnvelopeUI.h"
 
 //==============================================================================
 EnvelopeUI::EnvelopeUI(AudioProcessorValueTreeState& processorParameters)
     : parameters( processorParameters )
-    , updater( this )
 {
     //Attack slider
     attackAttachment = new SliderAttachment (parameters, "envAttack", attackSlider);
@@ -107,11 +93,12 @@ void EnvelopeUI::paintEnvelope (Graphics& g)
 
     //PAINT PROGRESS INDICATOR
 
-    for( const auto & envPair : envProgressMap )
+    for( const auto & envPair : envelopesMap )
     {
-        EnvelopePhase curPhase = envPair.second.phase;
-        const float curDeltaTime = envPair.second.deltaTime;
-        const float curGain = envPair.second.gain;
+		EnvelopeProgress progress = envPair.second->getEnvProgress();
+        EnvelopePhase curPhase = progress.phase;
+        const float curDeltaTime = progress.deltaTime;
+        const float curGain = progress.gain;
 
         g.setColour ( VOICES_COLOURS[ envPair.first ] );
 
@@ -166,28 +153,4 @@ void EnvelopeUI::resized()
 void EnvelopeUI::parameterChanged( const String& parameterID, float newValue )
 {
     repaint();
-}
-
-//==============================================================================
-void EnvelopeUI::onEndNote( int voiceNumber )
-{
-    if( envProgressMap.find( voiceNumber ) != envProgressMap.end() )
-    {
-        if( envProgressMap[ voiceNumber ].phase != OFF )
-        {
-            updater.triggerAsyncUpdate();
-        }
-        envProgressMap[ voiceNumber ].phase = OFF;
-        envProgressMap[ voiceNumber ].deltaTime = 0.f;
-    }
-}
-
-//==============================================================================
-void EnvelopeUI::onProgress(int voiceNumber, const EnvelopeProgress & progress)
-{
-    envProgressMap[voiceNumber] = {progress.phase, progress.deltaTime, progress.gain};
-
-    //TODO only update every 100 samples or so
-
-    updater.triggerAsyncUpdate();
 }

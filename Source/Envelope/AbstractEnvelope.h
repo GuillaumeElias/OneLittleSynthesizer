@@ -8,6 +8,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../Constants.h"
 
+#include <map>
 
 //==================================================================================
 
@@ -45,12 +46,18 @@ public:
     void addEnvelopeListener( EnvelopeListener * listener );
     void removeEnvelopeListener( EnvelopeListener * listener );
 
+	const EnvelopeProgress & getEnvProgress();
+
 protected:
     void notifyProgress( float deltaTime, float gain );
     void notifyEndNote();
 
     ListenerList<EnvelopeListener> listeners;
+	CriticalSection listenersMutex;
+
     EnvelopePhase currentPhase, lastNotifyPhase;
     int voiceNumber;
     float lastDeltaTime;
+
+	EnvelopeProgress envProgress;
 };

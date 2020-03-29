@@ -34,5 +34,4 @@ class Envelope : public AbstractEnvelope, private AudioProcessorValueTreeState::
         Atomic<float> decayDelta, hitReleaseGainRatio, hitReleaseGain;
         Atomic<int> sampleIndex;
         float currentGain;
-
 };

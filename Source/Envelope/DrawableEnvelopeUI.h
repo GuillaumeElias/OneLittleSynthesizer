@@ -7,6 +7,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "DrawableEnvelope.h"
+#include "AbstractEnvelopeUI.h"
 #include <map>
 
 //==============================================================================
@@ -15,27 +16,13 @@ typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
 typedef AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
 
 //==============================================================================
-class DrawableEnvelopeUI;
-class DrawableEnvelopeUIUpdater : public AsyncUpdater
-{
-    public:
-        DrawableEnvelopeUIUpdater(DrawableEnvelopeUI * envelopeUI);
-         void handleAsyncUpdate () override;
-    private:
-        DrawableEnvelopeUI * envelopeUI;
-};
-
-//==============================================================================
-class DrawableEnvelopeUI : public Component, public EnvelopeListener
+class DrawableEnvelopeUI : public AbstractEnvelopeUI
 {
     public:
         DrawableEnvelopeUI(AudioProcessorValueTreeState& processorParameters);
 
         void paint(Graphics&) override;
         void resized() override;
-
-        void onEndNote( int voiceNumber ) override;
-        void onProgress( int voiceNumber, const EnvelopeProgress & progress ) override;
 
     private:
         void mouseDown( const MouseEvent & event) override;
@@ -64,9 +51,5 @@ class DrawableEnvelopeUI : public Component, public EnvelopeListener
         //Loop button
         ToggleButton loopButton;
         ScopedPointer<ButtonAttachment> loopButtonAttachment;
-
-        std::map <int, EnvelopeProgress> envProgressMap;
-
-        DrawableEnvelopeUIUpdater updater;
 };
 

@@ -27,24 +27,8 @@ namespace
 }
 
 //=================================================================
-DrawableEnvelopeUIUpdater::DrawableEnvelopeUIUpdater(DrawableEnvelopeUI * envUI)
-    : envelopeUI( envUI )
-{
-}
-
-//=================================================================
-void DrawableEnvelopeUIUpdater::handleAsyncUpdate()
-{
-    if(envelopeUI->isShowing())
-    {
-        envelopeUI->repaint();
-    }
-}
-
-//=================================================================
 DrawableEnvelopeUI::DrawableEnvelopeUI(AudioProcessorValueTreeState& processorParameters)
     : height( DRAWABLE_ENVELOPE_HEIGHT )
-    , updater( this )
     , parameters( processorParameters )
     , lastMouseDragIndex( -1 )
     , lastMouseDragValue( -1 )
@@ -95,11 +79,12 @@ void DrawableEnvelopeUI::paint(Graphics & g)
     paintContour(g, DrawableEnvelope::getValuesRelease(), PADDING_LEFT_RELEASE);
 
     //PAINT PROGRESS INDICATOR
-    for( const auto & envPair : envProgressMap )
+    for( const auto & envPair : envelopesMap)
     {
-        EnvelopePhase curPhase = envPair.second.phase;
-        const float curDeltaTime = envPair.second.deltaTime;
-        const float curGain = envPair.second.gain;
+		EnvelopeProgress progress = envPair.second->getEnvProgress();
+        EnvelopePhase curPhase = progress.phase;
+        const float curDeltaTime = progress.deltaTime;
+        const float curGain = progress.gain;
 
         g.setColour ( VOICES_COLOURS[ envPair.first ] );
 
@@ -132,28 +117,6 @@ void DrawableEnvelopeUI::paint(Graphics & g)
         }
     }
 
-}
-
-//==============================================================================
-void DrawableEnvelopeUI::onEndNote( int voiceNumber )
-{
-    if( envProgressMap.find( voiceNumber ) != envProgressMap.end() )
-    {
-        if( envProgressMap[ voiceNumber ].phase != OFF )
-        {
-            updater.triggerAsyncUpdate();
-        }
-        envProgressMap[ voiceNumber ].phase = OFF;
-        envProgressMap[ voiceNumber ].deltaTime = 0.f;
-    }
-}
-
-//==============================================================================
-void DrawableEnvelopeUI::onProgress(int voiceNumber, const EnvelopeProgress & progress)
-{
-    envProgressMap[voiceNumber] = {progress.phase, progress.deltaTime, progress.gain};
-
-    updater.triggerAsyncUpdate();
 }
 
 //=================================================================
@@ -203,7 +166,7 @@ void DrawableEnvelopeUI::handleClick(int x, int y, bool drag)
     {
         DrawableEnvelope::setSustainLevel(value);
 
-        updater.triggerAsyncUpdate();
+		repaint();
         return;
     }
     else                                    //RELEASE
@@ -225,7 +188,7 @@ void DrawableEnvelopeUI::handleClick(int x, int y, bool drag)
             setEnvelopeValue(index, value, release);
         }
 
-        updater.triggerAsyncUpdate();
+		repaint();
     }
 }
 

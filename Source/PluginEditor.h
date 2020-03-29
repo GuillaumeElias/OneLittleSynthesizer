@@ -8,6 +8,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
 #include "PluginLookAndFeel.h"
+#include "OctaveShifterUI.h"
 #include "Envelope/EnvelopeUI.h"
 #include "Envelope/DrawableEnvelopeUI.h"
 
@@ -82,6 +83,9 @@ private:
     Slider filterResonanceSlider;
     Label filterResonanceLabel;
     ScopedPointer<SliderAttachment> filterResAttachment;
+
+    //Octave Shifter
+    OctaveShifterUI octaveShifterUI;
 
     //ENVELOPES
     EnvelopeUI envelopeUI;
